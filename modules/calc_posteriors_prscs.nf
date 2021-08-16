@@ -10,8 +10,7 @@ process calc_posteriors_prscs {
         path gwas_chr
         val N
         path ld_mat
-        val bfile
-        path plink_files
+        tuple val(bfile), path(plink_files)
     
     output:
         path "${out_prefix}_prscs_chr${chr}.snpRes"

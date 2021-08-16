@@ -12,7 +12,7 @@ process split_reformat_gwas {
         val traitName
         path gwas
         val N
-        each method
+        val method
 
     output:
         val chr

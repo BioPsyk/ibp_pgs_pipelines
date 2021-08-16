@@ -3,12 +3,12 @@
 nextflow.enable.dsl = 2
 import groovy.json.JsonSlurper
 
-include split_reformat_gwas as split_for_prscs from 'modules/split_reformat_gwas'
-include split_reformat_gwas as split_for_sbayesr from 'modules/split_reformat_gwas'
-include 'modules/calc_posteriors_sbayesr'
-include 'modules/calc_posteriors_prscs'
-include merge_posteriors as merge_sbayesr from 'modules/merge_posteriors'
-include merge_posteriors as merge_prscs from 'modules/merge_posteriors'
+include { split_reformat_gwas as split_for_prscs } from './modules/split_reformat_gwas.nf'
+include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
+include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
+include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
+include { merge_posteriors as merge_sbayesr } from './modules/merge_posteriors.nf'
+include { merge_posteriors as merge_prscs } from './modules/merge_posteriors.nf'
 
 def help_msg() {
     log.info """
@@ -29,20 +29,20 @@ def help_msg() {
     """
 }
 
+params.ref              = "/test/ieu-b42.vcf.gz"
+params.bfile            = "/test/Genomes1k_Phase1_CEU_chr1_22"
+params.N                = "77096"
+params.dir              = launchDir
+params.trait            = file(params.ref).getSimpleName()
+params.prscs_ld_files   = "prscs_eur_ld.json"
+params.sbayesr_ld_files = "sbayesR_eur_ld.json"
+params.help             = false
+
 if(params.help)
 {
     help_msg()
     exit 0
 }
-
-params.ref              = "/test/ieu-b42.vcf.gz"
-params.bfile            = "/test/Genomes1k_Phase1_CEU_chr1_22"
-params.N                = "77096"
-params.dir              = launchDir()
-params.trait            = file(params.ref).getSimpleName()
-params.prscs_ld_files   = "prscs_eur_ld.json"
-params.sbayesR_ld_files = "sbayesR_eur_ld.json"
-params.help             = false
 
 log.info """
 ======================================================
@@ -53,7 +53,7 @@ Trait Name                  : $params.trait
 Reference GWAS Sample Size  : $params.N
 Target dataset              : $params.bfile
 Prs-CS LD Files             : $params.prscs_ld_files
-sBayesR-LD-Files            : $params.sbayesR_ld_files
+sBayesR-LD-Files            : $params.sbayesr_ld_files
 Output Directory            : $params.dir
 ======================================================
 """
@@ -61,7 +61,7 @@ Output Directory            : $params.dir
 def jsonSlurper_prscs   = new JsonSlurper()
 def jsonSlurper_sBayesR = new JsonSlurper()
 def prscs_ld_json       = new File(params.prscs_ld_files)
-def sBayesR_ld_json     = new File(params.sbayesR_ld_files)
+def sBayesR_ld_json     = new File(params.sbayesr_ld_files)
 String prscs_ld_files   = prscs_ld_json.text
 String sBayesR_ld_files = sBayesR_ld_json.text 
 def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_files) 
@@ -73,21 +73,24 @@ workflow {
         params.ref, 
         params.N,
         "prscs")
+
     split_for_sbayesr(Channel.of(1..22), 
         params.trait, 
         params.ref, 
         params.N,
         "sbayesr")
+
     calc_posteriors_prscs(split_for_prscs.out[0], 
         split_for_prscs.out[1],
-        params.N,
-        path prscs_ld_dict[split_for_prscs.out[0]], 
-        params.bfile,  
+        params.N,  
+        Channel.fromPath(prscs_ld_dict.get("${split_for_prscs.out[0]}")),
         Channel.fromFilePairs("${params.bfile}.{bed, bim, fam}", checkIfExists: true))
+
     calc_posteriors_sbayesr(split_for_sbayesr.out[0],
         split_for_sbayesr.out[1],
-        path sbayesR_ld_dict[split_for_sbayesr.out[0]],
+        Channel.fromFilePairs("${sBayesR_ld_dict.get("${split_for_sbayesr.out[0]}").get("bin").getBaseName}.{bin, info}", checkIfExists: true),
         params.trait)
-    merge_prscs(calc_posteriors_prscs.out.collect(), "prscs")
-    merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR")
+
+    merge_prscs(calc_posteriors_prscs.out.collect(), "prscs", params.dir)
+    merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR", params.dir)
 }

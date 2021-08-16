@@ -2,12 +2,17 @@
 
 nextflow.enable.dsl = 2
 
-merge_posteriors {
+process merge_posteriors {
+    publishDir "${out_dir}/${method}/posteriors/", mode: "copy"
+
     input:
         path posteriors
         val method
+        path out_dir
+
     output:
         path ${method}_snpPosteriorEffects.txt
+
     script:
         """
         echo "
