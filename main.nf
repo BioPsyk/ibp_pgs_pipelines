@@ -3,10 +3,12 @@
 nextflow.enable.dsl = 2
 import groovy.json.JsonSlurper
 
-include 'modules/split_reformat_gwas'
-include 'modules/calc_prscs_posteriors'
-include 'modules/sbayesr_posteriors'
-include 'modules/merge_posteriors'
+include split_reformat_gwas as split_for_prscs from 'modules/split_reformat_gwas'
+include split_reformat_gwas as split_for_sbayesr from 'modules/split_reformat_gwas'
+include 'modules/calc_posteriors_sbayesr'
+include 'modules/calc_posteriors_prscs'
+include merge_posteriors as merge_sbayesr from 'modules/merge_posteriors'
+include merge_posteriors as merge_prscs from 'modules/merge_posteriors'
 
 def help_msg() {
     log.info """
@@ -66,15 +68,26 @@ def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_files)
 def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_files)
 
 workflow {
-    split_reformat_gwas(Channel.of(1..22), 
+    split_for_prscs(Channel.of(1..22), 
         params.trait, 
         params.ref, 
         params.N,
-        ["prscs", "sbayesR"])
-    calc_posteriors(prscs_chunk_ch, 
-        prscs_ld_dict, 
-        params.N, 
-        params.dir, 
+        "prscs")
+    split_for_sbayesr(Channel.of(1..22), 
+        params.trait, 
+        params.ref, 
+        params.N,
+        "sbayesr")
+    calc_posteriors_prscs(split_for_prscs.out[0], 
+        split_for_prscs.out[1],
+        params.N,
+        path prscs_ld_dict[split_for_prscs.out[0]], 
+        params.bfile,  
         Channel.fromFilePairs("${params.bfile}.{bed, bim, fam}", checkIfExists: true))
-    merge_posteriors(posteriors_ch)
+    calc_posteriors_sbayesr(split_for_sbayesr.out[0],
+        split_for_sbayesr.out[1],
+        path sbayesR_ld_dict[split_for_sbayesr.out[0]],
+        params.trait)
+    merge_prscs(calc_posteriors_prscs.out.collect(), "prscs")
+    merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR")
 }

@@ -17,7 +17,6 @@ process split_reformat_gwas {
     output:
         val chr
         path "${traitName}_${method}_chr${chr}.txt"
-        val method
 
     script:
         """

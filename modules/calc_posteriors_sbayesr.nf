@@ -4,14 +4,15 @@ nextflow.enable.dsl = 2
 
 // calculate per chromosome posterior SNP effects for sBayesR
 
-process sbayesR {
+process calc_posteriors_sbayesr {
     input:
-        val chr, file gwas_chr from sBayesR_chunk_ch
-        path sBayesR_ld_dict[$chr] name ld_mat from sBayesR_ld_dict
+        val chr
+        path gwas_chr
+        path ld_mat
         val out_prefix
     
     output:
-        path "${out_prefix}_sBayesR.snpRes"
+        path "${out_prefix}_sBayesR_chr${chr}.snpRes"
 
     script:
         """
@@ -25,5 +26,5 @@ process sbayesR {
                 --out $out_prefix \
                 --exclude-mhc \
                 --impute-n"
-        """
+             """
 }
