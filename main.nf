@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-import groovy.json.JsonSlurper
 
 include { split_reformat_gwas as split_for_prscs } from './modules/split_reformat_gwas.nf'
 include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
@@ -23,8 +22,8 @@ def help_msg() {
     --trait <ipsych_scz_2014> [A prefix for output files, preferably containing name of trait and dataset] (Default: Simple name of reference file)
     --N <10000> [Sample size of the reference dataset] (Default: 77096)
     --dir </path/to/results/> [Place where the results from the pipeline are to be stored] (Default: Launch directory)
-    --prscs_ld_files <prscs_eur_ld.json> [A .json format file with paths to chromosome wise LD matrices in hdf5 format] (Default: prscs_eur_ld.json)
-    --sbayesR_ld_files <sbayesR_eur_ld.json> [A .json format file with paths to chromosome wise LD matrices in sparse bin format] (Default: sbayesR_eur_ld.json)
+    --prscs_ld_files <"ldblk_1kg_chr*.hdf5"> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
+    --sbayesR_ld_files <"ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*"> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
     --help <prints this message>
     """
 }
@@ -45,9 +44,9 @@ if(params.help)
 }
 
 log.info """
-======================================================
+============================================================================================================
 I B P - P R S -  P I P E L I N E _ v. 1.0 - N F
-======================================================
+============================================================================================================
 Reference GWAS              : $params.ref
 Trait Name                  : $params.trait
 Reference GWAS Sample Size  : $params.N
@@ -55,17 +54,20 @@ Target dataset              : $params.bfile
 Prs-CS LD Files             : $params.prscs_ld_files
 sBayesR-LD-Files            : $params.sbayesr_ld_files
 Output Directory            : $params.dir
-======================================================
+============================================================================================================
 """
 
-def jsonSlurper_prscs   = new JsonSlurper()
-def jsonSlurper_sBayesR = new JsonSlurper()
-def prscs_ld_json       = new File(params.prscs_ld_files)
-def sBayesR_ld_json     = new File(params.sbayesr_ld_files)
-String prscs_ld_files   = prscs_ld_json.text
-String sBayesR_ld_files = sBayesR_ld_json.text 
-def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_files) 
-def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_files)
+Channel
+    .fromPath(params.prscs_ld_files, checkIfExists : true)
+    .view()
+Channel
+    .fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
+    .view()
+Channel
+    .fromFilePairs("${params.sbayesr_ld_files}.{bin,info}", size : 2, checkIfExists : true)
+    .view()
+
+return
 
 workflow {
     split_for_prscs(Channel.of(1..22), 
@@ -83,14 +85,14 @@ workflow {
     calc_posteriors_prscs(split_for_prscs.out[0], 
         split_for_prscs.out[1],
         params.N,  
-        Channel.fromPath(prscs_ld_dict.get("${split_for_prscs.out[0]}")),
+        prscs_ld_dict.get(split_for_prscs.out[0]),
         Channel.fromFilePairs("${params.bfile}.{bed, bim, fam}", checkIfExists: true))
 
-    calc_posteriors_sbayesr(split_for_sbayesr.out[0],
-        split_for_sbayesr.out[1],
-        Channel.fromFilePairs("${sBayesR_ld_dict.get("${split_for_sbayesr.out[0]}").get("bin").getBaseName}.{bin, info}", checkIfExists: true),
-        params.trait)
+ //   calc_posteriors_sbayesr(split_for_sbayesr.out[0],
+ //       split_for_sbayesr.out[1],
+ //       Channel.fromFilePairs("${sBayesR_ld_dict(${split_for_sbayesr}.out[0])("bin").getBaseName}.{bin, info}", checkIfExists: true),
+ //       params.trait)
 
     merge_prscs(calc_posteriors_prscs.out.collect(), "prscs", params.dir)
-    merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR", params.dir)
+ //   merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR", params.dir)
 }
