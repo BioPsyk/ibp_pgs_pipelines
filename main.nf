@@ -57,15 +57,18 @@ Output Directory            : $params.dir
 ============================================================================================================
 """
 
-Channel
-    .fromPath(params.prscs_ld_files, checkIfExists : true)
+Channel.fromPath(params.prscs_ld_files, checkIfExists : true)
+    .map{ it -> tuple(it.getSimpleName().replaceAll(/.+chr/, ''), it) }
     .view()
-Channel
-    .fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
+    .set{prscs_ld_ch}
+Channel.fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
+    { file -> file.getSimpleName().replaceAll(/.+chr/,'') }
     .view()
-Channel
-    .fromFilePairs("${params.sbayesr_ld_files}.{bin,info}", size : 2, checkIfExists : true)
+    .set{geno_ch}
+Channel.fromFilePairs("${params.sbayesr_ld_files}.{bin,info}", size : 2, checkIfExists : true)
+    { file -> file.getSimpleName().replaceAll(/.+chr/, '').replaceAll(/_.+/, '') }
     .view()
+    .set{sbayesr_ld_ch}
 
 return
 
