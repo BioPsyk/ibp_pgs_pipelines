@@ -3,20 +3,21 @@
 nextflow.enable.dsl = 2
 
 process merge_posteriors {
-    publishDir "${out_dir}/${method}/posteriors/", mode: "copy"
+    publishDir "$out_dir/$method/posteriors/"
 
     input:
-        path posteriors
-        val method
-        path out_dir
+        tuple path(posteriors),
+            val(method),
+            val(trait),
+            path(out_dir)
 
     output:
-        path ${method}_snpPosteriorEffects.txt
+        path("${trait}_${method}_snpPosteriorEffects.txt")
 
     script:
         """
         echo "
-        head -n 1 $posteriors[0] > ${method}_snpPosteriorEffects.txt
-        for i in {1..22};do cat $posteriors[\$i] >> ${method}_snpPosteriorEffects.txt"
+        head -n 1 $posteriors[0] > ${trait}_${method}_snpPosteriorEffects.txt
+        for i in {1..22};do cat $posteriors[\$i] >> ${trait}_${method}_snpPosteriorEffects.txt"
         """
 }

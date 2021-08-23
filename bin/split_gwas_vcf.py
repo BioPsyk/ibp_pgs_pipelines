@@ -18,17 +18,16 @@ def main():
     parser.add_argument('--vcf', type = str,help = "Path to a gzipped VCF", required = True)
     parser.add_argument('--format', type = str, help = "prscs or sbayesR", required = True)
 
-    args = parser.parse_args()
-    out  = re.sub('^.*\/', '', args.vcf)
-    out  = re.sub('\.vcf.gz$', '', out)
+    args        = parser.parse_args()
+    out         = re.sub('^.*\/', '', args.vcf)
+    out         = re.sub('\.vcf.gz$', '', out)
+    args.format = args.format.lower()
+    out         = out + "_" + args.format + "_" + str(args.chromosome) + ".txt"
+    out_fh      = open(out, "w")
 
     if(args.format == "prscs"):
-        out    = out + "_" + "prscs" + "_" + str(args.chromosome) + ".txt"
-        out_fh = open(out, "w")
         out_fh.write("SNP A1 A2 BETA P\n")
-    elif(args.format == "sbayesR"):
-        out    = out + "_" + "sbayesR" + "_" + str(args.chromosome) + ".txt"
-        out_fh = open(out, "w")
+    elif(args.format == "sbayesr"):
         out_fh.write("SNP A1 A2 freq b se p N\n")
     else:
         sys.exit("FATAL: --format is either prscs or sbayesR")
@@ -42,17 +41,17 @@ def main():
             out_fh.write(" ")
             out_fh.write(variant.REF)
             out_fh.write(" ")
-            if(args.format == "sbayesR"):
+            if(args.format == "sbayesr"):
                 out_fh.write(str(variant.INFO.get('AF')))
                 out_fh.write(" ")
             out_fh.write(str(variant.format('ES').flat[0]))
             out_fh.write(" ")
-            if (args.format == "sbayesR"):
+            if (args.format == "sbayesr"):
                 out_fh.write(str(variant.format('SE').flat[0]))
                 out_fh.write(" ")
             out_fh.write(str(pow(10, -1 * variant.format('LP').flat[0])))
             out_fh.write(" ")
-            if (args.format == "sbayesR"):
+            if (args.format == "sbayesr"):
                 out_fh.write(str(variant.format('SS').flat[0]))
             out_fh.write("\n")
     else:

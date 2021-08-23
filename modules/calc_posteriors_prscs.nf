@@ -6,22 +6,26 @@ nextflow.enable.dsl = 2
 
 process calc_posteriors_prscs {
     input:
-        val chr
-        path gwas_chr
-        val N
-        path ld_mat
-        tuple val(bfile), path(plink_files)
+        tuple val(chr),
+            path(gwas),
+            val(N),
+            path(ld_file),        
+            path(bed), 
+            path(bim), 
+            path(fam), 
+            path(out_dir),
+            val(traitName)
     
     output:
         path "${out_prefix}_prscs_chr${chr}.snpRes"
 
     script:
         """
-        echo "python /bin/PRScs.py --ref_dir=$ld_mat \
-                --sst_file=$gwas_chr \
-                --bim_prefix=$bfile \
+        echo "python ${projectDir}/bin/PRScs.py --ref_dir=${ld.file.getParent()}/${ld.file.getBaseName()} \
+                --sst_file=$gwas \
+                --bim_prefix=${bim.getParent()}/${bim.getBaseName()} \
                 --n_gwas=$N \
                 --chrom=$chr \
-                --out_dir=$workDir"
+                --out_dir=$out_dir/$traitName"
         """ 
 }

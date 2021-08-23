@@ -8,18 +8,19 @@ nextflow.enable.dsl = 2
 
 process split_reformat_gwas {
     input:
-        val chr
-        val traitName
-        path gwas
-        val N
-        val method
+        tuple val(chr),
+            val(traitName),
+            path(vcf),
+            path(vcf_idx),
+            val(N),
+            val (method)
 
     output:
-        val chr
-        path "${traitName}_${method}_chr${chr}.txt"
+        tuple val(chr), 
+            path("${traitName}_${method}_chr${chr}.txt")
 
     script:
         """
-        python /bin/split_gwas_vcf.py --vcf $gwas --chromosome $chr --format $method
+        python ${projectDir}/bin/split_gwas_vcf.py --vcf $vcf --chromosome $chr --format $method
         """
 }

@@ -6,19 +6,20 @@ nextflow.enable.dsl = 2
 
 process calc_posteriors_sbayesr {
     input:
-        val chr
-        path gwas_chr
-        tuple val ld_path, path ld_files
-        val out_prefix
+        tuple val(chr),
+            path(gwas_chr),
+            path(ld_bin), 
+            path(ld_info), 
+            val(out_prefix)
     
     output:
-        path "${out_prefix}_sBayesR_chr${chr}.snpRes"
+        path "${out_prefix}_sbayesr_chr${chr}.snpRes"
 
     script:
         """
-        echo "$gctb --sbayes R \
+        echo "${projectDir}/bin/gctb --sbayes R \
                 --gwas-summary $gwas_chr \
-                --ldm $ld_path \
+                --ldm ${ld_bin.getParent()}/${ld_bin.getBaseName()} \
                 --gamma 0.0,0.01,0.1,1 \
                 --pi 0.95.0.02,0.02,0.01 \
                 --burn-in 2000 \

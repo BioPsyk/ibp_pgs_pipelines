@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+import groovy.json.JsonSlurper
 
 include { split_reformat_gwas as split_for_prscs } from './modules/split_reformat_gwas.nf'
 include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
@@ -57,45 +58,50 @@ Output Directory            : $params.dir
 ============================================================================================================
 """
 
-Channel.fromPath(params.prscs_ld_files, checkIfExists : true)
-    .map{ it -> tuple(it.getSimpleName().replaceAll(/.+chr/, ''), it) }
-    .view()
-    .set{prscs_ld_ch}
+def jsonSlurper_prscs   = new JsonSlurper()
+def jsonSlurper_sBayesR = new JsonSlurper()
+def prscs_ld_json       = new File(params.prscs_ld_files)
+def sBayesR_ld_json     = new File(params.sbayesr_ld_files)
+String prscs_ld_paths   = prscs_ld_json.text
+String sBayesR_ld_paths = sBayesR_ld_json.text 
+def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_paths) 
+def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_paths)
+
+// Channel.fromFilePairs("${ref_vcf_gz.getParent()}/${ref_vcf_gz.getBaseName()}.{gz,gz.tbi}", size : 2, checkIfExists : true).set{ref_ch}
+prscs_ld_ch = Channel.of(1..22) | map {a -> [a, prscs_ld_dict.get(a.toString())]}
+sbayesr_ld_ch = Channel.of(1..22) | map {a -> [a, sBayesR_ld_dict.get(a.toString())]}
 Channel.fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
     { file -> file.getSimpleName().replaceAll(/.+chr/,'') }
-    .view()
     .set{geno_ch}
-Channel.fromFilePairs("${params.sbayesr_ld_files}.{bin,info}", size : 2, checkIfExists : true)
-    { file -> file.getSimpleName().replaceAll(/.+chr/, '').replaceAll(/_.+/, '') }
-    .view()
-    .set{sbayesr_ld_ch}
-
-return
+ref_ch = Channel.of(1..22) | map {a -> [a, file("${params.ref}"), file("${params.ref}.tbi")]}
 
 workflow {
-    split_for_prscs(Channel.of(1..22), 
-        params.trait, 
-        params.ref, 
-        params.N,
-        "prscs")
+    Channel.of(1..22) \
+    | combine(Channel.from(params.trait)) \
+    | combine(ref_ch, by: 0) \
+    | combine(Channel.from(params.N)) \
+    | combine(Channel.from('prscs')) \
+    | split_for_prscs \
+    | combine(Channel.of(params.N)) \
+    | combine(prscs_ld_ch, by: 0) \
+    | combine(geno_ch, by: 0) \
+    | combine(Channel.of(params.dir)) \
+    | combine(Channel.of(params.trait)) \
+    | calc_posteriors_prscs.collect() \
+    | combine(Channel.of('prscs')) \
+    | combine(Channel.of(params.trait)) \
+    | merge_prscs
 
-    split_for_sbayesr(Channel.of(1..22), 
-        params.trait, 
-        params.ref, 
-        params.N,
-        "sbayesr")
-
-    calc_posteriors_prscs(split_for_prscs.out[0], 
-        split_for_prscs.out[1],
-        params.N,  
-        prscs_ld_dict.get(split_for_prscs.out[0]),
-        Channel.fromFilePairs("${params.bfile}.{bed, bim, fam}", checkIfExists: true))
-
- //   calc_posteriors_sbayesr(split_for_sbayesr.out[0],
- //       split_for_sbayesr.out[1],
- //       Channel.fromFilePairs("${sBayesR_ld_dict(${split_for_sbayesr}.out[0])("bin").getBaseName}.{bin, info}", checkIfExists: true),
- //       params.trait)
-
-    merge_prscs(calc_posteriors_prscs.out.collect(), "prscs", params.dir)
- //   merge_sbayesr(calc_posteriors_sbayesr.out.collect(), "sBayesR", params.dir)
-}
+    Channel.of(1..22) \
+    | combine(Channel.from(params.trait)) \
+    | combine(ref_ch, by: 0) \
+    | combine(Channel.from(params.N)) \
+    | combine(Channel.from('sbayesr')) \
+    | split_for_sbayesr \
+    | combine(sbayesr_ld_ch, by: 0) \
+    | combine(Channel.of(params.trait)) \
+    | calc_posteriors_sbayesr.collect() \
+    | combine(Channel.of('sbayesr'))  \
+    | combine(Channel.of(params.trait)) \ 
+    | merge_sbayesr
+} 
