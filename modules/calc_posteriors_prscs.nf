@@ -17,15 +17,17 @@ process calc_posteriors_prscs {
             val(traitName)
     
     output:
-        path "${out_prefix}_prscs_chr${chr}.snpRes"
+    tuple val(chr),
+        path("${out_prefix}_prscs_chr${chr}.snpRes")
 
     script:
         """
-        echo "python ${projectDir}/bin/PRScs.py --ref_dir=${ld.file.getParent()}/${ld.file.getBaseName()} \
+        echo "python ${projectDir}/bin/PRScs.py --ref_dir=$ld_file.getBaseName() \
                 --sst_file=$gwas \
-                --bim_prefix=${bim.getParent()}/${bim.getBaseName()} \
+                --bim_prefix=$bim.getBaseName() \
                 --n_gwas=$N \
                 --chrom=$chr \
                 --out_dir=$out_dir/$traitName"
+        touch "${out_prefix}_prscs_chr${chr}.snpRes"
         """ 
 }

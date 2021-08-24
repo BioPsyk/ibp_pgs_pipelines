@@ -13,7 +13,8 @@ process calc_posteriors_sbayesr {
             val(out_prefix)
     
     output:
-        path "${out_prefix}_sbayesr_chr${chr}.snpRes"
+        tuple val(chr),
+            path("${out_prefix}_sbayesr_chr${chr}.snpRes")
 
     script:
         """
@@ -27,5 +28,6 @@ process calc_posteriors_sbayesr {
                 --out $out_prefix \
                 --exclude-mhc \
                 --impute-n"
+        touch "${out_prefix}_sbayesr_chr${chr}.snpRes"
              """
 }

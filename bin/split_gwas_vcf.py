@@ -22,7 +22,7 @@ def main():
     out         = re.sub('^.*\/', '', args.vcf)
     out         = re.sub('\.vcf.gz$', '', out)
     args.format = args.format.lower()
-    out         = out + "_" + args.format + "_" + str(args.chromosome) + ".txt"
+    out         = out + "_" + args.format + "_" + "chr" + str(args.chromosome) + ".txt"
     out_fh      = open(out, "w")
 
     if(args.format == "prscs"):
@@ -35,8 +35,18 @@ def main():
     if path.exists(args.vcf):
         gwas_vcf = VCF(args.vcf)
         for variant in gwas_vcf(args.chromosome):
-            out_fh.write(variant.ID)
-            out_fh.write(" ")
+            if (variant.ID):
+                out_fh.write(variant.ID)
+                out_fh.write(" ")
+            else:
+                out_fh.write(variant.CHROM)
+                out_fh.write("_")
+                out_fh.write(str(variant.start))
+                out_fh.write("_")
+                out_fh.write(variant.REF) 
+                out_fh.write("_")
+                out_fh.write(''.join(variant.ALT))
+                out_fh.write(" ")
             out_fh.write(''.join(variant.ALT))
             out_fh.write(" ")
             out_fh.write(variant.REF)

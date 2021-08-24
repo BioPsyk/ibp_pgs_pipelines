@@ -7,8 +7,8 @@ include { split_reformat_gwas as split_for_prscs } from './modules/split_reforma
 include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
 include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
 include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
-include { merge_posteriors as merge_sbayesr } from './modules/merge_posteriors.nf'
-include { merge_posteriors as merge_prscs } from './modules/merge_posteriors.nf'
+//include { merge_posteriors as merge_sbayesr } from './modules/merge_posteriors.nf'
+//include { merge_posteriors as merge_prscs } from './modules/merge_posteriors.nf'
 
 def help_msg() {
     log.info """
@@ -67,13 +67,12 @@ String sBayesR_ld_paths = sBayesR_ld_json.text
 def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_paths) 
 def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_paths)
 
-// Channel.fromFilePairs("${ref_vcf_gz.getParent()}/${ref_vcf_gz.getBaseName()}.{gz,gz.tbi}", size : 2, checkIfExists : true).set{ref_ch}
-prscs_ld_ch = Channel.of(1..22) | map {a -> [a, prscs_ld_dict.get(a.toString())]}
-sbayesr_ld_ch = Channel.of(1..22) | map {a -> [a, sBayesR_ld_dict.get(a.toString())]}
+prscs_ld_ch     = Channel.of(1..22) | map {a -> [a, prscs_ld_dict.get(a.toString())]}
+sbayesr_ld_ch   = Channel.of(1..22) | map {a -> [a, sBayesR_ld_dict.get(a.toString())["bin"], sBayesR_ld_dict.get(a.toString())["info"]]}
+ref_ch          = Channel.of(1..22) | map {a -> [a, file("${params.ref}"), file("${params.ref}.tbi")]}
 Channel.fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
     { file -> file.getSimpleName().replaceAll(/.+chr/,'') }
     .set{geno_ch}
-ref_ch = Channel.of(1..22) | map {a -> [a, file("${params.ref}"), file("${params.ref}.tbi")]}
 
 workflow {
     Channel.of(1..22) \
@@ -85,12 +84,11 @@ workflow {
     | combine(Channel.of(params.N)) \
     | combine(prscs_ld_ch, by: 0) \
     | combine(geno_ch, by: 0) \
-    | combine(Channel.of(params.dir)) \
-    | combine(Channel.of(params.trait)) \
-    | calc_posteriors_prscs.collect() \
-    | combine(Channel.of('prscs')) \
-    | combine(Channel.of(params.trait)) \
-    | merge_prscs
+    | combine(Channel.from(params.dir)) \
+    | combine(Channel.from(params.trait)) \
+    | calc_posteriors_prscs \
+    | combine(geno_ch, by: 0) \
+    | view()
 
     Channel.of(1..22) \
     | combine(Channel.from(params.trait)) \
@@ -100,8 +98,7 @@ workflow {
     | split_for_sbayesr \
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | calc_posteriors_sbayesr.collect() \
-    | combine(Channel.of('sbayesr'))  \
-    | combine(Channel.of(params.trait)) \ 
-    | merge_sbayesr
+    | calc_posteriors_sbayesr \
+    | combine(geno_ch, by: 0) \
+    | view()
 } 
