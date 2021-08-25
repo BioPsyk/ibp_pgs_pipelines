@@ -34,8 +34,8 @@ params.bfile            = "/test/Genomes1k_Phase1_CEU_chr1_22"
 params.N                = "77096"
 params.dir              = launchDir
 params.trait            = file(params.ref).getSimpleName()
-params.prscs_ld_files   = "prscs_eur_ld.json"
-params.sbayesr_ld_files = "sbayesR_eur_ld.json"
+params.prscs_ld         = ""
+params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
 
 if(params.help)
@@ -52,27 +52,34 @@ Reference GWAS              : $params.ref
 Trait Name                  : $params.trait
 Reference GWAS Sample Size  : $params.N
 Target dataset              : $params.bfile
-Prs-CS LD Files             : $params.prscs_ld_files
-sBayesR-LD-Files            : $params.sbayesr_ld_files
+Prs-CS LD Directory         : $params.prscs_ld
+sBayesR LD File Paths       : $params.sbayesr_ld
 Output Directory            : $params.dir
 ============================================================================================================
 """
 
-def jsonSlurper_prscs   = new JsonSlurper()
 def jsonSlurper_sBayesR = new JsonSlurper()
-def prscs_ld_json       = new File(params.prscs_ld_files)
-def sBayesR_ld_json     = new File(params.sbayesr_ld_files)
-String prscs_ld_paths   = prscs_ld_json.text
+def jsonSlurper_prscs   = new JsonSlurper()
+def sBayesR_ld_json     = new File(params.sbayesr_ld)
+def prscs_ld_json       = new File(params.prscs_ld)
 String sBayesR_ld_paths = sBayesR_ld_json.text 
-def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_paths) 
+String prscs_ld_paths   = prscs_ld_json.text
 def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_paths)
+def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_paths)
 
-prscs_ld_ch     = Channel.of(1..22) | map {a -> [a, prscs_ld_dict.get(a.toString())]}
-sbayesr_ld_ch   = Channel.of(1..22) | map {a -> [a, sBayesR_ld_dict.get(a.toString())["bin"], sBayesR_ld_dict.get(a.toString())["info"]]}
-ref_ch          = Channel.of(1..22) | map {a -> [a, file("${params.ref}"), file("${params.ref}.tbi")]}
-Channel.fromFilePairs("${params.bfile}.{bed,bim,fam}", size : 3, checkIfExists : true)
-    { file -> file.getSimpleName().replaceAll(/.+chr/,'') }
-    .set{geno_ch}
+sbayesr_ld_ch = Channel.of(1..22) 
+    | map {a -> [a, file(sBayesR_ld_dict.get(a.toString())["bin"]).getBaseName(), 
+        sBayesR_ld_dict.get(a.toString())["bin"], 
+        sBayesR_ld_dict.get(a.toString())["info"]]}
+prscs_ld_ch = Channel.of(1..22) 
+    | map {a -> [a, prscs_ld_dict.get(a.toString())]}
+ref_ch = Channel.of(1..22) 
+    | map {a -> [a, params.ref, "${params.ref}.tbi"]}
+geno_ch = Channel.of(1..22) 
+    | map {a -> [a, file("{params.bfile}.bed").getParent(), 
+        "${params.bfile}.bed", 
+        "${params.bfile}.bim", 
+        "${params.bfile}.fam"]}
 
 workflow {
     Channel.of(1..22) \
@@ -84,11 +91,12 @@ workflow {
     | combine(Channel.of(params.N)) \
     | combine(prscs_ld_ch, by: 0) \
     | combine(geno_ch, by: 0) \
-    | combine(Channel.from(params.dir)) \
     | combine(Channel.from(params.trait)) \
     | calc_posteriors_prscs \
-    | combine(geno_ch, by: 0) \
-    | view()
+    | collectFile(name: "${params.trait}_prscs_snp_posterior_effects.txt", 
+        keepHeader: true, 
+        skip: 1, 
+        storeDir: params.dir)
 
     Channel.of(1..22) \
     | combine(Channel.from(params.trait)) \
@@ -99,6 +107,8 @@ workflow {
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | calc_posteriors_sbayesr \
-    | combine(geno_ch, by: 0) \
-    | view()
+    | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt", \
+        keepHeader: true,
+        skip: 1,
+        storeDir: params.dir)
 } 

@@ -9,25 +9,24 @@ process calc_posteriors_prscs {
         tuple val(chr),
             path(gwas),
             val(N),
-            path(ld_file),        
+            path(ld_file),
+            val(plink_prefix),       
             path(bed), 
             path(bim), 
             path(fam), 
-            path(out_dir),
             val(traitName)
     
     output:
     tuple val(chr),
-        path("${out_prefix}_prscs_chr${chr}.snpRes")
+        path("${traitName}_pst_eff_a1_b0.5_phiauto_chr22.txt")
 
     script:
         """
-        echo "python ${projectDir}/bin/PRScs.py --ref_dir=$ld_file.getBaseName() \
+        echo "#Header\npython ${projectDir}/bin/PRScs.py --ref_dir=$workDir \
                 --sst_file=$gwas \
-                --bim_prefix=$bim.getBaseName() \
+                --bim_prefix=$plink_prefix \
                 --n_gwas=$N \
                 --chrom=$chr \
-                --out_dir=$out_dir/$traitName"
-        touch "${out_prefix}_prscs_chr${chr}.snpRes"
+                --out_dir=$projectDir/$traitName" > ${traitName}_pst_eff_a1_b0.5_phiauto_chr22.txt
         """ 
 }
