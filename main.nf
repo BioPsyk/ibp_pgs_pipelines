@@ -107,7 +107,7 @@ workflow {
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | calc_posteriors_sbayesr \
-    | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt", \
+    | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
         keepHeader: true,
         skip: 1,
         storeDir: params.dir)

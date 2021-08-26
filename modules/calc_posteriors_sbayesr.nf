@@ -14,8 +14,7 @@ process calc_posteriors_sbayesr {
             val(out_prefix)
     
     output:
-        tuple val(chr),
-            path("${out_prefix}_sbayesr_chr${chr}.snpRes")
+        path("${out_prefix}_sbayesr_chr${chr}.snpRes")
 
     script:
         """

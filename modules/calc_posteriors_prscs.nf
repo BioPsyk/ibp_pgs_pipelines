@@ -17,8 +17,7 @@ process calc_posteriors_prscs {
             val(traitName)
     
     output:
-    tuple val(chr),
-        path("${traitName}_pst_eff_a1_b0.5_phiauto_chr22.txt")
+        path("${traitName}_pst_eff_a1_b0.5_phiauto_chr${chr}.txt")
 
     script:
         """
@@ -27,6 +26,6 @@ process calc_posteriors_prscs {
                 --bim_prefix=$plink_prefix \
                 --n_gwas=$N \
                 --chrom=$chr \
-                --out_dir=$projectDir/$traitName" > ${traitName}_pst_eff_a1_b0.5_phiauto_chr22.txt
+                --out_dir=$projectDir/$traitName" > ${traitName}_pst_eff_a1_b0.5_phiauto_chr${chr}.txt
         """ 
 }
