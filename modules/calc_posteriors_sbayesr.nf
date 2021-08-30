@@ -18,15 +18,18 @@ process calc_posteriors_sbayesr {
 
     script:
         """
-        echo -e "#Header\n${projectDir}/bin/gctb --sbayes R \
-                --gwas-summary $gwas_chr \
-                --ldm $ld_prefix \
-                --gamma 0.0,0.01,0.1,1 \
-                --pi 0.95.0.02,0.02,0.01 \
-                --burn-in 2000 \
-                --out-freq 10 \
-                --out ${out_prefix}_sbayesr_chr$chr \
-                --exclude-mhc \
-                --impute-n" > ${out_prefix}_sbayesr_chr${chr}.snpRes
+        ${projectDir}/bin/gctb --sbayes R \
+            --gwas-summary ${gwas_chr} \
+            --ldm ${ld_prefix} \
+            --gamma 0.0,0.01,0.1,1 \
+            --pi 0.95.0.02,0.02,0.01 \
+            --burn-in 5000 \
+            --chain-length 25000 \
+            --out ${out_prefix}_sbayesr_chr${chr} \
+            --exclude-mhc \
+            --no-mcmc-bin \
+            --thread 8 \
+            --seed 80851 \
+            --impute-n
         """
 }

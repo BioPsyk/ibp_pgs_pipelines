@@ -7,8 +7,9 @@ include { split_reformat_gwas as split_for_prscs } from './modules/split_reforma
 include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
 include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
 include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
-//include { merge_posteriors as merge_sbayesr } from './modules/merge_posteriors.nf'
-//include { merge_posteriors as merge_prscs } from './modules/merge_posteriors.nf'
+include { calc_score as calc_score_prscs} from './modules/calc_score.nf'
+include { calc_score as calc_score_sbayesr } from './modules/calc_score.nf'
+include { eval_scores as eval_prs }
 
 def help_msg() {
     log.info """
@@ -37,6 +38,7 @@ params.trait            = file(params.ref).getSimpleName()
 params.prscs_ld         = ""
 params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
+params.covs             = ""
 
 if(params.help)
 {
@@ -55,6 +57,7 @@ Target dataset              : $params.bfile
 Prs-CS LD Directory         : $params.prscs_ld
 sBayesR LD File Paths       : $params.sbayesr_ld
 Output Directory            : $params.dir
+PGS Covariates              : $params.covs
 ============================================================================================================
 """
 
@@ -95,8 +98,17 @@ workflow {
     | calc_posteriors_prscs \
     | collectFile(name: "${params.trait}_prscs_snp_posterior_effects.txt", 
         keepHeader: true, 
-        skip: 1, 
-        storeDir: params.dir)
+        skip: 1) \
+    | combine(Channel.from(2)) \
+    | combine(Channel.from(4)) \
+    | combine(Channel.from(6)) \
+    | combine(Channel.from(params.trait)) \
+    | combine(Channel.from('prscs')) \
+    | combine(Channel.from(params.bfile)) \
+    | combine(Channel.from("${params.bfile}.bed") \
+    | combine(Channel.from("${params.bfile}.bim") \
+    | combine(Channel.from("${params.bfile}.fam") \
+    | calc_score_prscs
 
     Channel.of(1..22) \
     | combine(Channel.from(params.trait)) \
@@ -109,6 +121,17 @@ workflow {
     | calc_posteriors_sbayesr \
     | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
         keepHeader: true,
-        skip: 1,
-        storeDir: params.dir)
+        skip: 1) \
+    | combine(Channel.from(2)) \
+    | combine(Channel.from(5)) \
+    | combine(Channel.from(8)) \
+    | combine(Channel.from(params.trait)) \
+    | combine(Channel.from('sbayesr')) \
+    | combine(Channel.from(params.bfile)) \
+    | combine(Channel.from("${params.bfile}.bed") \
+    | combine(Channel.from("${params.bfile}.bim") \
+    | combine(Channel.from("${params.bfile}.fam") \
+    | calc_score_sbayesr
+
+    eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait)
 } 
