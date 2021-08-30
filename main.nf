@@ -39,6 +39,7 @@ params.prscs_ld         = ""
 params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
 params.covs             = ""
+params.pheno            = ""
 
 if(params.help)
 {
@@ -58,6 +59,7 @@ Prs-CS LD Directory         : $params.prscs_ld
 sBayesR LD File Paths       : $params.sbayesr_ld
 Output Directory            : $params.dir
 PGS Covariates              : $params.covs
+Phenotype                   : $params.pheno
 ============================================================================================================
 """
 
