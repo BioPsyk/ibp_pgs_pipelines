@@ -13,14 +13,15 @@ process calc_posteriors_sbayesr {
             val(ld_prefix),
             path(ld_bin), 
             path(ld_info), 
-            val(out_prefix)
+            val(out_prefix),
+            path(gctb)
     
     output:
         path("${out_prefix}_sbayesr_chr${chr}.snpRes")
 
     script:
         """
-        ${projectDir}/bin/gctb --sbayes R \
+        ${gctb} --sbayes R \
             --gwas-summary ${gwas_chr} \
             --ldm ${ld_prefix} \
             --gamma 0.0,0.01,0.1,1 \

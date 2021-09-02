@@ -44,7 +44,7 @@ params.covs             = ""
 params.pheno            = ""
 split_gwas_path         = path("$projectDir/bin/split_gwas_vcf.py")
 prscs_path              = path("$projectDir/bin/PRScs/PRScs.py")
-sbayesr_path            = path("$projectDir/bin/gctb_2.03beta_Linux")
+sbayesr_path            = path("$projectDir/bin/gctb_2.03beta_Linux/gctb")
 plink_path              = path("$projectDir/bin/plink2")
 
 if(params.help)

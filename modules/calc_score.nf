@@ -3,6 +3,8 @@
 nextflow.enable.dsl = 2
 
 process calc_score {
+    label 'mod_mem'
+    
     input:
         tuple path(snp_posteriors),
         val(rsId_col_num),
