@@ -130,8 +130,8 @@ workflow {
     | split_for_sbayesr \
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | calc_posteriors_sbayesr \
     | combine(Channel.of(sbayesr_path)) \
+    | calc_posteriors_sbayesr \
     | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
         keepHeader: true,
         skip: 1) \
