@@ -1,0 +1,3 @@
+[submodule "bin/PRScs"]
+	path = bin/PRScs
+	url = https://github.com/getian107/PRScs.git

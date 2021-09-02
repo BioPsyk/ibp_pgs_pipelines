@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 process merge_posteriors {
+    label 'low_mem'
     publishDir "$out_dir/$method/posteriors/"
 
     input:

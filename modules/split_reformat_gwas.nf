@@ -7,13 +7,16 @@ nextflow.enable.dsl = 2
 // Generates a file in mt-cojo format for sBayesR
 
 process split_reformat_gwas {
+    label 'mod_mem'
+
     input:
         tuple val(chr),
             val(traitName),
             path(vcf),
             path(vcf_idx),
             val(N),
-            val (method)
+            val (method),
+            path(split_gwas)
 
     output:
         tuple val(chr), 
@@ -21,6 +24,6 @@ process split_reformat_gwas {
 
     script:
         """
-        python ${projectDir}/bin/split_gwas_vcf.py --vcf $vcf --chromosome $chr --format $method
+        python ${split_gwas} --vcf $vcf --chromosome $chr --format $method
         """
 }

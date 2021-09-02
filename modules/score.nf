@@ -3,6 +3,8 @@
 nextflow.enable.dsl = 2
 
 process score {
+    label 'mod_mem'
+    
     input: 
         tuple val(chr),
             path(posteriors),

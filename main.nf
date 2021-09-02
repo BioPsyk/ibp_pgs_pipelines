@@ -9,7 +9,7 @@ include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
 include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
 include { calc_score as calc_score_prscs} from './modules/calc_score.nf'
 include { calc_score as calc_score_sbayesr } from './modules/calc_score.nf'
-include { eval_scores as eval_prs }
+//include { eval_scores as eval_prs }
 
 def help_msg() {
     log.info """
@@ -24,8 +24,10 @@ def help_msg() {
     --trait <ipsych_scz_2014> [A prefix for output files, preferably containing name of trait and dataset] (Default: Simple name of reference file)
     --N <10000> [Sample size of the reference dataset] (Default: 77096)
     --dir </path/to/results/> [Place where the results from the pipeline are to be stored] (Default: Launch directory)
-    --prscs_ld_files <"ldblk_1kg_chr*.hdf5"> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
-    --sbayesR_ld_files <"ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*"> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
+    --prscs_ld_files <prscs_eur_ld.json> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
+    --sbayesR_ld_files <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
+    --covs <file.covs> [Path to covariates you might want to include in the NULL PGS model, such as age, gender, 10 PCs]
+    --pheno <trait.pheno> [Path to the true phenotype file to evaluate the PGS performance]
     --help <prints this message>
     """
 }
@@ -40,6 +42,10 @@ params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
 params.covs             = ""
 params.pheno            = ""
+split_gwas_path         = path("$projectDir/bin/split_gwas_vcf.py")
+prscs_path              = path("$projectDir/bin/PRScs/PRScs.py")
+sbayesr_path            = path("$projectDir/bin/gctb_2.03beta_Linux")
+plink_path              = path("$projectDir/bin/plink2")
 
 if(params.help)
 {
@@ -92,11 +98,13 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.from(params.N)) \
     | combine(Channel.from('prscs')) \
+    | combine(Channel.from(split_gwas_path)) \
     | split_for_prscs \
     | combine(Channel.of(params.N)) \
     | combine(prscs_ld_ch, by: 0) \
     | combine(geno_ch, by: 0) \
     | combine(Channel.from(params.trait)) \
+    | combine(Channel.from(prscs_path)) \
     | calc_posteriors_prscs \
     | collectFile(name: "${params.trait}_prscs_snp_posterior_effects.txt", 
         keepHeader: true, 
@@ -110,6 +118,7 @@ workflow {
     | combine(Channel.from("${params.bfile}.bed") \
     | combine(Channel.from("${params.bfile}.bim") \
     | combine(Channel.from("${params.bfile}.fam") \
+    | combine(Channel.from(plink_path)) \
     | calc_score_prscs
 
     Channel.of(1..22) \
@@ -117,10 +126,12 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.from(params.N)) \
     | combine(Channel.from('sbayesr')) \
+    | combine(Channel.from(split_gwas_path)) \
     | split_for_sbayesr \
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | calc_posteriors_sbayesr \
+    | combine(Channel.from(sbayesr_path)) \
     | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
         keepHeader: true,
         skip: 1) \
@@ -133,7 +144,8 @@ workflow {
     | combine(Channel.from("${params.bfile}.bed") \
     | combine(Channel.from("${params.bfile}.bim") \
     | combine(Channel.from("${params.bfile}.fam") \
+    | combine(Channel.from(plink_path)) \
     | calc_score_sbayesr
 
-    eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait)
+    //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno)
 } 

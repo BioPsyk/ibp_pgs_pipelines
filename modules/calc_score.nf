@@ -13,12 +13,13 @@ process calc_score {
         val(plink_prefix),
         path(bed),
         path(bim),
-        path(fam)
+        path(fam),
+        path(plink)
     output:
         path "${trait}_${method}.sscore"
     script:
         """
-        plink2 --bfile ${plink_prefix} \
+        ${plink} --bfile ${plink_prefix} \
         --out ${trait}_${method} \
         --score ${snp_posteriors} ${rsId_col_num} ${eff_allele_col_num} ${eff_size_col_num}
         """

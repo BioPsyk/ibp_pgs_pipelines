@@ -3,6 +3,8 @@
 nextflow.enable.dsl = 2
 
 process eval_scores {
+    label 'mod_mem'
+    
     input:
         path prscs_scores,
         path sbayesr_scores,

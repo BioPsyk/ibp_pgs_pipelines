@@ -5,6 +5,8 @@ nextflow.enable.dsl = 2
 // calculate per chromosome posterior SNP effects for sBayesR
 
 process calc_posteriors_sbayesr {
+    label 'big_mem'
+    
     input:
         tuple val(chr),
             path(gwas_chr),
