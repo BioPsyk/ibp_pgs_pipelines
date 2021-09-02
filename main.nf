@@ -42,10 +42,10 @@ params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
 params.covs             = ""
 params.pheno            = ""
-split_gwas_path         = path("$projectDir/bin/split_gwas_vcf.py")
-prscs_path              = path("$projectDir/bin/PRScs/PRScs.py")
-sbayesr_path            = path("$projectDir/bin/gctb_2.03beta_Linux/gctb")
-plink_path              = path("$projectDir/bin/plink2")
+split_gwas_path         = "$projectDir/bin/split_gwas_vcf.py"
+prscs_path              = "$projectDir/bin/PRScs/PRScs.py"
+sbayesr_path            = "$projectDir/bin/gctb_2.03beta_Linux/gctb"
+plink_path              = "$projectDir/bin/plink2"
 
 if(params.help)
 {
@@ -94,58 +94,58 @@ geno_ch = Channel.of(1..22)
 
 workflow {
     Channel.of(1..22) \
-    | combine(Channel.from(params.trait)) \
+    | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
-    | combine(Channel.from(params.N)) \
-    | combine(Channel.from('prscs')) \
-    | combine(Channel.from(split_gwas_path)) \
+    | combine(Channel.of(params.N)) \
+    | combine(Channel.of('prscs')) \
+    | combine(Channel.of(split_gwas_path)) \
     | split_for_prscs \
     | combine(Channel.of(params.N)) \
     | combine(prscs_ld_ch, by: 0) \
     | combine(geno_ch, by: 0) \
-    | combine(Channel.from(params.trait)) \
-    | combine(Channel.from(prscs_path)) \
+    | combine(Channel.of(params.trait)) \
+    | combine(Channel.of(prscs_path)) \
     | calc_posteriors_prscs \
     | collectFile(name: "${params.trait}_prscs_snp_posterior_effects.txt", 
         keepHeader: true, 
         skip: 1) \
-    | combine(Channel.from(2)) \
-    | combine(Channel.from(4)) \
-    | combine(Channel.from(6)) \
-    | combine(Channel.from(params.trait)) \
-    | combine(Channel.from('prscs')) \
-    | combine(Channel.from(params.bfile)) \
-    | combine(Channel.from("${params.bfile}.bed") \
-    | combine(Channel.from("${params.bfile}.bim") \
-    | combine(Channel.from("${params.bfile}.fam") \
-    | combine(Channel.from(plink_path)) \
-    | calc_score_prscs
+    | combine(Channel.of(2)) \
+    | combine(Channel.of(4)) \
+    | combine(Channel.of(6)) \
+    | combine(Channel.of(params.trait)) \
+    | combine(Channel.of('prscs')) \
+    | combine(Channel.of(params.bfile)) \
+    | combine(Channel.of(params.bfile + ".bed")) \
+    | combine(Channel.of(params.bfile + ".bim")) \
+    | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(Channel.of(plink_path)) \
+    | calc_score_prscs 
 
     Channel.of(1..22) \
-    | combine(Channel.from(params.trait)) \
+    | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
-    | combine(Channel.from(params.N)) \
-    | combine(Channel.from('sbayesr')) \
-    | combine(Channel.from(split_gwas_path)) \
+    | combine(Channel.of(params.N)) \
+    | combine(Channel.of('sbayesr')) \
+    | combine(Channel.of(split_gwas_path)) \
     | split_for_sbayesr \
     | combine(sbayesr_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | calc_posteriors_sbayesr \
-    | combine(Channel.from(sbayesr_path)) \
+    | combine(Channel.of(sbayesr_path)) \
     | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
         keepHeader: true,
         skip: 1) \
-    | combine(Channel.from(2)) \
-    | combine(Channel.from(5)) \
-    | combine(Channel.from(8)) \
-    | combine(Channel.from(params.trait)) \
-    | combine(Channel.from('sbayesr')) \
-    | combine(Channel.from(params.bfile)) \
-    | combine(Channel.from("${params.bfile}.bed") \
-    | combine(Channel.from("${params.bfile}.bim") \
-    | combine(Channel.from("${params.bfile}.fam") \
-    | combine(Channel.from(plink_path)) \
+    | combine(Channel.of(2)) \
+    | combine(Channel.of(5)) \
+    | combine(Channel.of(8)) \
+    | combine(Channel.of(params.trait)) \
+    | combine(Channel.of('sbayesr')) \
+    | combine(Channel.of(params.bfile)) \
+    | combine(Channel.of(params.bfile + ".bed")) \
+    | combine(Channel.of(params.bfile + ".bim")) \
+    | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(Channel.of(plink_path)) \
     | calc_score_sbayesr
 
-    //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno)
+    //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
 } 
