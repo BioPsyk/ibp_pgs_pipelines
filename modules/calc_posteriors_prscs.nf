@@ -29,6 +29,6 @@ process calc_posteriors_prscs {
             --bim_prefix=$plink_prefix \
             --n_gwas=$N \
             --chrom=$chr \
-            --out_dir=$projectDir/$traitName
+            --out_dir=$projectDir/${traitName}
         """ 
 }

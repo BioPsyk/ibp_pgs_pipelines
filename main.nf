@@ -87,10 +87,14 @@ prscs_ld_ch = Channel.of(1..22)
 ref_ch = Channel.of(1..22) 
     | map {a -> [a, params.ref, "${params.ref}.tbi"]}
 geno_ch = Channel.of(1..22) 
-    | map {a -> [a, file("{params.bfile}.bed").getSimpleName(), 
+    | map {a -> [a, file("${params.bfile}.bed").getSimpleName(), 
         "${params.bfile}.bed", 
         "${params.bfile}.bim", 
         "${params.bfile}.fam"]}
+
+geno_ch.view()
+
+return
 
 workflow {
     Channel.of(1..22) \
