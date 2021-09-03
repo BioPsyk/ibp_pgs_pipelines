@@ -11,7 +11,9 @@ process calc_posteriors_prscs {
         tuple val(chr),
             path(gwas),
             val(N),
-            path(ld_file),
+            path(ld_bin),
+            path(ld_info),
+            val(cohort),
             val(plink_prefix),       
             path(bed), 
             path(bim), 
@@ -24,11 +26,13 @@ process calc_posteriors_prscs {
 
     script:
         """
-        python ${prscs} --ref_dir=\$PWD \
+        mkdir ${cohort}
+        mv ${ld_bin} ${ld_info} ${cohort}/
+        python ${prscs} --ref_dir=\$PWD/${cohort} \
             --sst_file=$gwas \
             --bim_prefix=$plink_prefix \
             --n_gwas=$N \
             --chrom=$chr \
-            --out_dir=$projectDir/${traitName}
+            --out_dir=${traitName}
         """ 
 }
