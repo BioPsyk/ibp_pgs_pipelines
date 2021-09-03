@@ -14,7 +14,7 @@ process calc_posteriors_prscs {
             path(ld_bin),
             path(ld_info),
             val(cohort),
-            val(plink_prefix),       
+            val(plink_prefix),
             path(bed), 
             path(bim), 
             path(fam), 

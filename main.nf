@@ -84,8 +84,8 @@ sbayesr_ld_ch = Channel.of(1..22)
         sBayesR_ld_dict.get(a.toString())["info"]]}
 prscs_ld_ch = Channel.of(1..22) 
     | map {a -> [a, prscs_ld_dict.get(a.toString())["bin"],
-    prscs_ld_dict.get(a.toString())["info"],
-    prscs_ld_dict.get(a.toString())["pop"]]}
+        prscs_ld_dict.get(a.toString())["info"],
+        prscs_ld_dict.get(a.toString())["pop"]]}
 ref_ch = Channel.of(1..22) 
     | map {a -> [a, params.ref, "${params.ref}.tbi"]}
 geno_ch = Channel.of(1..22) 
