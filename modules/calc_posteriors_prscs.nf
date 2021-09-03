@@ -24,11 +24,11 @@ process calc_posteriors_prscs {
 
     script:
         """
-        python ${prscs} --ref_dir=$workDir \
+        python ${prscs} --ref_dir=\$PWD \
             --sst_file=$gwas \
             --bim_prefix=$plink_prefix \
             --n_gwas=$N \
             --chrom=$chr \
-            --out_dir=$projectDir/$traitName" > ${traitName}_pst_eff_a1_b0.5_phiauto_chr${chr}.txt
+            --out_dir=$projectDir/$traitName
         """ 
 }
