@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 process calc_score {
+    publishDir launchDir
     label 'mod_mem'
     
     input:

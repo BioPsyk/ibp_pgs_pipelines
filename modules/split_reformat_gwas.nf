@@ -15,7 +15,7 @@ process split_reformat_gwas {
             path(vcf),
             path(vcf_idx),
             val(N),
-            val (method),
+            val(method),
             path(split_gwas)
 
     output:
