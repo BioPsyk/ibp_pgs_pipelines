@@ -5,6 +5,7 @@ import groovy.json.JsonSlurper
 
 include { split_reformat_gwas as split_for_prscs } from './modules/split_reformat_gwas.nf'
 include { split_reformat_gwas as split_for_sbayesr } from './modules/split_reformat_gwas.nf'
+include { split_reformat_gwas as split_for_prsice } from './modules/split_reformat_gwas.nf'
 include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
 include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
 include { calc_score as calc_score_prscs} from './modules/calc_score.nf'
@@ -95,6 +96,9 @@ geno_ch = Channel.of(1..22)
         "${params.bfile}.fam"]}
 
 workflow {
+
+    //Run PRS-CS
+
     Channel.of(1..22) \
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
@@ -121,7 +125,9 @@ workflow {
     | combine(Channel.of(params.bfile + ".bim")) \
     | combine(Channel.of(params.bfile + ".fam")) \
     | combine(Channel.of(plink_path)) \
-    | calc_score_prscs 
+    | calc_score_prscs
+
+    //Run SBayesR
 
     Channel.of(1..22) \
     | combine(Channel.of(params.trait)) \
@@ -148,6 +154,21 @@ workflow {
     | combine(Channel.of(params.bfile + ".fam")) \
     | combine(Channel.of(plink_path)) \
     | calc_score_sbayesr
+
+    Channel.of(1..22) \
+    | combine(Channel.of(params.trait)) \
+    | combine(ref_ch, by: 0) \
+    | combine(Channel.of(params.N)) \
+    | combine(Channel.of('prsice')) \
+    | combine(Channel.of(split_gwas_path)) \
+    | split_for_prsice \
+    | collectFile(name: "${params.trait}_prsice_target.txt",
+        keepHeader: true,
+        skip: 1) \
+    | combine(Channel.of(params.bfile + ".bed")) \
+    | combine(Channel.of(params.bfile + ".bim")) \
+    | combine(Channel.of(params.bfile + ".fam")) \
+    | run_prsice
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
 } 

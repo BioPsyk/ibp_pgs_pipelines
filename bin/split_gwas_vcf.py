@@ -16,7 +16,7 @@ def main():
     tab delimited format format for prs-cs""")
     parser.add_argument('--chromosome', type = str, help = "Chromosome to split from VCF", required = True)
     parser.add_argument('--vcf', type = str,help = "Path to a gzipped VCF", required = True)
-    parser.add_argument('--format', type = str, help = "prscs or sbayesR", required = True)
+    parser.add_argument('--format', type = str, help = "prscs or sbayesr or prsice", required = True)
 
     args        = parser.parse_args()
     out         = re.sub('^.*\/', '', args.vcf)
@@ -29,8 +29,10 @@ def main():
         out_fh.write("SNP A1 A2 BETA P\n")
     elif(args.format == "sbayesr"):
         out_fh.write("SNP A1 A2 freq b se p N\n")
+    elif(args.format == "prsice"):
+        out_fh.write("SNP CHR BP A1 A2 BETA SE P\n")
     else:
-        sys.exit("FATAL: --format is either prscs or sbayesR")
+        sys.exit("FATAL: --format is invalid")
 
     if path.exists(args.vcf):
         gwas_vcf = VCF(args.vcf)
@@ -41,11 +43,16 @@ def main():
             else:
                 out_fh.write(variant.CHROM)
                 out_fh.write("_")
-                out_fh.write(str(variant.start))
+                out_fh.write(str(variant.start + 1)) # Positions returned by CyVCF2 API are 0-based
                 out_fh.write("_")
                 out_fh.write(variant.REF) 
                 out_fh.write("_")
                 out_fh.write(''.join(variant.ALT))
+                out_fh.write(" ")
+            if(args.format == 'prsice'):
+                out_fh.write(variant.CHROM)
+                out_fh.write(" ")
+                out_fh.write(str(variant.start + 1))
                 out_fh.write(" ")
             out_fh.write(''.join(variant.ALT))
             out_fh.write(" ")
@@ -56,7 +63,7 @@ def main():
                 out_fh.write(" ")
             out_fh.write(str(variant.format('ES').flat[0]))
             out_fh.write(" ")
-            if (args.format == "sbayesr"):
+            if (args.format == "sbayesr" or args.format == "prsice"):
                 out_fh.write(str(variant.format('SE').flat[0]))
                 out_fh.write(" ")
             out_fh.write(str(pow(10, -1 * variant.format('LP').flat[0])))
