@@ -24,7 +24,7 @@ def main():
     args.format = args.format.lower()
     out         = out + "_" + args.format + "_" + "chr" + str(args.chromosome) + ".txt"
     out_fh      = open(out, "w")
-    snp_list    = []
+    snp_dict    = {}
 
     if(args.format == "prscs"):
         out_fh.write("SNP A1 A2 BETA P\n")
@@ -39,12 +39,12 @@ def main():
         gwas_vcf = VCF(args.vcf)
         for variant in gwas_vcf(args.chromosome):
             if (variant.ID):
-                if variant.ID in snp_list:
+                if variant.ID in snp_dict.keys():
                     continue
                 else:
                     out_fh.write(variant.ID)
                     out_fh.write(" ")
-                    snp_list.append(variant.ID)
+                    snp_dict[variant.ID] = 1
             else:
                 out_fh.write(variant.CHROM)
                 out_fh.write("_")
