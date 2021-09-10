@@ -10,6 +10,7 @@ include { calc_posteriors_sbayesr } from './modules/calc_posteriors_sbayesr.nf'
 include { calc_posteriors_prscs } from './modules/calc_posteriors_prscs.nf'
 include { calc_score as calc_score_prscs} from './modules/calc_score.nf'
 include { calc_score as calc_score_sbayesr } from './modules/calc_score.nf'
+include { run_prsice as run_prsice} from './modules/run_prsice.nf'
 //include { eval_scores as eval_prs }
 
 def help_msg() {
@@ -29,6 +30,7 @@ def help_msg() {
     --sbayesR_ld_files <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
     --covs <file.covs> [Path to covariates you might want to include in the NULL PGS model, such as age, gender, 10 PCs]
     --pheno <trait.pheno> [Path to the true phenotype file to evaluate the PGS performance]
+    --binary <true/false> [Is the outcome binary or continuous?] (Default: Binary)
     --help <prints this message>
     """
 }
@@ -43,6 +45,7 @@ params.sbayesr_ld       = "sbayesR_eur_ld.json"
 params.help             = false
 params.covs             = ""
 params.pheno            = ""
+params.binary           = true
 split_gwas_path         = "$projectDir/bin/split_gwas_vcf.py"
 prscs_path              = "$projectDir/bin/PRScs/PRScs.py"
 sbayesr_path            = "$projectDir/bin/gctb_2.03beta_Linux/gctb"
@@ -155,6 +158,8 @@ workflow {
     | combine(Channel.of(plink_path)) \
     | calc_score_sbayesr
 
+    // Run PRSice
+
     Channel.of(1..22) \
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
@@ -162,12 +167,13 @@ workflow {
     | combine(Channel.of('prsice')) \
     | combine(Channel.of(split_gwas_path)) \
     | split_for_prsice \
-    | collectFile(name: "${params.trait}_prsice_target.txt",
+    | collectFile(name: "${params.trait}_prsice_source.txt",
         keepHeader: true,
         skip: 1) \
     | combine(Channel.of(params.bfile + ".bed")) \
     | combine(Channel.of(params.bfile + ".bim")) \
     | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(Channel.of(params.trait)) \
     | run_prsice
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
