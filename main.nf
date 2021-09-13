@@ -178,7 +178,7 @@ workflow {
     | combine(Channel.of(params.bfile + ".bim")) \
     | combine(Channel.of(params.bfile + ".fam")) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(params.p_val_thresholds)) \
+    | combine(Channel.of(params.p_value_thresholds)) \
     | combine(Channel.of(params.binary)) \
     | combine(Channel.of(params.pheno)) \
     | combine(Channel.of(prsice_path))
