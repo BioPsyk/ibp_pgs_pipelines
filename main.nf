@@ -174,6 +174,7 @@ workflow {
     | collectFile(name: "${params.trait}_prsice_source.txt",
         keepHeader: true,
         skip: 1) \
+    | combine(Channel.of(params.bfile)) \
     | combine(Channel.of(params.bfile + ".bed")) \
     | combine(Channel.of(params.bfile + ".bim")) \
     | combine(Channel.of(params.bfile + ".fam")) \

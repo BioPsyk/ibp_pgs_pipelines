@@ -6,6 +6,7 @@ process run_prsice {
 
     input: 
         tuple path(source),
+            val(bfile)
             path(bed),
             path(bim),
             path(fam),
@@ -21,7 +22,7 @@ process run_prsice {
     """
         ./PRsice_linux \
             --base $source \
-            --target $bed.getBaseName() \
+            --target $bfile \
             --thread 8 \
             --binary-target $binary \
             --pheno $pheno \
