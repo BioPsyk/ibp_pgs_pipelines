@@ -6,7 +6,7 @@ process run_prsice {
 
     input: 
         tuple path(source),
-            val(bfile)
+            val(bfile),
             path(bed),
             path(bim),
             path(fam),
