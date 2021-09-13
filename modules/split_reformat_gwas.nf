@@ -19,8 +19,13 @@ process split_reformat_gwas {
             path(split_gwas)
 
     output:
-        tuple val(chr), 
+        if ($method == "prsice") {
             path("${traitName}_${method}_chr${chr}.txt")
+        }
+        else {
+            tuple val(chr), 
+                path("${traitName}_${method}_chr${chr}.txt")
+        }
 
     script:
         """
