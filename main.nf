@@ -52,7 +52,7 @@ split_gwas_path           = "$projectDir/bin/split_gwas_vcf.py"
 prscs_path                = "$projectDir/bin/PRScs/PRScs.py"
 sbayesr_path              = "$projectDir/bin/gctb_2.03beta_Linux/gctb"
 plink_path                = "$projectDir/bin/plink2"
-prsice_path               = "$projectDir/bin/PRSice_linux"
+prsice_path               = "$projectDir/bin/PRSice_linux/PRSice_linux"
 
 if(params.help)
 {
