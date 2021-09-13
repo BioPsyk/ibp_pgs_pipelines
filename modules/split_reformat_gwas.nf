@@ -19,7 +19,7 @@ process split_reformat_gwas {
             path(split_gwas)
 
     output:
-        if ($method == "prsice") {
+        if (method == "prsice") {
             path("${traitName}_${method}_chr${chr}.txt")
         }
         else {
