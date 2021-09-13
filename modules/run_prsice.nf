@@ -10,10 +10,10 @@ process run_prsice {
             path(bim),
             path(fam),
             val(trait),
-            val(p_value_thresholds),
+            val(p_vals),
             val(binary),
             path(pheno),
-            path(prsice),
+            path(prsice)
     output:
         "$trait.all_score"
 
