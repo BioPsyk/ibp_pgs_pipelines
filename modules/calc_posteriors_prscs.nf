@@ -28,7 +28,7 @@ process calc_posteriors_prscs {
         """
         mkdir ${cohort}
         mv ${ld_bin} ${ld_info} ${cohort}/
-        python ./${prscs} --ref_dir=\$PWD/${cohort} \
+        python ./PRScs.py --ref_dir=\$PWD/${cohort} \
             --sst_file=$gwas \
             --bim_prefix=$plink_prefix \
             --n_gwas=$N \

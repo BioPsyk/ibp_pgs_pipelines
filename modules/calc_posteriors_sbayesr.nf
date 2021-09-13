@@ -21,7 +21,7 @@ process calc_posteriors_sbayesr {
 
     script:
         """
-        ./${gctb} --sbayes R \
+        ./gctb --sbayes R \
             --gwas-summary ${gwas_chr} \
             --ldm ${ld_prefix} \
             --gamma 0.0,0.01,0.1,1 \

@@ -22,7 +22,7 @@ process calc_score {
         path "${trait}_${method}.sscore"
     script:
         """
-        ${plink} --bfile ${plink_prefix} \
+        ./plink2 --bfile ${plink_prefix} \
         --out ${trait}_${method} \
         --score ${snp_posteriors} ${rsId_col_num} ${eff_allele_col_num} ${eff_size_col_num}
         """
