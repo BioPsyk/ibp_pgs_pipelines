@@ -38,6 +38,10 @@ def main():
     if path.exists(args.vcf):
         gwas_vcf = VCF(args.vcf)
         for variant in gwas_vcf(args.chromosome):
+            alt_allele = ''.join(variant.ALT)
+            ref_allele = variant.REF
+            if(len(alt_allele) > 1 or len(ref_allele) > 1): # Ignores INDELs in the input GWAS dataset
+                continue
             if (variant.ID):
                 if variant.ID in snp_dict.keys():
                     continue
@@ -50,18 +54,18 @@ def main():
                 out_fh.write("_")
                 out_fh.write(str(variant.start + 1)) # Positions returned by CyVCF2 API are 0-based
                 out_fh.write("_")
-                out_fh.write(variant.REF) 
+                out_fh.write(ref_allele) 
                 out_fh.write("_")
-                out_fh.write(''.join(variant.ALT))
+                out_fh.write(alt_allele)
                 out_fh.write(" ")
             if(args.format == 'prsice'):
                 out_fh.write(variant.CHROM)
                 out_fh.write(" ")
                 out_fh.write(str(variant.start + 1))
                 out_fh.write(" ")
-            out_fh.write(''.join(variant.ALT))
+            out_fh.write(alt_allele)
             out_fh.write(" ")
-            out_fh.write(variant.REF)
+            out_fh.write(ref_allele)
             out_fh.write(" ")
             if(args.format == "sbayesr"):
                 out_fh.write(str(variant.INFO.get('AF')))

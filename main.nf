@@ -30,26 +30,29 @@ def help_msg() {
     --sbayesR_ld_files <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
     --covs <file.covs> [Path to covariates you might want to include in the NULL PGS model, such as age, gender, 10 PCs]
     --pheno <trait.pheno> [Path to the true phenotype file to evaluate the PGS performance]
-    --binary <true/false> [Is the outcome binary or continuous?] (Default: Binary)
+    --binary <T/F> [Is the outcome binary or continuous?] (Default: T)
+    --p_value_thresholds <comma separated list of p-values> [p-value thresholds to be used for pruning and thresholding method] (Default: 5e-8,1e-6,0.05,1)
     --help <prints this message>
     """
 }
 
-params.ref              = "/test/ieu-b42.vcf.gz"
-params.bfile            = "/test/Genomes1k_Phase1_CEU_chr1_22"
-params.N                = "77096"
-params.dir              = launchDir
-params.trait            = file(params.ref).getSimpleName()
-params.prscs_ld         = ""
-params.sbayesr_ld       = "sbayesR_eur_ld.json"
-params.help             = false
-params.covs             = ""
-params.pheno            = ""
-params.binary           = true
-split_gwas_path         = "$projectDir/bin/split_gwas_vcf.py"
-prscs_path              = "$projectDir/bin/PRScs/PRScs.py"
-sbayesr_path            = "$projectDir/bin/gctb_2.03beta_Linux/gctb"
-plink_path              = "$projectDir/bin/plink2"
+params.ref                = "/test/ieu-b42.vcf.gz"
+params.bfile              = "/test/Genomes1k_Phase1_CEU_chr1_22"
+params.N                  = "77096"
+params.dir                = launchDir
+params.trait              = file(params.ref).getSimpleName()
+params.prscs_ld           = ""
+params.sbayesr_ld         = "sbayesR_eur_ld.json"
+params.help               = false
+params.covs               = ""
+params.pheno              = ""
+params.binary             = "T"
+params.p_value_thresholds = "5e-8,1e-6,0.05,1"
+split_gwas_path           = "$projectDir/bin/split_gwas_vcf.py"
+prscs_path                = "$projectDir/bin/PRScs/PRScs.py"
+sbayesr_path              = "$projectDir/bin/gctb_2.03beta_Linux/gctb"
+plink_path                = "$projectDir/bin/plink2"
+prsice_path               = "$projectDir/bin/PRSice_linux"
 
 if(params.help)
 {
@@ -70,6 +73,7 @@ sBayesR LD File Paths       : $params.sbayesr_ld
 Output Directory            : $params.dir
 PGS Covariates              : $params.covs
 Phenotype                   : $params.pheno
+p-value thresholds for P&T  : $params.p_value_thresholds
 ============================================================================================================
 """
 
@@ -174,6 +178,10 @@ workflow {
     | combine(Channel.of(params.bfile + ".bim")) \
     | combine(Channel.of(params.bfile + ".fam")) \
     | combine(Channel.of(params.trait)) \
+    | combine(Channel.of(params.p_val_thresholds)) \
+    | combine(Channel.of(params.binary)) \
+    | combine(Channel.of(params.pheno)) \
+    | combine(Channel.of(prsice_path))
     | run_prsice
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 

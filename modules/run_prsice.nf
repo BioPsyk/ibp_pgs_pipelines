@@ -10,31 +10,21 @@ process run_prsice {
             path(bim),
             path(fam),
             val(trait),
-            path(prsice),
+            val(p_value_thresholds),
             val(binary),
             path(pheno),
-            val(p_vals)
+            path(prsice),
     output:
+        "$trait.all_score"
 
     script:
     """
-        Rscript $prsice --dir . \
-            --prsice ./PRsice \
+        ./PRsice_linux \
             --base $source \
             --target $bed.getBaseName() \
             --thread 8 \
-            --stat BETA \
-            --beta \
             --binary-target $binary \
-            --snp SNP \
-            --chr CHR \
-            --bp BP \
-            --A1 A1 \
-            --A2 A2 \
-            --stat BETA \
-            --pvalue P \
             --pheno $pheno \
-            --pheno-col 3 \
             --out $trait \
             --all-score \
             --fastscore \
