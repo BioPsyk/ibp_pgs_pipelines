@@ -19,13 +19,8 @@ process split_reformat_gwas {
             path(split_gwas)
 
     output:
-        if (method == "prsice") {
+        tuple val(chr), 
             path("${traitName}_${method}_chr${chr}.txt")
-        }
-        else {
-            tuple val(chr), 
-                path("${traitName}_${method}_chr${chr}.txt")
-        }
 
     script:
         """
