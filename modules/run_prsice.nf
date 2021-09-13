@@ -20,7 +20,7 @@ process run_prsice {
 
     script:
     """
-        ./PRsice_linux \
+        ./PRSice_linux \
             --base $source \
             --target $bfile \
             --thread 8 \
