@@ -15,7 +15,7 @@ process run_prsice {
             path(pheno),
             path(prsice)
     output:
-        "$trait.all_score"
+        "${trait}.all_score"
 
     script:
     """
