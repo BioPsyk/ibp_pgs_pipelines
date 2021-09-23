@@ -17,12 +17,11 @@ def main():
     parser.add_argument('--chromosome', type = str, help = "Chromosome to split from VCF", required = True)
     parser.add_argument('--vcf', type = str,help = "Path to a gzipped VCF", required = True)
     parser.add_argument('--format', type = str, help = "prscs or sbayesr or prsice", required = True)
+    parser.add_argument('--out',  type = str, help = "Output prefix", required = true)
 
     args        = parser.parse_args()
-    out         = re.sub('^.*\/', '', args.vcf)
-    out         = re.sub('\.vcf.gz$', '', out)
     args.format = args.format.lower()
-    out         = out + "_" + args.format + "_" + "chr" + str(args.chromosome) + ".txt"
+    out         = args.out + "_" + args.format + "_" + "chr" + str(args.chromosome) + ".txt"
     out_fh      = open(out, "w")
     snp_dict    = {}
 

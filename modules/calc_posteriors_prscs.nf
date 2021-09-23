@@ -13,7 +13,7 @@ process calc_posteriors_prscs {
             val(N),
             path(ld_bin),
             path(ld_info),
-            val(cohort),
+            val(ld_pop),
             val(plink_prefix),
             path(bed), 
             path(bim), 
@@ -22,13 +22,14 @@ process calc_posteriors_prscs {
             path(prscs)
     
     output:
-        path("${traitName}_pst_eff_a1_b0.5_phiauto_chr${chr}.txt")
+        tuple val(chr),
+            path("${traitName}_pst_eff_a1_b0.5_phiauto_chr${chr}.txt")
 
     script:
         """
-        mkdir ${cohort}
-        mv ${ld_bin} ${ld_info} ${cohort}/
-        python ./PRScs.py --ref_dir=\$PWD/${cohort} \
+        mkdir ${ld_pop}
+        mv ${ld_bin} ${ld_info} ${ld_pop}/
+        python ./PRScs.py --ref_dir=\$PWD/${ld_pop} \
             --sst_file=$gwas \
             --bim_prefix=$plink_prefix \
             --n_gwas=$N \

@@ -7,23 +7,22 @@ process calc_score {
     label 'mod_mem'
     
     input:
-        tuple path(snp_posteriors),
-        val(rsId_col_num),
-        val(eff_allele_col_num),
-        val(eff_size_col_num),
+        tuple val(chr),
+        path(snp_posteriors),
+        val(col_nums),
         val(trait),
         val(method),
-        val(plink_prefix),
+        val(bfile),
         path(bed),
         path(bim),
         path(fam),
         path(plink)
     output:
-        path "${trait}_${method}.sscore"
+        path "${trait}_${method}_chr${chr}.sscore"
     script:
         """
-        ./plink2 --bfile ${plink_prefix} \
-        --out ${trait}_${method} \
-        --score ${snp_posteriors} ${rsId_col_num} ${eff_allele_col_num} ${eff_size_col_num}
+        ./plink --bfile ${bfile} \
+        --out ${trait}_${method}_chr${chr} \
+        --score ${snp_posteriors} ${col_nums} header sum
         """
 }

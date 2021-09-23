@@ -5,7 +5,8 @@ process run_prsice {
     label 'big_mem'
 
     input: 
-        tuple path(source),
+        tuple val(chr),
+            path(source),
             val(bfile),
             path(bed),
             path(bim),
@@ -16,7 +17,7 @@ process run_prsice {
             path(pheno),
             path(prsice)
     output:
-        path "${trait}.all_score"
+        path "${trait}_chr${chr}.all_score"
 
     script:
     """
@@ -26,10 +27,11 @@ process run_prsice {
             --thread 8 \
             --binary-target $binary \
             --pheno $pheno \
-            --out $trait \
+            --out $trait_chr${chr} \
             --all-score \
             --fastscore \
             --bar-levels $p_vals \
-            --no-regress
+            --no-regress \
+            --score sum
     """
 }

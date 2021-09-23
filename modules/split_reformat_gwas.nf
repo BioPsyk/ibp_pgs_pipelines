@@ -24,6 +24,6 @@ process split_reformat_gwas {
 
     script:
         """
-        python ${split_gwas} --vcf $vcf --chromosome $chr --format $method
+        python ${split_gwas} --vcf $vcf --chromosome $chr --format $method --out ${traitName}
         """
 }

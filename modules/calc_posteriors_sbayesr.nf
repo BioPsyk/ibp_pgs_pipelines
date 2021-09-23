@@ -17,7 +17,8 @@ process calc_posteriors_sbayesr {
             path(gctb)
     
     output:
-        path("${out_prefix}_sbayesr_chr${chr}.snpRes")
+        tuple val(chr),
+            path("${out_prefix}_sbayesr_chr${chr}.snpRes")
 
     script:
         """

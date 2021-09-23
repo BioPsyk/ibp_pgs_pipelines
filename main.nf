@@ -26,8 +26,8 @@ def help_msg() {
     --trait <ipsych_scz_2014> [A prefix for output files, preferably containing name of trait and dataset] (Default: Simple name of reference file)
     --N <10000> [Sample size of the reference dataset] (Default: 77096)
     --dir </path/to/results/> [Place where the results from the pipeline are to be stored] (Default: Launch directory)
-    --prscs_ld_files <prscs_eur_ld.json> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
-    --sbayesR_ld_files <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
+    --prscs_ld <prscs_eur_ld.json> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
+    --sbayesR_ld <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
     --covs <file.covs> [Path to covariates you might want to include in the NULL PGS model, such as age, gender, 10 PCs]
     --pheno <trait.pheno> [Path to the true phenotype file to evaluate the PGS performance]
     --binary <T/F> [Is the outcome binary or continuous?] (Default: T)
@@ -96,7 +96,7 @@ prscs_ld_ch = Channel.of(1..22)
         prscs_ld_dict.get(a.toString())["pop"]]}
 ref_ch = Channel.of(1..22) 
     | map {a -> [a, params.ref, "${params.ref}.tbi"]}
-geno_ch = Channel.of(1..22) 
+plink_ch = Channel.of(1..22) 
     | map {a -> [a, file("${params.bfile}.bed").getSimpleName(), 
         "${params.bfile}.bed", 
         "${params.bfile}.bim", 
@@ -115,24 +115,20 @@ workflow {
     | split_for_prscs \
     | combine(Channel.of(params.N)) \
     | combine(prscs_ld_ch, by: 0) \
-    | combine(geno_ch, by: 0) \
+    | combine(plink_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(prscs_path)) \
     | calc_posteriors_prscs \
-    | collectFile(name: "${params.trait}_prscs_snp_posterior_effects.txt", 
-        keepHeader: true, 
-        skip: 1) \
-    | combine(Channel.of(2)) \
-    | combine(Channel.of(4)) \
-    | combine(Channel.of(6)) \
+    | combine(Channel.of("2 4 6")) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of('prscs')) \
     | combine(Channel.of(params.bfile)) \
-    | combine(Channel.of(params.bfile + ".bed")) \
-    | combine(Channel.of(params.bfile + ".bim")) \
-    | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(Channel.of(plink_ch, by: 0)) \
     | combine(Channel.of(plink_path)) \
-    | calc_score_prscs
+    | calc_score_prscs \
+    | collectFile(name: "${params.trait}_prscs.sscore", 
+        keepHeader: true,
+        skip: 1)
 
     //Run SBayesR
 
@@ -147,20 +143,15 @@ workflow {
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(sbayesr_path)) \
     | calc_posteriors_sbayesr \
-    | collectFile(name: "${params.trait}_sBayesR_snp_posterior_effects.txt",
-        keepHeader: true,
-        skip: 1) \
-    | combine(Channel.of(2)) \
-    | combine(Channel.of(5)) \
-    | combine(Channel.of(8)) \
+    | combine(Channel.of("2 5 8")) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of('sbayesr')) \
-    | combine(Channel.of(params.bfile)) \
-    | combine(Channel.of(params.bfile + ".bed")) \
-    | combine(Channel.of(params.bfile + ".bim")) \
-    | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(plink_ch, by: 0) \
     | combine(Channel.of(plink_path)) \
-    | calc_score_sbayesr
+    | calc_score_sbayesr \
+    | collectFile(name: "${params.trait}_sbayesr.sscore", 
+        keepHeader: true,
+        skip: 1)
 
     // Run PRSice
 
@@ -171,20 +162,14 @@ workflow {
     | combine(Channel.of('prsice')) \
     | combine(Channel.of(split_gwas_path)) \
     | split_for_prsice \
-    | collectFile(name: "${params.trait}_prsice_source.txt",
-        keepHeader: true,
-        skip: 1,
-        sort: { it[0] }) { it[1] }\
-    | combine(Channel.of(params.bfile)) \
-    | combine(Channel.of(params.bfile + ".bed")) \
-    | combine(Channel.of(params.bfile + ".bim")) \
-    | combine(Channel.of(params.bfile + ".fam")) \
+    | combine(plink_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.p_value_thresholds)) \
     | combine(Channel.of(params.binary)) \
     | combine(Channel.of(params.pheno)) \
-    | combine(Channel.of(prsice_path))
-    | run_prsice
+    | combine(Channel.of(prsice_path)) \
+    | run_prsice \
+    | collectFile(name: "${params.trait}_prsice.all_score")
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
 } 
