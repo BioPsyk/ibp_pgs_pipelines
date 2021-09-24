@@ -27,7 +27,7 @@ process run_prsice {
             --thread 8 \
             --binary-target $binary \
             --pheno $pheno \
-            --out $trait_chr${chr} \
+            --out ${trait}_chr${chr} \
             --all-score \
             --fastscore \
             --bar-levels $p_vals \
