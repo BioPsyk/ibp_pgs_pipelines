@@ -17,7 +17,7 @@ def main():
     parser.add_argument('--chromosome', type = str, help = "Chromosome to split from VCF", required = True)
     parser.add_argument('--vcf', type = str,help = "Path to a gzipped VCF", required = True)
     parser.add_argument('--format', type = str, help = "prscs or sbayesr or prsice", required = True)
-    parser.add_argument('--out',  type = str, help = "Output prefix", required = true)
+    parser.add_argument('--out',  type = str, help = "Output prefix", required = True)
 
     args        = parser.parse_args()
     args.format = args.format.lower()
