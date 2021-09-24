@@ -109,8 +109,6 @@ plink_ch = Channel.of(1..22)
         target_plink_dict.get(a.toString())["bim"],
         target_plink_dict.get(a.toString())["fam"]]}
 
-plink_ch.view()
-
 workflow {
 
     //Run PRS-CS
@@ -131,7 +129,6 @@ workflow {
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of('prscs')) \
-    | combine(Channel.of(params.bfile)) \
     | combine(Channel.of(plink_ch, by: 0)) \
     | combine(Channel.of(plink_path)) \
     | calc_score_prscs \
