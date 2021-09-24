@@ -25,6 +25,7 @@ def help_msg() {
     --ref <gwas.vcf.gz> [A reference file of gwas summary stats in VCF.gz format] (Default: PGC SCZ 2014)
     --trait <ipsych_scz_2014> [A prefix for output files, preferably containing name of trait and dataset] (Default: Simple name of reference file)
     --N <10000> [Sample size of the reference dataset] (Default: 77096)
+    --target <json file containing plink target genotype files> (Default: /test/genotypes.json)
     --dir </path/to/results/> [Place where the results from the pipeline are to be stored] (Default: Launch directory)
     --prscs_ld <prscs_eur_ld.json> [Paths to chromosome wise LD matrices in hdf5 format] (Default: "ldblk_1kg_chr*.hdf5")
     --sbayesR_ld <"sbayesr_eur_ld.json> [Paths to chromosome wise LD matrices in .bin/.info format] (Default: "ukbEURu_hm3_chr*_v3_50k.ldm.sparse.*")
@@ -37,7 +38,7 @@ def help_msg() {
 }
 
 params.ref                = "/test/ieu-b42.vcf.gz"
-params.bfile              = "/test/Genomes1k_Phase1_CEU_chr1_22"
+params.target             = "/test/genotypes.json"
 params.N                  = "77096"
 params.dir                = launchDir
 params.trait              = file(params.ref).getSimpleName()
@@ -67,7 +68,7 @@ I B P - P R S -  P I P E L I N E _ v. 1.0 - N F
 Reference GWAS              : $params.ref
 Trait Name                  : $params.trait
 Reference GWAS Sample Size  : $params.N
-Target dataset              : $params.bfile
+Target dataset              : $params.target
 Prs-CS LD Directory         : $params.prscs_ld
 sBayesR LD File Paths       : $params.sbayesr_ld
 Output Directory            : $params.dir
@@ -77,14 +78,20 @@ p-value thresholds for P&T  : $params.p_value_thresholds
 ============================================================================================================
 """
 
-def jsonSlurper_sBayesR = new JsonSlurper()
-def jsonSlurper_prscs   = new JsonSlurper()
-def sBayesR_ld_json     = new File(params.sbayesr_ld)
-def prscs_ld_json       = new File(params.prscs_ld)
-String sBayesR_ld_paths = sBayesR_ld_json.text 
-String prscs_ld_paths   = prscs_ld_json.text
-def sBayesR_ld_dict     = jsonSlurper_sBayesR.parseText(sBayesR_ld_paths)
-def prscs_ld_dict       = jsonSlurper_prscs.parseText(prscs_ld_paths)
+//Parse the .json inputs for LD matrices, target PLINK genotypes
+
+def js_sBayesR            = new JsonSlurper()
+def js_prscs              = new JsonSlurper()
+def js_target             = new JsonSlurper()
+def sBayesR_ld_json       = new File(params.sbayesr_ld)
+def prscs_ld_json         = new File(params.prscs_ld)
+def target_json           = new File(params.target)
+String sBayesR_ld_paths   = sBayesR_ld_json.text 
+String prscs_ld_paths     = prscs_ld_json.text
+String target_plink_paths = target_json.text
+def sBayesR_ld_dict       = js_sBayesR.parseText(sBayesR_ld_paths)
+def prscs_ld_dict         = js_prscs.parseText(prscs_ld_paths)
+def target_plink_dict     = js_target.parseText(target_json.text)
 
 sbayesr_ld_ch = Channel.of(1..22) 
     | map {a -> [a, file(sBayesR_ld_dict.get(a.toString())["bin"]).getBaseName(), 
@@ -96,11 +103,13 @@ prscs_ld_ch = Channel.of(1..22)
         prscs_ld_dict.get(a.toString())["pop"]]}
 ref_ch = Channel.of(1..22) 
     | map {a -> [a, params.ref, "${params.ref}.tbi"]}
-plink_ch = Channel.of(1..22) 
-    | map {a -> [a, file("${params.bfile}.bed").getSimpleName(), 
-        "${params.bfile}.bed", 
-        "${params.bfile}.bim", 
-        "${params.bfile}.fam"]}
+plink_ch = Channel.of(1..22)
+    | map {a -> [a, file(target_plink_dict.get(a.toString())["bed"]).getBaseName(),
+        target_plink_dict.get(a.toString())["bed"],
+        target_plink_dict.get(a.toString())["bim"],
+        target_plink_dict.get(a.toString())["fam"]]}
+
+plink_ch.view()
 
 workflow {
 
