@@ -129,7 +129,7 @@ workflow {
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of('prscs')) \
-    | combine(Channel.of(plink_ch, by: 0)) \
+    | combine(plink_ch, by: 0) \
     | combine(Channel.of(plink_path)) \
     | calc_score_prscs \
     | collectFile(name: "${params.trait}_prscs.sscore", 
@@ -175,7 +175,9 @@ workflow {
     | combine(Channel.of(params.pheno)) \
     | combine(Channel.of(prsice_path)) \
     | run_prsice \
-    | collectFile(name: "${params.trait}_prsice.all_score")
+    | collectFile(name: "${params.trait}_prsice.all_score", 
+        keepHeader: true,
+        skip: 1)
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
 } 
