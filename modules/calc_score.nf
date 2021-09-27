@@ -21,8 +21,8 @@ process calc_score {
         path "${trait}_${method}_chr${chr}.sscore"
     script:
         """
-        ./plink --bfile ${bfile} \
+        ./plink2 --bfile ${bfile} \
         --out ${trait}_${method}_chr${chr} \
-        --score ${snp_posteriors} ${col_nums} header sum
+        --score ${snp_posteriors} ${col_nums} header cols=+scoresums ignore-dup-ids
         """
 }
