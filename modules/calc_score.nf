@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 process calc_score {
-    publishDir launchDir
     label 'mod_mem'
     
     input:
@@ -17,8 +16,10 @@ process calc_score {
         path(bim),
         path(fam),
         path(plink)
+
     output:
         path "${trait}_${method}_chr${chr}.sscore"
+    
     script:
         """
         ./plink2 --bfile ${bfile} \

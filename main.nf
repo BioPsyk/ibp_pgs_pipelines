@@ -157,7 +157,8 @@ workflow {
     | calc_score_sbayesr \
     | collectFile(name: "${params.trait}_sbayesr.sscore", 
         keepHeader: true,
-        skip: 1)
+        skip: 1,
+        storeDir: launchDir)
 
     // Run PRSice
 
@@ -177,7 +178,8 @@ workflow {
     | run_prsice \
     | collectFile(name: "${params.trait}_prsice.all_score", 
         keepHeader: true,
-        skip: 1)
+        skip: 1,
+        storeDir: launchDir)
 
     //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
 } 

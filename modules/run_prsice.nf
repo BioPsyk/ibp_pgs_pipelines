@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
 process run_prsice {
-    publishDir launchDir
     label 'big_mem'
 
     input: 
@@ -16,6 +15,7 @@ process run_prsice {
             val(binary),
             path(pheno),
             path(prsice)
+    
     output:
         path "${trait}_chr${chr}.all_score"
 
