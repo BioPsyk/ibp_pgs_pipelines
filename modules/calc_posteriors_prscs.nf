@@ -16,7 +16,7 @@ process calc_posteriors_prscs {
             val(ld_cohort),
             val(ld_population),
             val(ld_snp_set),
-            val(ld_format)
+            val(ld_format),
             val(bfile),
             path(bed), 
             path(bim), 
