@@ -216,7 +216,7 @@ workflow {
     //Run SBayesR
 
     Channel.of(1..22) \
-    | combine(Channel.of(sbayesr_input_ch), by: 0)
+    | combine(sbayesr_input_ch, by: 0)
     | combine(sbayesr_ukbb_big_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.sbayesr_path)) \
@@ -232,7 +232,7 @@ workflow {
         storeDir: launchDir)
 
     Channel.of(1..22) \
-    | combine(Channel.of(sbayesr_input_ch), by: 0)
+    | combine(sbayesr_input_ch, by: 0)
     | combine(sbayesr_ukbb_hm3_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.sbayesr_path)) \
