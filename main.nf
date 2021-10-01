@@ -67,7 +67,6 @@ PRSCS 1000G hapmap3 SNPs LD  : $params.prscs_1000G_hm3_eur_ld
 PRSCS UKBB hapmap3 LD        : $params.prscs_ukbb_hm3_eur_ld
 sBayesR UKBB hapmap3 SNPs LD : $params.sbayesr_ukbb_hm3_eur_ld
 sBayesR UKBB 2.5M SNPs LD    : $params.sbayesr_ukbb_big_eur_ld
-LD Files                     : $params.ld_files
 Output Directory             : $launchDir
 Covariates                   : $params.covs
 Phenotype                    : $params.pheno
@@ -193,7 +192,8 @@ workflow {
     | calc_score_prscs_ukbb_eur_hm3 \
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_ukbb_eur_hm3.sscore",
         keepHeader: true,
-        skip: 1)
+        skip: 1,
+        storDir: launchDir)
 
     Channel.of(1..22) \
     | combine(prscs_input_ch, by: 0) \
@@ -210,7 +210,8 @@ workflow {
     | calc_score_prscs_1kg_eur_hm3 \
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_1kg_eur_hm3.sscore",
         keepHeader: true,
-        skip: 1)
+        skip: 1,
+        storeDir: launchDir)
 
     //Run SBayesR
 
