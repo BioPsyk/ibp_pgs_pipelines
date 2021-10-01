@@ -253,7 +253,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prsice')) \
     | combine(Channel.of(params.split_gwas_path)) \
-    | split_reformat_gwas \
+    | split_for_prsice \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.p_value_thresholds)) \
