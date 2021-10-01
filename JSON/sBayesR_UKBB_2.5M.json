@@ -1,0 +1,96 @@
+{
+    "1": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr1_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr1_mafpt01.sparse.info"
+    },
+    "2": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr2_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr2_mafpt01.sparse.info"
+    },
+    "3": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr3_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr3_mafpt01.sparse.info"
+    },
+    "4": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr4_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr4_mafpt01.sparse.info"
+    },
+    "5": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr5_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr5_mafpt01.sparse.info"
+    },
+    "6": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr6_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr6_mafpt01.sparse.info"
+    },
+    "7": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr7_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr7_mafpt01.sparse.info"
+    },
+    "8": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr8_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr8_mafpt01.sparse.info"
+    },
+    "9": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr9_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr9_mafpt01.sparse.info"
+    },
+    "10": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr10_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr10_mafpt01.sparse.info"
+    },
+    "11": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr11_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr11_mafpt01.sparse.info"
+    },
+    "12": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr12_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr12_mafpt01.sparse.info"
+    },
+    "13": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr13_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr13_mafpt01.sparse.info"
+    },
+    "14": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr14_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr14_mafpt01.sparse.info"
+    },
+    "15": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr15_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr15_mafpt01.sparse.info"
+    },
+    "16": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr16_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr16_mafpt01.sparse.info"
+    },
+    "17": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr17_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr17_mafpt01.sparse.info"
+    },
+    "18": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr18_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr18_mafpt01.sparse.info"
+    },
+    "19": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr19_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr19_mafpt01.sparse.info"
+    },
+    "20": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr20_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr20_mafpt01.sparse.info"
+    },
+    "21": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr21_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr21_mafpt01.sparse.info"
+    },
+    "22": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr22_mafpt01.sparse.bin",
+        "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/sbayesr/ukb_50k_bigset_2.8M/ukb_shrunk_chr22_mafpt01.sparse.info"
+    },
+    "meta": {
+        "cohort": "ukbb",
+        "snps": "2.5M",
+        "population": "eur",
+        "format": "sbayesr"
+    }
+}

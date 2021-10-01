@@ -9,21 +9,23 @@ process calc_score {
         tuple val(chr),
         path(snp_posteriors),
         val(col_nums),
-        val(trait),
-        val(method),
+        val(out_prefix),
         val(bfile),
         path(bed),
         path(bim),
         path(fam),
+        val(target_cohort),
+        val(target_population),
+        val(target_snp_set),
         path(plink)
 
     output:
-        path "${trait}_${method}_chr${chr}.sscore"
+        path "${target_cohort}_${target_population}_${target_snp_set}_${out_prefix}_chr${chr}.sscore"
     
     script:
         """
         ./plink2 --bfile ${bfile} \
-        --out ${trait}_${method}_chr${chr} \
+        --out ${target_cohort}_${target_population}_${target_snp_set}_${out_prefix}_chr${chr} \
         --score ${snp_posteriors} ${col_nums} header cols=+scoresums ignore-dup-ids
         """
 }

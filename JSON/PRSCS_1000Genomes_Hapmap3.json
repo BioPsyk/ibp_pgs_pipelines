@@ -1,0 +1,75 @@
+{
+    "1": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr1.hdf5"
+    },
+    "2": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr2.hdf5"
+    },
+    "3": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr3.hdf5"
+    },
+    "4": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr4.hdf5"
+    },
+    "5": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr5.hdf5"
+    },
+    "6": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr6.hdf5"
+    },
+    "7": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr7.hdf5"
+    },
+    "8": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr8.hdf5"
+    },
+    "9": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr9.hdf5"
+    },
+    "10": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr10.hdf5"
+    },
+    "11": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr11.hdf5"
+    },
+    "12": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr12.hdf5"
+    },
+    "13": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr13.hdf5"
+    },
+    "14": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr14.hdf5"
+    },
+    "15": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr15.hdf5"
+    },
+    "16": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr16.hdf5"
+    },
+    "17": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr17.hdf5"
+    },
+    "18": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr18.hdf5"
+    },
+    "19": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr19.hdf5"
+    },
+    "20": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr20.hdf5"
+    },
+    "21": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr21.hdf5"
+    },
+    "22": {
+        "bin" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/ldblk_1kg_chr22.hdf5"
+    },
+    "meta": {
+        "cohort": "1kg",
+        "snps": "hapmap3",
+        "population": "eur",
+        "format": "prscs"
+    },
+    "info" : "/faststorage/jail/project/ibp_data_reference/LD_maps/prscs/ldblk_1kg_eur/snpinfo_1kg_hm3"
+}

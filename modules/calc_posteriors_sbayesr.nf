@@ -13,12 +13,16 @@ process calc_posteriors_sbayesr {
             val(ld_prefix),
             path(ld_bin), 
             path(ld_info), 
-            val(out_prefix),
+            val(ld_cohort),
+            val(ld_population),
+            val(ld_snp_set),
+            val(ld_format),
+            val(trait),
             path(gctb)
     
     output:
         tuple val(chr),
-            path("${out_prefix}_sbayesr_chr${chr}.snpRes")
+            path("${trait}_${ld_cohort}_${ld_population}_${ld_snp_set}_sbayesr_chr${chr}.snpRes")
 
     script:
         """
@@ -29,7 +33,7 @@ process calc_posteriors_sbayesr {
             --pi 0.95,0.02,0.02,0.01 \
             --burn-in 5000 \
             --chain-length 25000 \
-            --out ${out_prefix}_sbayesr_chr${chr} \
+            --out ${trait}_${ld_cohort}_${ld_population}_${ld_snp_set}_sbayesr_chr${chr} \
             --exclude-mhc \
             --no-mcmc-bin \
             --thread 8 \

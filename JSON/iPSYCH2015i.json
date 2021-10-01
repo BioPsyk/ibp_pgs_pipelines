@@ -1,0 +1,117 @@
+{
+    "1": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr1.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr1.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr1.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "2": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr2.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr2.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr2.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "3": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr3.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr3.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr3.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "4": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr4.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr4.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr4.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "5": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr5.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr5.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr5.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "6": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr6.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr6.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr6.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "7": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr7.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr7.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr7.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "8": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr8.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr8.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr8.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "9": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr9.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr9.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr9.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "10": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr10.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr10.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr10.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "11": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr11.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr11.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr11.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "12": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr12.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr12.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr12.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "13": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr13.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr13.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr13.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "14": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr14.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr14.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr14.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "15": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr15.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr15.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr15.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "16": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr16.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr16.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr16.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+        },
+    "17": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr17.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr17.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr17.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+        },
+    "18": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr18.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr18.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr18.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+        },
+    "19": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr19.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr19.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr19.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "20": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr20.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr20.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr20.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "21": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr21.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr21.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr21.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "22": {
+        "bed": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr22.SNP_SAMPLE_QC.UpdatedRSID.1.bed",
+        "bim": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr22.SNP_SAMPLE_QC.UpdatedRSID.1.bim",
+        "fam": "/faststorage/jail/project/ibp_data_ipsych/ipsych_2015i/iPSYCH_IBP_Imputed_v_2.1/qced/plink1/iPSYCH2015i.PhaseBEAGLE5.1PhaseStates560ImputeBEAGLE5.1.chr22.SNP_SAMPLE_QC.UpdatedRSID.1.fam"
+    },
+    "meta": {
+        "cohort": "ipsych2015i",
+        "population": "all",
+        "snps": "imputed_2021_qced"
+    }
+}
