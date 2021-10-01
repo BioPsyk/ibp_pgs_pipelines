@@ -165,7 +165,7 @@ workflow {
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prscs')) \
-    | combine(Channel.of(split_gwas_path)) \
+    | combine(Channel.of(params.split_gwas_path)) \
     | split_reformat_gwas \
     | set { prscs_input_ch } 
 
@@ -173,7 +173,7 @@ workflow {
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('sbayesr')) \
-    | combine(Channel.of(split_gwas_path)) \
+    | combine(Channel.of(params.split_gwas_path)) \
     | split_reformat_gwas \
     | set { sbayesr_input_ch } 
 
@@ -185,12 +185,12 @@ workflow {
     | combine(prscs_ukbb_hm3_eur_ld_ch, by: 0) \
     | combine(ipsych2012_geno_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(prscs_path)) \
+    | combine(Channel.of(params.prscs_path)) \
     | calc_posteriors_prscs() \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_ukbb_eur_hm3")) \
     | combine(ipsych2012_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2012_all_imputed_2021_qced_${params.trait}_prscs_ukbb_eur_hm3.sscore",
         keepHeader: true,
@@ -202,12 +202,12 @@ workflow {
     | combine(prscs_1kg_hm3_eur_ld_ch, by: 0) \
     | combine(ipsych2012_geno_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(prscs_path)) \
+    | combine(Channel.of(params.prscs_path)) \
     | calc_posteriors_prscs() \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_1kg_hm3_eur")) \
     | combine(ipsych2012_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2012_all_imputed_2021_qced_${params.trait}_prscs_1kg_eur_hm3.sscore",
         keepHeader: true,
@@ -215,11 +215,11 @@ workflow {
 
     Channel.of(1..22) \
     | combine(prscs_input_ch, by: 0) \
-    | combine(Channel.of(params.N)) \
+    | combine(Channel.of(params.n)) \
     | combine(prscs_ukbb_hm3_eur_ld_ch, by: 0) \
     | combine(ipsych2015i_geno_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(prscs_path)) \
+    | combine(Channel.of(params.prscs_path)) \
     | calc_posteriors_prscs() \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_ukbb_eur_hm3")) \
@@ -232,16 +232,16 @@ workflow {
 
     Channel.of(1..22) \
     | combine(prscs_input_ch, by: 0) \
-    | combine(Channel.of(params.N)) \
+    | combine(Channel.of(params.n)) \
     | combine(prscs_1kg_hm3_eur_ld_ch, by: 0) \
     | combine(ipsych2015i_geno_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(prscs_path)) \
+    | combine(Channel.of(params.prscs_path)) \
     | calc_posteriors_prscs() \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_1kg_hm3_eur")) \
     | combine(ipsych2015i_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2015i_all_imputed_2021_qced_${params.trait}_prscs_1kg_eur_hm3.sscore",
         keepHeader: true,
@@ -253,7 +253,7 @@ workflow {
     | combine(Channel.of(sbayesr_input_ch), by: 0)
     | combine(sbayesr_ukbb_big_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(sbayesr_path)) \
+    | combine(Channel.of(params.sbayesr_path)) \
     | calc_posteriors_sbayesr \
     | set { sbayesr_ukbb_big_eur_posteriors }
 
@@ -261,7 +261,7 @@ workflow {
     | combine(Channel.of(sbayesr_input_ch), by: 0)
     | combine(sbayesr_ukbb_hm3_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
-    | combine(Channel.of(sbayesr_path)) \
+    | combine(Channel.of(params.sbayesr_path)) \
     | calc_posteriors_sbayesr \
     | set { sbayesr_ukbb_hm3_eur_posteriors }
 
@@ -270,7 +270,7 @@ workflow {
     | combine(Channel.of("2 5 8")) \
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_2.5M")) \
     | combine(ipsych2012_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2012_all_imputed_2021_qced_${params.trait}_sbayesr_ukbb_eur_2.5M.sscore", 
         keepHeader: true,
@@ -282,7 +282,7 @@ workflow {
     | combine(Channel.of("2 5 8")) \
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_hm3")) \
     | combine(ipsych2012_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2012_all_imputed_2021_qced_${params.trait}_sbayesr_ukbb_eur_hm3.sscore", 
         keepHeader: true,
@@ -294,7 +294,7 @@ workflow {
     | combine(Channel.of("2 5 8")) \
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_2.5M")) \
     | combine(ipsych2015i_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2015i_all_imputed_2021_qced_${params.trait}_sbayesr_ukbb_eur_2.5M.sscore", 
         keepHeader: true,
@@ -306,7 +306,7 @@ workflow {
     | combine(Channel.of("2 5 8")) \
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_hm3")) \
     | combine(ipsych2015i_geno_ch, by: 0) \
-    | combine(Channel.of(plink_path)) \
+    | combine(Channel.of(params.plink_path)) \
     | calc_score \
     | collectFile(name: "ipsych2015i_all_imputed_2021_qced_${params.trait}_sbayesr_ukbb_eur_hm3.sscore", 
         keepHeader: true,
@@ -319,14 +319,14 @@ workflow {
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prsice')) \
-    | combine(Channel.of(split_gwas_path)) \
+    | combine(Channel.of(params.split_gwas_path)) \
     | split_reformat_gwas \
     | combine(plink_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.p_value_thresholds)) \
     | combine(Channel.of(params.binary)) \
     | combine(Channel.of(params.pheno)) \
-    | combine(Channel.of(prsice_path)) \
+    | combine(Channel.of(params.prsice_path)) \
     | run_prsice \
     | collectFile(name: "${params.trait}_prsice.all_score", 
         keepHeader: true,
