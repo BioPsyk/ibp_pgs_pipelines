@@ -193,7 +193,7 @@ workflow {
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_ukbb_eur_hm3.sscore",
         keepHeader: true,
         skip: 1,
-        storDir: launchDir)
+        storeDir: launchDir)
 
     Channel.of(1..22) \
     | combine(prscs_input_ch, by: 0) \
