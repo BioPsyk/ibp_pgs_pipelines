@@ -164,7 +164,7 @@ workflow {
     Channel.of(1..22) \
     | combine(Channel.of(params.trait)) \
     | combine(ref_ch, by: 0) \
-    | conbine(Channel.of('prscs')) \
+    | combine(Channel.of('prscs')) \
     | combine(Channel.of(split_gwas_path)) \
     | split_reformat_gwas \
     | set { prscs_input_ch } 
