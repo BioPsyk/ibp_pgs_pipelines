@@ -185,7 +185,7 @@ workflow {
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.prscs_path)) \
-    | calc_posteriors_prscs_ukbb_eur_hm3() \
+    | calc_posteriors_prscs_ukbb_eur_hm3 \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_ukbb_eur_hm3")) \
     | combine(genotypes_ch, by: 0) \
@@ -202,7 +202,7 @@ workflow {
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.prscs_path)) \
-    | calc_posteriors_prscs_1kg_eur_hm3() \
+    | calc_posteriors_prscs_1kg_eur_hm3 \
     | combine(Channel.of("2 4 6")) \
     | combine(Channel.of("${params.trait}_prscs_1kg_hm3_eur")) \
     | combine(genotypes_ch, by: 0) \
