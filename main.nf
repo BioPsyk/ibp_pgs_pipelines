@@ -12,7 +12,7 @@ include { calc_posteriors_prscs as calc_posteriors_prscs_ukbb_eur_hm3 } from './
 include { calc_posteriors_prscs as calc_posteriors_prscs_1kg_eur_hm3 } from './modules/calc_posteriors_prscs.nf'
 include { calc_score as calc_score_prscs_ukbb_eur_hm3 } from './modules/calc_score.nf'
 include { calc_score as calc_score_prscs_1kg_eur_hm3 } from './modules/calc_score.nf'
-include { calc_score as calc_score_sBayesR_sbayesr_ukbb_eur_2.5M } from './modules/calc_score.nf'
+include { calc_score as calc_score_sBayesR_sbayesr_ukbb_eur_big } from './modules/calc_score.nf'
 include { calc_score as calc_score_sBayesR_sbayesr_ukbb_eur_hm3 } from './modules/calc_score.nf'
 include { run_prsice } from './modules/run_prsice.nf'
 //include { eval_scores as eval_prs }
@@ -190,7 +190,7 @@ workflow {
     | combine(Channel.of("${params.trait}_prscs_ukbb_eur_hm3")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
-    | calc_score_prscs \
+    | calc_score_prscs_ukbb_eur_hm3 \
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_ukbb_eur_hm3.sscore",
         keepHeader: true,
         skip: 1)
@@ -207,7 +207,7 @@ workflow {
     | combine(Channel.of("${params.trait}_prscs_1kg_hm3_eur")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
-    | calc_score \
+    | calc_score_prscs_1kg_hm3_eur \
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_1kg_eur_hm3.sscore",
         keepHeader: true,
         skip: 1)
@@ -224,7 +224,7 @@ workflow {
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_2.5M")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
-    | calc_score \
+    | calc_score_sbayesr_ukbb_eur_big \
     | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_2.5M.sscore", 
         keepHeader: true,
         skip: 1,
@@ -240,7 +240,7 @@ workflow {
     | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_hm3")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
-    | calc_score \
+    | calc_score_sbayesr_ukbb_eur_hm3 \
     | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_hm3.sscore", 
         keepHeader: true,
         skip: 1,
