@@ -66,7 +66,7 @@ Target Prefix to use         : $target_prefix
 PRSCS 1000G hapmap3 SNPs LD  : $params.prscs_1000G_hm3_eur_ld
 PRSCS UKBB hapmap3 LD        : $params.prscs_ukbb_hm3_eur_ld
 sBayesR UKBB hapmap3 SNPs LD : $params.sbayesr_ukbb_hm3_eur_ld
-sBayesR UKBB 2.5M SNPs LD    : $parmas.sbayesr_ukbb_big_eur_ld
+sBayesR UKBB 2.5M SNPs LD    : $params.sbayesr_ukbb_big_eur_ld
 LD Files                     : $params.ld_files
 Output Directory             : $launchDir
 Covariates                   : $params.covs
