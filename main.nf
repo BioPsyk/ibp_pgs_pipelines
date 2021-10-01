@@ -12,8 +12,8 @@ include { calc_posteriors_prscs as calc_posteriors_prscs_ukbb_eur_hm3 } from './
 include { calc_posteriors_prscs as calc_posteriors_prscs_1kg_eur_hm3 } from './modules/calc_posteriors_prscs.nf'
 include { calc_score as calc_score_prscs_ukbb_eur_hm3 } from './modules/calc_score.nf'
 include { calc_score as calc_score_prscs_1kg_eur_hm3 } from './modules/calc_score.nf'
-include { calc_score as calc_score_sBayesR_sbayesr_ukbb_eur_big } from './modules/calc_score.nf'
-include { calc_score as calc_score_sBayesR_sbayesr_ukbb_eur_hm3 } from './modules/calc_score.nf'
+include { calc_score as calc_score_sbayesr_sbayesr_ukbb_eur_big } from './modules/calc_score.nf'
+include { calc_score as calc_score_sbayesr_sbayesr_ukbb_eur_hm3 } from './modules/calc_score.nf'
 include { run_prsice } from './modules/run_prsice.nf'
 //include { eval_scores as eval_prs }
 
