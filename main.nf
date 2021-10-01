@@ -207,7 +207,7 @@ workflow {
     | combine(Channel.of("${params.trait}_prscs_1kg_hm3_eur")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
-    | calc_score_prscs_1kg_hm3_eur \
+    | calc_score_prscs_1kg_eur_hm3 \
     | collectFile(name: "${target_prefix}_${params.trait}_prscs_1kg_eur_hm3.sscore",
         keepHeader: true,
         skip: 1)
