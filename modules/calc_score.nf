@@ -27,5 +27,8 @@ process calc_score {
         ./plink2 --bfile ${bfile} \
         --out ${target_cohort}_${target_population}_${target_snp_set}_${out_prefix}_chr${chr} \
         --score ${snp_posteriors} ${col_nums} header cols=+scoresums ignore-dup-ids
+
+        awk '{gsub(/^\#/, ""); print}' ${target_cohort}_${target_population}_${target_snp_set}_${out_prefix}_chr${chr}.sscore > tmp.score
+        mv tmp.score ${target_cohort}_${target_population}_${target_snp_set}_${out_prefix}_chr${chr}.sscore
         """
 }
