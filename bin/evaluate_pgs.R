@@ -28,41 +28,79 @@ parser = add_argument(parser,
                       default = "PGS_Eval")
 parser = add_argument(parser,
                       "pheno",
-                      help = "Phenotype file to evaluate, expected cols: FID IID Pheno")
+                      help = "Phenotype file to evaluate, 
+                      expected cols: FID IID Pheno")
 parser = add_argument(parser,
                       "covar",
-                      help = "File of covariates to use in tge PGS null model, expected cols: FID IID...")
+                      help = "File of covariates to use in tge PGS null model, 
+                      expected cols: FID IID...")
 parser = add_argument(parser,
                       "--binary",
                       flag = TRUE,
                       help = "Flag if the outcome is binary")
 parser = add_argument(parser,
                       "--prevalence",
-                      help = "Prevalence in case of a binary trait for liability transformation")
+                      help = "Prevalence in case of a binary trait
+                      for liability transformation")
 parser = add_argument(parser,
                       "--case_pct",
-                      help = "Case proportion in case of a binary trait for liability transformation")
+                      help = "Case proportion in case of a binary trait 
+                      for liability transformation")
 options = parse_args(parser)
 
-if(isTRUE(options$binary) && (!exists(options$prevalence) || !exists(options$case_pct))) {
-    print("ERROR: --binary flag implies binary trait and requires --prevalence & --case_pct!")
+if(isTRUE(options$binary) && 
+   (!exists(options$prevalence) || !exists(options$case_pct))) {
+    print("ERROR: --binary flag implies binary trait and 
+          requires --prevalence & --case_pct!")
     stop()
 }
 
-scaled_unique_scores = function (x_df) {
-    colnames(x_df) = c("FID", "IID", "N_MISS_ALLELE_CT", 
-                       "NAMED_ALLELE_DOSAGE_SUM", 
-                       "SCORE_AVG", "SCORE_SUM")
+##################### Functions used in the script #############################
+
+# Sum PGS across chromosomes and scale to zero mean, unit variance
+
+sum_scale_scores = function (x_df, score_col_name) {
+    colnames(x_df) = c("IID", "SCORE_CHR")
     x_df = x_df %>% 
         group_by(IID) %>%
-        mutate(score_genome_sum = sum(SCORE_SUM)) %>%
+        mutate(SCORE_SUM = sum(SCORE_CHR)) %>%
         ungroup() %>%
         as.data.frame() %>%
-        mutate(SCORE_SCALED = scale(score_sum)) %>%
+        mutate(SCORE_SCALED = scale(SCORE_SUM)) %>%
         select(IID, SCORE_SCALED) %>% 
         unique()
+    colnames(x_df) = c("IID", score_col_name)
     return (x_df)
 }
+
+# Calculate variance explained by PGS
+
+calculate_R2 = function(x_df, y_df, binary, null_r2) {
+    pgs = inner_join(x_df, y_df, by = c("IID"))
+    r2 = 0
+    if(isTRUE(binary)) {
+        r2 = NagelkerkeR2(glm(data = pgs, pheno ~ . -IID))
+    } else {
+        r2 = summary(lm(data = pgs, pheno ~ . -IID))$r.squared
+    }
+    r2 = r2 - null_r2
+    return (r2)
+}
+
+# Transform variance explained to liability scale for binary traits
+
+liability_transform = function(r2, k, p) {
+    x     = qnorm(1 - k)
+    z     = dnorm(x)
+    i     = z / k
+    cc    = k * (1 - k) * k * (1 - k) / (z * z * p * (1 - p))
+    theta = i * ((p - k) / (1 - k)) * (i * ((p - k) / (1- k)) - x)
+    e     = 1 - p^(2 * p) * (1 - p)^(2 * (1 - p))
+    r2_L  = cc * e * r2 / (1 + cc * e * theta * r2)
+    return (r2_L)
+}
+
+################################################################################
 
 pheno = read.table(options$pheno, header = TRUE)
 pheno = pheno %>% select(-FID)
@@ -70,53 +108,130 @@ covar = read.table(options$covar, header = TRUE)
 covar = covar %>% select(-FID)
 
 # Read PRSice scores, assumes there are scores at 4 different p-value thresholds
-# 5e-08, 1e-06, 0.05, 1 and the scores are summed but not averaged
+# 5e-08, 1e-06, 0.05, 1 and that the scores are summed but not averaged
 
 prsice_scores = read.table(options$prsice, header = TRUE)
 colnames(prsice_scores) = c("FID", "IID", 
                             "PT_5E8", "PT_1E6", "PT_0.05", "PT_1")
-prsice_scores = prsice_scores %>% 
-    group_by(IID) %>% 
-    mutate(PT_5E8_sum = sum(PT_5E8)) %>% 
-    mutate(PT_1E6_sum = sum(PT_1E6)) %>% 
-    mutate(PT_0.05_sum = sum(PT_0.05)) %>%
-    mutate(PT_1_sum = sum(PT_1)) %>%
-    ungroup() %>%
-    as.data.frame() %>%
-    mutate(PT_5E8_scaled = scale(PT_5E8_sum)) %>%
-    mutate(PT_1E6_scaled = scale(PT_1E6_sum)) %>%
-    mutate(PT_0.05_scaled = scale(PT_0.05_sum)) %>%
-    mutate(PT_1_scaled = scale(PT_1_sum)) %>%
-    select(-PT_5E8, -PT_1E6, -PT_0.05, -PT_1, 
-           -PT_1eE8_sum, -PT_1E6_sum, -PT_0.05_sum, -PT_1_sum, -FID) %>%
-    unique()
+prsice_5E8_scores  = prsice_scores %>% 
+    select(IID, PT_5E8) %>% 
+    sum_scale_scores("PT_5E8")
+prsice_1E6_scores  = prsice_scores %>% 
+    select(IID, PT_1E6) %>% 
+    sum_scale_scores("PT_1E6")
+prsice_0.05_scores = prsice_scores %>% 
+    select(IID, PT_0.05) %>% 
+    sum_scale_scores("PT_0.05")
+prsice_1_scores = prsice_scores %>% 
+    select(IID, PT_1) %>% 
+    sum_scale_scores("PT_1")
 
 # Read sBayesR, PRS-CS scores, assumes the scores are summed but not averaged
 
-sbayesr_ukbb_big_scores = read.table(options$sbayesr_ukbb_big, header = TRUE)
-sbayesr_ukbb_big_scores = sbayesr_ukbb_big_scores %>% scaled_unique_scores()
-colnames(sbayesr_ukbb_big_scores) = c("IID", "sBayesR_UKBB_2.5M")
+sbayesr_ukbb_2.5m_scores = read.table(options$sbayesr_ukbb_big, header = TRUE)
+sbayesr_ukbb_2.5m_scores = sbayesr_ukbb_2.5m_scores %>% 
+    select(IID, SCORE1_SUM) %>% 
+    sum_scale_scores("sBayesR_UKBB_2.5M")
 
 sbayesr_ukbb_hm3_scores = read.table(options$sbayesr_ukbb_hm3, header = TRUE)
-sbayesr_ukbb_hm3_scores = sbayesr_ukbb_hm3_scores %>% scaled_unique_scores()
-colnames(sbayesr_ukbb_hm3_scores) = c("IID", "sBayesR_UKBB_Hapmap3")
+sbayesr_ukbb_hm3_scores = sbayesr_ukbb_hm3_scores %>% 
+    seelct(IID, SCORE1_SUM) %>%
+    sum_scale_scores("sBayesR_UKBB_HM3")
 
-prscs_ukbb_hm3_scores   = read.table(options$prscs_ukbb_hm3, header = TRUE)
-prscs_ukbb_hm3_scores   = prscs_ukbb_hm3_scores %>% scaled_unique_scores()
-colnames(prscs_ukbb_hm3_scores) = c("IID", "PRSCS_UKBB_Hapmap3")
+prscs_ukbb_hm3_scores = read.table(options$prscs_ukbb_hm3, header = TRUE)
+prscs_ukbb_hm3_scores = prscs_ukbb_hm3_scores %>% 
+    select(IID, SCORE1_SUM) %>% 
+    sum_scale_scores("PRSCS_UKBB_HM3")
 
-prscs_1kg_hm3_scores    = read.table(options$prscs_1kg_hm3, header = TRUE)
-prscs_1kg_hm3_scores    = prscs_1kg_hm3_scores %>% scaled_unique_scores()
-colnames(prscs_1kg_hm3_scores) = c("IID", "PRSCS_1KG_Hapmap3")
+prscs_1kg_hm3_scores = read.table(options$prscs_1kg_hm3, header = TRUE)
+prscs_1kg_hm3_scores = prscs_1kg_hm3_scores %>% 
+    select(IID, SCORE1_SUM) %>% 
+    sum_scale_scores("PRSCS_1KG_HM3")
 
-pgs = inner_join(prsice_scores, sbayesr_ukbb_hm3_scores, by = c("IID"))
-pgs = inner_join(pgs, sbayesr_ukbb_big_scores, by = c("IID"))
+pheno_cov = inner_join(pheno, covar, by = c("IID"))
+
+# Calculate Nagelkerke R2 for binary traits
+
+null_model = glm(data = pgs, pheno ~ . -IID)
+
+if(isTRUE(options$binary)) { 
+    null_model_r2 = NagelkerkeR2(null_model)$R2
+} else {
+    null_model_r2 = summary(lm(data = pgs, pheno ~ . -IID))$r.squared
+}
+
+prsice_5E8_eval = calculate_R2(pheno_covar,
+                               prsice_5E8_scores,
+                               options$binary,
+                               null_model_r2)
+prsice_1E6_eval = calculate_R2(pheno_covar,
+                                prsice_1E6_scores,
+                                options$binary,
+                                null_model_r2)
+prsice_0.05_eval = calculate_R2(pheno_covar,
+                                prsice_0.05_scores,
+                                options$binary,
+                                null_model_r2)
+prsice_1_eval = calculate_R2(pheno_covar,
+                             prsice_1_scores,
+                             options$binary,
+                             null_model_r2)
+sbayesr_ukbb_2.5m_eval = calculate_R2(pheno_covar,
+                                      sbayesr_ukbb_2.5m_scores,
+                                      options$binary,
+                                      null_model_r2)
+sbayesr_ukbb_hm3_eval = calculate_R2(pheno_covar,
+                                     sbayesr_ukbb_hm3_scores,
+                                     options$binary,
+                                     null_model_r2)
+prscs_1kg_hm3_eval = calculate_R2(pheno_covar,
+                                  prscs_1kg_hm3_scores,
+                                  options$binary,
+                                  null_model_r2)
+prscs_ukbb_hm3_eval = calculate_R2(pheno_covar,
+                                   prscs_ukbb_hm3_scores,
+                                   options$binary,
+                                   null_model_r2)
+
+pgs = inner_join(prsice_5E8_scores, prsice_1E6_scores, by = c("IID"))
+pgs = inner_join(pgs, prsice_0.05_scores, by = c("IID"))
+pgs = inner_join(pgs, prsice_1_scores, by = c("IID"))
+pgs = inner_join(pgs, sbayesr_ukbb_2.5m_scores, by = c("IID"))
+pgs = inner_join(pgs, sbayesr_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_1kg_hm3_scores, by = c("IID"))
-pgs = inner_join(pgs, pheno, by = c("IID"))
-pgs = inner_join(pgs, covar, by = c("IID"))
 
-null_model = glm(data = pgs, pheno ~ . -PT_5E8_scaled, -PT_1E6_scaled,
-                 -PT_0.05_scaled, -PT_1_scaled, 
-                 -sBayesR_UKBB_2.5M, -sBayesR_UKBB_Hapmap3, 
-                 -PRSCS_UKBB_Hapmap3, -PRSCS_1KG_Hapmap3, -IID)
+all_methods_eval = calculate_R2(pheno_cov, 
+                                pgs, 
+                                options$binary, 
+                                null_model_r2)
+
+
+if(isTRUE(options$binary)) {
+    prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    prsice_1_r2_L          = liability_transform(prsice_1_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    sBayesR_ukbb_2.5m_r2_L = liability_transform(sbayesr_ukbb_2.5m_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+    prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], 
+                                                 options$case_pct, 
+                                                 options$prevalence)
+}
+
+
