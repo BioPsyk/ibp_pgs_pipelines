@@ -73,18 +73,29 @@ sum_scale_scores = function (x_df, score_col_name) {
     return (x_df)
 }
 
-# Calculate variance explained by PGS
+# Calculate r2 and p-value of PGS
 
-calculate_R2 = function(x_df, y_df, binary, null_r2) {
+calculate_r2_p = function(x_df, y_df, binary) {
     pgs = inner_join(x_df, y_df, by = c("IID"))
-    r2 = 0
+    r2  = 0
+    p   = 0
+    
     if(isTRUE(binary)) {
-        r2 = NagelkerkeR2(glm(data = pgs, pheno ~ . -IID))
+        fit_null = glm(data = x_df, pheno ~ . -IID)
+        fit_bin  = glm(data = pgs, pheno ~ . -IID)
+        r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
+        p        = pchisq(deviance(fit_null) - deviance(fit_bin),
+                          df.residual(fit_null) - df.residual(fit_bin),
+                          lower.tail = F) 
     } else {
-        r2 = summary(lm(data = pgs, pheno ~ . -IID))$r.squared
+        fit_null = lm(data = x_df, pheno ~ . -IID)
+        fit_con  = lm(data = pgs, pheno ~ . -IID)
+        r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
+        p        = pchisq(deviance(fit_null) - deviance(fit_con),
+                          df.residual(fit_null) - df.residual(fit_con),
+                          lower.tail = F) 
     }
-    r2 = r2 - null_r2
-    return (r2)
+    return (r2, p)
 }
 
 # Transform variance explained to liability scale for binary traits
@@ -152,46 +163,30 @@ pheno_cov = inner_join(pheno, covar, by = c("IID"))
 
 # Calculate Nagelkerke R2 for binary traits
 
-null_model = glm(data = pgs, pheno ~ . -IID)
-
-if(isTRUE(options$binary)) { 
-    null_model_r2 = NagelkerkeR2(null_model)$R2
-} else {
-    null_model_r2 = summary(lm(data = pgs, pheno ~ . -IID))$r.squared
-}
-
-prsice_5E8_eval = calculate_R2(pheno_covar,
-                               prsice_5E8_scores,
-                               options$binary,
-                               null_model_r2)
-prsice_1E6_eval = calculate_R2(pheno_covar,
-                                prsice_1E6_scores,
-                                options$binary,
-                                null_model_r2)
-prsice_0.05_eval = calculate_R2(pheno_covar,
-                                prsice_0.05_scores,
-                                options$binary,
-                                null_model_r2)
-prsice_1_eval = calculate_R2(pheno_covar,
-                             prsice_1_scores,
-                             options$binary,
-                             null_model_r2)
-sbayesr_ukbb_2.5m_eval = calculate_R2(pheno_covar,
-                                      sbayesr_ukbb_2.5m_scores,
-                                      options$binary,
-                                      null_model_r2)
-sbayesr_ukbb_hm3_eval = calculate_R2(pheno_covar,
-                                     sbayesr_ukbb_hm3_scores,
-                                     options$binary,
-                                     null_model_r2)
-prscs_1kg_hm3_eval = calculate_R2(pheno_covar,
-                                  prscs_1kg_hm3_scores,
-                                  options$binary,
-                                  null_model_r2)
-prscs_ukbb_hm3_eval = calculate_R2(pheno_covar,
-                                   prscs_ukbb_hm3_scores,
-                                   options$binary,
-                                   null_model_r2)
+prsice_5E8_eval = calculate_r2_p(pheno_covar,
+                                 prsice_5E8_scores,
+                                 options$binary)
+prsice_1E6_eval = calculate_r2_p(pheno_covar,
+                                 prsice_1E6_scores,
+                                 options$binary)
+prsice_0.05_eval = calculate_r2_p(pheno_covar,
+                                  prsice_0.05_scores,
+                                  options$binary)
+prsice_1_eval = calculate_r2_p(pheno_covar,
+                               prsice_1_scores,
+                               options$binary)
+sbayesr_ukbb_2.5m_eval = calculate_r2_p(pheno_covar,
+                                        sbayesr_ukbb_2.5m_scores,
+                                        options$binary)
+sbayesr_ukbb_hm3_eval = calculate_r2_p(pheno_covar,
+                                       sbayesr_ukbb_hm3_scores,
+                                       options$binary)
+prscs_1kg_hm3_eval = calculate_r2_p(pheno_covar,
+                                    prscs_1kg_hm3_scores,
+                                    options$binary)
+prscs_ukbb_hm3_eval = calculate_r2_p(pheno_covar,
+                                     prscs_ukbb_hm3_scores,
+                                     options$binary)
 
 pgs = inner_join(prsice_5E8_scores, prsice_1E6_scores, by = c("IID"))
 pgs = inner_join(pgs, prsice_0.05_scores, by = c("IID"))
@@ -201,10 +196,9 @@ pgs = inner_join(pgs, sbayesr_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_1kg_hm3_scores, by = c("IID"))
 
-all_methods_eval = calculate_R2(pheno_cov, 
-                                pgs, 
-                                options$binary, 
-                                null_model_r2)
+all_methods_eval = calculate_r2_p(pheno_cov,
+                                  pgs,
+                                  options$binary)
 
 
 if(isTRUE(options$binary)) {
@@ -233,5 +227,3 @@ if(isTRUE(options$binary)) {
                                                  options$case_pct, 
                                                  options$prevalence)
 }
-
-
