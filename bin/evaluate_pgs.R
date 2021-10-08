@@ -32,7 +32,7 @@ parser = add_argument(parser,
                       expected cols: FID IID Pheno")
 parser = add_argument(parser,
                       "covar",
-                      help = "File of covariates to use in tge PGS null model, 
+                      help = "File of covariates to use in the PGS null model, 
                       expected cols: FID IID...")
 parser = add_argument(parser,
                       "--binary",
@@ -146,7 +146,7 @@ sbayesr_ukbb_2.5m_scores = sbayesr_ukbb_2.5m_scores %>%
 
 sbayesr_ukbb_hm3_scores = read.table(options$sbayesr_ukbb_hm3, header = TRUE)
 sbayesr_ukbb_hm3_scores = sbayesr_ukbb_hm3_scores %>% 
-    seelct(IID, SCORE1_SUM) %>%
+    select(IID, SCORE1_SUM) %>%
     sum_scale_scores("sBayesR_UKBB_HM3")
 
 prscs_ukbb_hm3_scores = read.table(options$prscs_ukbb_hm3, header = TRUE)
