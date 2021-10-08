@@ -95,7 +95,7 @@ calculate_r2_p = function(x_df, y_df, binary) {
                           df.residual(fit_null) - df.residual(fit_con),
                           lower.tail = F) 
     }
-    return (r2, p)
+    return (c(r2, p))
 }
 
 # Transform variance explained to liability scale for binary traits
@@ -200,6 +200,31 @@ all_methods_eval = calculate_r2_p(pheno_cov,
                                   pgs,
                                   options$binary)
 
+r2_out = data.frame(Method = c("PRsice_5E8",
+                               "PRSice_1E6",
+                               "PRSice_0.05",
+                               "PRSice_1",
+                               "sBayesR_UKBB_2.5M",
+                               "sBayesR_UKBB_HM3",
+                               "PRSCS_UKBB_HM3",
+                               "PRSCS_1KG_HM3"),
+                    r2 = c(prsice_5E8_eval[1],
+                           prsice_1E6_eval[1],
+                           prsice_0.05_eval[1],
+                           prsice_1_eval[1],
+                           sbayesr_ukbb_2.5m_eval[1],
+                           sbayesr_ukbb_hm3_eval[1],
+                           prscs_ukbb_hm3_eval[1],
+                           prscs_1kg_hm3_eval[1]),
+                    p = c(prsice_5E8_eval[2],
+                          prsice_1E6_eval[2],
+                          prsice_0.05_eval[2],
+                          prsice_1_eval[2],
+                          sbayesr_ukbb_2.5m_eval[2],
+                          sbayesr_ukbb_hm3_eval[2],
+                          prscs_ukbb_hm3_eval[2],
+                          prscs_1kg_hm3_eval[2]))
+
 
 if(isTRUE(options$binary)) {
     prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
@@ -226,4 +251,58 @@ if(isTRUE(options$binary)) {
     prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], 
                                                  options$case_pct, 
                                                  options$prevalence)
+    
+    r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L, 
+                                prsice_1E6_r2_L,
+                                prsice_0.05_r2_L,
+                                prsice_1_r2_L,
+                                sBayesR_ukbb_2.5m_r2_L,
+                                sBayesR_ukbb_hm3_r2_L,
+                                prscs_ukbb_hm3_r2_L,
+                                prscs_1kg_hm3_r2_L))
+    r2_out = cbind(r2_out, r2_L)
+    
+    # Make plot
+    
+    png(paste0(options$out, "_", "VarianceExplainedLiabilityScale.png"), 
+        width = 5, 
+        height = 5, 
+        units = "in", 
+        res = 300)
+    
+    ggplot(r2_out, aes(x = "Method", y = r2_L)) + 
+        geom_bar(stat = "identity") + 
+        theme_bw() + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    
+    dev.off()
 }
+
+#------------------------------ Make plots -------------------------------------
+
+png(paste0(options$out, "_", "VarianceExplained.png"), 
+    width = 5, 
+    height = 5, 
+    units = "in", 
+    res = 300)
+
+ggplot(r2_out, aes(x = "Method", y = r2)) + 
+    geom_bar(stat = "identity") + 
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+dev.off()
+
+#--------------------------- Write outputs -------------------------------------
+
+write.table(r2_out, paste0(options$out, "_", "VarianceExplained.txt"), 
+                           row.names = F, 
+                           quote = F, 
+                           sep = "\t")
+
+write.table(pgs, paste0(options$out, "_", "Scores.txt"), 
+            row.names = F, 
+            quote = F, 
+            sep = "\t")
+
+######################### --- End of Script --- ################################
