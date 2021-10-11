@@ -76,19 +76,21 @@ sum_scale_scores = function (x_df, score_col_name) {
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
-    pgs = inner_join(x_df, y_df, by = c("IID"))
-    r2  = 0
-    p   = 0
+    colnames(x_df) = c("IID", "Pheno")
+    colnames(y_df) = c("IID", "SCORE")
+    pgs            = inner_join(x_df, y_df, by = c("IID"))
+    r2             = 0
+    p              = 0
     
     if(isTRUE(binary)) {
-        fit_null = glm(data = x_df, Pheno ~ . -IID)
+        fit_null = glm(data = pgs, Pheno ~ . -IID -SCORE)
         fit_bin  = glm(data = pgs, Pheno ~ . -IID)
         r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
         p        = pchisq(deviance(fit_null) - deviance(fit_bin),
                           df.residual(fit_null) - df.residual(fit_bin),
                           lower.tail = F) 
     } else {
-        fit_null = lm(data = x_df, Pheno ~ . -IID)
+        fit_null = lm(data = x_df, Pheno ~ . -IID -SCORE)
         fit_con  = lm(data = pgs, Pheno ~ . -IID)
         r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
         p        = pchisq(deviance(fit_null) - deviance(fit_con),
@@ -114,7 +116,6 @@ liability_transform = function(r2, k, p) {
 ################################################################################
 
 pheno           = read.table(options$pheno, header = TRUE)
-colnames(pheno) = c("FID", "IID", "Pheno")
 pheno           = pheno %>% select(-FID)
 covar           = read.table(options$covar, header = TRUE)
 covar           = covar %>% select(-FID)
@@ -217,7 +218,7 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                            sbayesr_ukbb_hm3_eval[1],
                            prscs_ukbb_hm3_eval[1],
                            prscs_1kg_hm3_eval[1]),
-                    p = c(prsice_5E8_eval[2],
+                    P = c(prsice_5E8_eval[2],
                           prsice_1E6_eval[2],
                           prsice_0.05_eval[2],
                           prsice_1_eval[2],
@@ -286,7 +287,7 @@ png(paste0(options$out, "_", "VarianceExplained.png"),
     units = "in", 
     res = 300)
 
-ggplot(r2_out, aes(x = "Method", y = r2)) + 
+ggplot(r2_out, aes(x = Method, y = r2)) + 
     geom_bar(stat = "identity") + 
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
