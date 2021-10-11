@@ -81,15 +81,15 @@ calculate_r2_p = function(x_df, y_df, binary) {
     p   = 0
     
     if(isTRUE(binary)) {
-        fit_null = glm(data = x_df, pheno ~ . -IID)
-        fit_bin  = glm(data = pgs, pheno ~ . -IID)
+        fit_null = glm(data = x_df, Pheno ~ . -IID)
+        fit_bin  = glm(data = pgs, Pheno ~ . -IID)
         r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
         p        = pchisq(deviance(fit_null) - deviance(fit_bin),
                           df.residual(fit_null) - df.residual(fit_bin),
                           lower.tail = F) 
     } else {
-        fit_null = lm(data = x_df, pheno ~ . -IID)
-        fit_con  = lm(data = pgs, pheno ~ . -IID)
+        fit_null = lm(data = x_df, Pheno ~ . -IID)
+        fit_con  = lm(data = pgs, Pheno ~ . -IID)
         r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
         p        = pchisq(deviance(fit_null) - deviance(fit_con),
                           df.residual(fit_null) - df.residual(fit_con),
@@ -113,10 +113,11 @@ liability_transform = function(r2, k, p) {
 
 ################################################################################
 
-pheno = read.table(options$pheno, header = TRUE)
-pheno = pheno %>% select(-FID)
-covar = read.table(options$covar, header = TRUE)
-covar = covar %>% select(-FID)
+pheno           = read.table(options$pheno, header = TRUE)
+colnames(pheno) = c("FID", "IID", "Pheno")
+pheno           = pheno %>% select(-FID)
+covar           = read.table(options$covar, header = TRUE)
+covar           = covar %>% select(-FID)
 
 # Read PRSice scores, assumes there are scores at 4 different p-value thresholds
 # 5e-08, 1e-06, 0.05, 1 and that the scores are summed but not averaged
@@ -224,7 +225,6 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           sbayesr_ukbb_hm3_eval[2],
                           prscs_ukbb_hm3_eval[2],
                           prscs_1kg_hm3_eval[2]))
-
 
 if(isTRUE(options$binary)) {
     prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
