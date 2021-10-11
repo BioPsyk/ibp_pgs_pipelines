@@ -79,6 +79,7 @@ calculate_r2_p = function(x_df, y_df, binary) {
     colnames(y_df) = c("IID", "SCORE")
     head(x_df)
     head(y_df)
+    stop()
     pgs            = inner_join(x_df, y_df, by = c("IID"))
     r2             = 0
     p              = 0
