@@ -163,28 +163,28 @@ pheno_cov = inner_join(pheno, covar, by = c("IID"))
 
 # Calculate Nagelkerke R2 for binary traits
 
-prsice_5E8_eval = calculate_r2_p(pheno_covar,
+prsice_5E8_eval = calculate_r2_p(pheno_cov,
                                  prsice_5E8_scores,
                                  options$binary)
-prsice_1E6_eval = calculate_r2_p(pheno_covar,
+prsice_1E6_eval = calculate_r2_p(pheno_cov,
                                  prsice_1E6_scores,
                                  options$binary)
-prsice_0.05_eval = calculate_r2_p(pheno_covar,
+prsice_0.05_eval = calculate_r2_p(pheno_cov,
                                   prsice_0.05_scores,
                                   options$binary)
-prsice_1_eval = calculate_r2_p(pheno_covar,
+prsice_1_eval = calculate_r2_p(pheno_cov,
                                prsice_1_scores,
                                options$binary)
-sbayesr_ukbb_2.5m_eval = calculate_r2_p(pheno_covar,
+sbayesr_ukbb_2.5m_eval = calculate_r2_p(pheno_cov,
                                         sbayesr_ukbb_2.5m_scores,
                                         options$binary)
-sbayesr_ukbb_hm3_eval = calculate_r2_p(pheno_covar,
+sbayesr_ukbb_hm3_eval = calculate_r2_p(pheno_cov,
                                        sbayesr_ukbb_hm3_scores,
                                        options$binary)
-prscs_1kg_hm3_eval = calculate_r2_p(pheno_covar,
+prscs_1kg_hm3_eval = calculate_r2_p(pheno_cov,
                                     prscs_1kg_hm3_scores,
                                     options$binary)
-prscs_ukbb_hm3_eval = calculate_r2_p(pheno_covar,
+prscs_ukbb_hm3_eval = calculate_r2_p(pheno_cov,
                                      prscs_ukbb_hm3_scores,
                                      options$binary)
 
