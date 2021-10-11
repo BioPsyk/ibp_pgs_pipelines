@@ -209,7 +209,8 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                                "sBayesR_UKBB_2.5M",
                                "sBayesR_UKBB_HM3",
                                "PRSCS_UKBB_HM3",
-                               "PRSCS_1KG_HM3"),
+                               "PRSCS_1KG_HM3",
+                               "ALL"),
                     r2 = c(prsice_5E8_eval[1],
                            prsice_1E6_eval[1],
                            prsice_0.05_eval[1],
@@ -217,7 +218,8 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                            sbayesr_ukbb_2.5m_eval[1],
                            sbayesr_ukbb_hm3_eval[1],
                            prscs_ukbb_hm3_eval[1],
-                           prscs_1kg_hm3_eval[1]),
+                           prscs_1kg_hm3_eval[1],
+                           all_methods_eval[1]),
                     P = c(prsice_5E8_eval[2],
                           prsice_1E6_eval[2],
                           prsice_0.05_eval[2],
@@ -225,7 +227,8 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           sbayesr_ukbb_2.5m_eval[2],
                           sbayesr_ukbb_hm3_eval[2],
                           prscs_ukbb_hm3_eval[2],
-                          prscs_1kg_hm3_eval[2]))
+                          prscs_1kg_hm3_eval[2],
+                          all_methods_eval[2]))
 
 if(isTRUE(options$binary)) {
     prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
@@ -271,10 +274,11 @@ if(isTRUE(options$binary)) {
         units = "in", 
         res = 300)
     
-    ggplot(r2_out, aes(x = "Method", y = r2_L)) + 
+    ggplot(r2_out, aes(x = Method, y = r2_L)) + 
         geom_bar(stat = "identity") + 
         theme_bw() + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1))
+        theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+        xlab("")
     
     dev.off()
 }
@@ -290,7 +294,8 @@ png(paste0(options$out, "_", "VarianceExplained.png"),
 ggplot(r2_out, aes(x = Method, y = r2)) + 
     geom_bar(stat = "identity") + 
     theme_bw() + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+    xlab("")
 
 dev.off()
 
