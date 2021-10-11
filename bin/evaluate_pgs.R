@@ -76,7 +76,6 @@ sum_scale_scores = function (x_df, score_col_name) {
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
-    colnames(x_df) = c("IID", "Pheno")
     colnames(y_df) = c("IID", "SCORE")
     pgs            = inner_join(x_df, y_df, by = c("IID"))
     r2             = 0
@@ -116,6 +115,7 @@ liability_transform = function(r2, k, p) {
 ################################################################################
 
 pheno           = read.table(options$pheno, header = TRUE)
+colnames(pheno) = c("FID", "IID", "Pheno")
 pheno           = pheno %>% select(-FID)
 covar           = read.table(options$covar, header = TRUE)
 covar           = covar %>% select(-FID)
