@@ -76,23 +76,20 @@ sum_scale_scores = function (x_df, score_col_name) {
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
-    colnames(y_df) = c("IID", "SCORE")
-    head(x_df)
-    head(y_df)
-    stop()
-    pgs            = inner_join(x_df, y_df, by = c("IID"))
-    r2             = 0
-    p              = 0
+    x_df = semi_join(x_df, y_df, by = c("IID"))
+    pgs  = inner_join(x_df, y_df, by = c("IID"))
+    r2   = 0
+    p    = 0
     
     if(isTRUE(binary)) {
-        fit_null = glm(data = pgs, Pheno ~ . -IID -SCORE)
+        fit_null = glm(data = x_df, Pheno ~ . -IID)
         fit_bin  = glm(data = pgs, Pheno ~ . -IID)
         r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
         p        = pchisq(deviance(fit_null) - deviance(fit_bin),
                           df.residual(fit_null) - df.residual(fit_bin),
                           lower.tail = F) 
     } else {
-        fit_null = lm(data = pgs, Pheno ~ . -IID -SCORE)
+        fit_null = lm(data = x_df, Pheno ~ . -IID)
         fit_con  = lm(data = pgs, Pheno ~ . -IID)
         r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
         p        = pchisq(deviance(fit_null) - deviance(fit_con),
