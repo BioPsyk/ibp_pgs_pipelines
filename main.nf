@@ -169,7 +169,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prscs')) \
     | combine(Channel.of(params.split_gwas_path)) \
-    | combine(Channel.of(n)) \
+    | combine(Channel.of(params.n)) \
     | split_for_prscs \
     | set { prscs_input_ch } 
 
@@ -178,7 +178,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('sbayesr')) \
     | combine(Channel.of(params.split_gwas_path)) \
-    | combine(Channel.of(n)) \
+    | combine(Channel.of(params.n)) \
     | split_for_sbayesr \
     | set { sbayesr_input_ch } 
 
@@ -261,7 +261,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prsice')) \
     | combine(Channel.of(params.split_gwas_path)) \
-    | combine(Channel.of(n)) \
+    | combine(Channel.of(params.n)) \
     | split_for_prsice \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
