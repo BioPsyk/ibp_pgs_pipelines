@@ -282,12 +282,12 @@ workflow {
     | combine(sbayesr_ukbb_eur_hm3_score_ch) \
     | combine(prscs_ukbb_eur_hm3_score_ch) \
     | combine(prscs_1kg_eur_hm3_score_ch) \
-    | combine(Channel.of($params.pheno)) \
-    | combine(Channel.of($params.covs)) \
-    | combine(Channel.of($params.binary)) \
-    | combine(Channel.of($params.prevalence)) \
+    | combine(Channel.of(params.pheno)) \
+    | combine(Channel.of(params.covs)) \
+    | combine(Channel.of(params.binary)) \
+    | combine(Channel.of(params.prevalence)) \
     | combine(Channel.of(case_proportion)) \
     | combine(Channel.of("${target_prefix}_${params.trait}")) \
-    | combine(Channel.of($params.eval_scores_path)) \
+    | combine(Channel.of(params.eval_scores_path)) \
     | eval_scores
 } 
