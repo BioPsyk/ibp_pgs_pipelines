@@ -15,7 +15,7 @@ include { calc_score as calc_score_prscs_1kg_eur_hm3 } from './modules/calc_scor
 include { calc_score as calc_score_sbayesr_ukbb_eur_big } from './modules/calc_score.nf'
 include { calc_score as calc_score_sbayesr_ukbb_eur_hm3 } from './modules/calc_score.nf'
 include { run_prsice } from './modules/run_prsice.nf'
-//include { eval_scores as eval_prs }
+include { eval_scores } from './modules/eval_scores.nf'
 
 def help_msg() {
     log.info """
@@ -28,6 +28,8 @@ def help_msg() {
 
     --ref <gwas.vcf.gz> [A reference file of gwas summary stats in VCF.gz format] (Default: PGC SCZ 2014)
     --n <77096> [Reference GWAS Sample Size] (Default: 77096)
+    --n_cases <Number of cases> [If the outcome is binary, case proportion is used to calculate liability transformed r2] (Default: 33640)
+    --prevalence <Prevalence in decimals> [If the outcome is binary, population prevalence is used to calculate liability transformed r2] (Default: 0.1)
     --target <iPSYCH2012_All_Imputed_2021_QCed.json> [JSON file of target genotypes to score] (Default: iPSYCH2012 Imputed in 2021)
     --trait <ipsych_scz_2014> [A prefix for output files] (Default: Simple name of reference file)
     --covs <file.covs> [Path to covariates you might want to include in the NULL PGS model, such as age, gender, 10 PCs]
@@ -38,15 +40,18 @@ def help_msg() {
     """
 }
 
-params.ref    = "/test/ieu-b42.vcf.gz"
-params.n      = 77096
-params.trait  = file(params.ref).getSimpleName()
-params.covs   = ""
-params.pheno  = ""
-params.binary = "T"
-params.p_vals = "5e-8,1e-6,0.05,1"
-params.help   = false
-target_prefix = file(params.target).getSimpleName()
+params.ref        = "/test/ieu-b42.vcf.gz"
+params.n          = 77096
+params.n_cases    = 33640
+params.prevalence = 0.1
+params.trait      = file(params.ref).getSimpleName()
+params.covs       = ""
+params.pheno      = ""
+params.binary     = "T"
+params.p_vals     = "5e-8,1e-6,0.05,1"
+params.help       = false
+target_prefix     = file(params.target).getSimpleName()
+case_proportion   = params.n_cases/params.n 
 
 if(params.help)
 {
@@ -164,6 +169,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prscs')) \
     | combine(Channel.of(params.split_gwas_path)) \
+    | combine(Channel.of(n)) \
     | split_for_prscs \
     | set { prscs_input_ch } 
 
@@ -172,6 +178,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('sbayesr')) \
     | combine(Channel.of(params.split_gwas_path)) \
+    | combine(Channel.of(n)) \
     | split_for_sbayesr \
     | set { sbayesr_input_ch } 
 
@@ -190,10 +197,10 @@ workflow {
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
     | calc_score_prscs_ukbb_eur_hm3 \
-    | collectFile(name: "${target_prefix}_${params.trait}_prscs_ukbb_eur_hm3.sscore",
+    | collectFile(name: "${target_prefix}_${params.trait}_prscs_ukbb_eur_hm3.score",
         keepHeader: true,
-        skip: 1,
-        storeDir: launchDir)
+        skip: 1) \
+    | set { prscs_ukbb_eur_hm3_score_ch } 
 
     Channel.of(1..22) \
     | combine(prscs_input_ch, by: 0) \
@@ -208,10 +215,10 @@ workflow {
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
     | calc_score_prscs_1kg_eur_hm3 \
-    | collectFile(name: "${target_prefix}_${params.trait}_prscs_1kg_eur_hm3.sscore",
+    | collectFile(name: "${target_prefix}_${params.trait}_prscs_1kg_eur_hm3.score",
         keepHeader: true,
-        skip: 1,
-        storeDir: launchDir)
+        skip: 1) \
+    | set { prscs_1kg_eur_hm3_score_ch }
 
     //Run SBayesR
 
@@ -222,14 +229,14 @@ workflow {
     | combine(Channel.of(params.sbayesr_path)) \
     | calc_posteriors_sbayesr_ukbb_eur_big \
     | combine(Channel.of("2 5 8")) \
-    | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_2.5M")) \
+    | combine(Channel.of("${params.trait}_sbayesr_ukbb_eur_2.8M")) \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
     | calc_score_sbayesr_ukbb_eur_big \
-    | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_2.5M.sscore", 
+    | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_2.8M.score", 
         keepHeader: true,
-        skip: 1,
-        storeDir: launchDir)
+        skip: 1) \
+    | set { sbayesr_ukbb_eur_big_score_ch }
 
     Channel.of(1..22) \
     | combine(sbayesr_input_ch, by: 0)
@@ -242,10 +249,10 @@ workflow {
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.plink_path)) \
     | calc_score_sbayesr_ukbb_eur_hm3 \
-    | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_hm3.sscore", 
+    | collectFile(name: "${target_prefix}_${params.trait}_sbayesr_ukbb_eur_hm3.score", 
         keepHeader: true,
-        skip: 1,
-        storeDir: launchDir)
+        skip: 1) \
+    | set { sbayesr_ukbb_eur_hm3_score_ch }
 
     // Run PRSice
 
@@ -254,6 +261,7 @@ workflow {
     | combine(ref_ch, by: 0) \
     | combine(Channel.of('prsice')) \
     | combine(Channel.of(params.split_gwas_path)) \
+    | combine(Channel.of(n)) \
     | split_for_prsice \
     | combine(genotypes_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
@@ -262,10 +270,24 @@ workflow {
     | combine(Channel.of(params.pheno)) \
     | combine(Channel.of(params.prsice_path)) \
     | run_prsice \
-    | collectFile(name: "${target_prefix}_${params.trait}_prsice.all_score", 
+    | collectFile(name: "${target_prefix}_${params.trait}_prsice.score", 
         keepHeader: true,
-        skip: 1,
-        storeDir: launchDir)
+        skip: 1) \
+    | set { prsice_score_ch }
 
-    //eval_prs(calc_score_prscs.out, calc_score_sbayesr.out, $params.covs, $params.trait, $params.pheno) 
+    // Evaluate the different PGS methods
+
+    prsice_score_ch \
+    | combine(sbayesr_ukbb_eur_big_score_ch) \ 
+    | combine(sbayesr_ukbb_eur_hm3_score_ch) \
+    | combine(prscs_ukbb_eur_hm3_score_ch) \
+    | combine(prscs_1kg_eur_hm3_score_ch) \ 
+    | combine(Channel.of($params.pheno)) \
+    | combine(Channel.of($params.covs)) \
+    | combine(Channel.of($params.binary)) \
+    | combine(Channel.of($params.prevalence)) \
+    | combine(Channel.of(case_proportion)) \
+    | combine(Channel.of("${target_prefix}_${params.trait}")) \
+    | combine(Channel.of($params.eval_scores_path)) \
+    | eval_scores
 } 

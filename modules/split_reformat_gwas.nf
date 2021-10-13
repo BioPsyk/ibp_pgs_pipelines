@@ -16,6 +16,7 @@ process split_reformat_gwas {
             path(vcf_idx),
             val(method),
             path(split_gwas)
+            val(n)
 
     output:
         tuple val(chr), 
@@ -23,6 +24,6 @@ process split_reformat_gwas {
 
     script:
         """
-        python ${split_gwas} --vcf $vcf --chromosome $chr --format $method --out ${traitName}
+        python ${split_gwas} --vcf $vcf --chromosome $chr --format $method --out ${traitName} --n $n
         """
 }

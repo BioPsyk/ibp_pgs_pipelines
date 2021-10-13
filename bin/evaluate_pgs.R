@@ -12,7 +12,7 @@ parser = add_argument(parser,
                       help = "Path  to PRSice scores")
 parser = add_argument(parser, 
                       "sbayesr_ukbb_big", 
-                      help = "Path to sBayesR scores with 2.5M UKBB SNP set")
+                      help = "Path to sBayesR scores with 2.8M UKBB SNP set")
 parser = add_argument(parser, 
                       "sbayesr_ukbb_hm3", 
                       help = "Path to sBayesR scores with Hapmap3 SNP set")
@@ -141,10 +141,10 @@ prsice_1_scores = prsice_scores %>%
 
 # Read sBayesR, PRS-CS scores, assumes the scores are summed but not averaged
 
-sbayesr_ukbb_2.5m_scores = read.table(options$sbayesr_ukbb_big, header = TRUE)
-sbayesr_ukbb_2.5m_scores = sbayesr_ukbb_2.5m_scores %>% 
+sbayesr_ukbb_2.8m_scores = read.table(options$sbayesr_ukbb_big, header = TRUE)
+sbayesr_ukbb_2.8m_scores = sbayesr_ukbb_2.8m_scores %>% 
     select(IID, SCORE1_SUM) %>% 
-    sum_scale_scores("sBayesR_UKBB_2.5M")
+    sum_scale_scores("sBayesR_UKBB_2.8M")
 
 sbayesr_ukbb_hm3_scores = read.table(options$sbayesr_ukbb_hm3, header = TRUE)
 sbayesr_ukbb_hm3_scores = sbayesr_ukbb_hm3_scores %>% 
@@ -177,8 +177,8 @@ prsice_0.05_eval = calculate_r2_p(pheno_cov,
 prsice_1_eval = calculate_r2_p(pheno_cov,
                                prsice_1_scores,
                                options$binary)
-sbayesr_ukbb_2.5m_eval = calculate_r2_p(pheno_cov,
-                                        sbayesr_ukbb_2.5m_scores,
+sbayesr_ukbb_2.8m_eval = calculate_r2_p(pheno_cov,
+                                        sbayesr_ukbb_2.8m_scores,
                                         options$binary)
 sbayesr_ukbb_hm3_eval = calculate_r2_p(pheno_cov,
                                        sbayesr_ukbb_hm3_scores,
@@ -193,7 +193,7 @@ prscs_ukbb_hm3_eval = calculate_r2_p(pheno_cov,
 pgs = inner_join(prsice_5E8_scores, prsice_1E6_scores, by = c("IID"))
 pgs = inner_join(pgs, prsice_0.05_scores, by = c("IID"))
 pgs = inner_join(pgs, prsice_1_scores, by = c("IID"))
-pgs = inner_join(pgs, sbayesr_ukbb_2.5m_scores, by = c("IID"))
+pgs = inner_join(pgs, sbayesr_ukbb_2.8m_scores, by = c("IID"))
 pgs = inner_join(pgs, sbayesr_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_ukbb_hm3_scores, by = c("IID"))
 pgs = inner_join(pgs, prscs_1kg_hm3_scores, by = c("IID"))
@@ -206,7 +206,7 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                                "PRSice_1E6",
                                "PRSice_0.05",
                                "PRSice_1",
-                               "sBayesR_UKBB_2.5M",
+                               "sBayesR_UKBB_2.8M",
                                "sBayesR_UKBB_HM3",
                                "PRSCS_UKBB_HM3",
                                "PRSCS_1KG_HM3",
@@ -215,7 +215,7 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                            prsice_1E6_eval[1],
                            prsice_0.05_eval[1],
                            prsice_1_eval[1],
-                           sbayesr_ukbb_2.5m_eval[1],
+                           sbayesr_ukbb_2.8m_eval[1],
                            sbayesr_ukbb_hm3_eval[1],
                            prscs_ukbb_hm3_eval[1],
                            prscs_1kg_hm3_eval[1],
@@ -224,7 +224,7 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           prsice_1E6_eval[2],
                           prsice_0.05_eval[2],
                           prsice_1_eval[2],
-                          sbayesr_ukbb_2.5m_eval[2],
+                          sbayesr_ukbb_2.8m_eval[2],
                           sbayesr_ukbb_hm3_eval[2],
                           prscs_ukbb_hm3_eval[2],
                           prscs_1kg_hm3_eval[2],
@@ -243,7 +243,7 @@ if(isTRUE(options$binary)) {
     prsice_1_r2_L          = liability_transform(prsice_1_eval[1], 
                                                  options$case_pct, 
                                                  options$prevalence)
-    sBayesR_ukbb_2.5m_r2_L = liability_transform(sbayesr_ukbb_2.5m_eval[1], 
+    sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], 
                                                  options$case_pct, 
                                                  options$prevalence)
     sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], 
@@ -260,7 +260,7 @@ if(isTRUE(options$binary)) {
                                 prsice_1E6_r2_L,
                                 prsice_0.05_r2_L,
                                 prsice_1_r2_L,
-                                sBayesR_ukbb_2.5m_r2_L,
+                                sBayesR_ukbb_2.8m_r2_L,
                                 sBayesR_ukbb_hm3_r2_L,
                                 prscs_ukbb_hm3_r2_L,
                                 prscs_1kg_hm3_r2_L))

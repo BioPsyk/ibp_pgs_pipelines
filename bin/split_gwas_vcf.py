@@ -15,9 +15,10 @@ def main():
     mt-cojo format for sBayesR,
     tab delimited format format for prs-cs""")
     parser.add_argument('--chromosome', type = str, help = "Chromosome to split from VCF", required = True)
-    parser.add_argument('--vcf', type = str,help = "Path to a gzipped VCF", required = True)
+    parser.add_argument('--vcf', type = str, help = "Path to a gzipped VCF", required = True)
     parser.add_argument('--format', type = str, help = "prscs or sbayesr or prsice", required = True)
     parser.add_argument('--out',  type = str, help = "Output prefix", required = True)
+    parser.add_argument('--n',  type = int, help = "GWAS Sample Size", required = True)
 
     args        = parser.parse_args()
     args.format = args.format.lower()
@@ -77,7 +78,7 @@ def main():
             out_fh.write(str(pow(10, -1 * variant.format('LP').flat[0])))
             out_fh.write(" ")
             if (args.format == "sbayesr"):
-                out_fh.write(str(variant.format('SS').flat[0]))
+                out_fh.write(str(args.n))
             out_fh.write("\n")
     else:
         sys.exit("FATAL: File not found: " + args.vcf + "!!")
