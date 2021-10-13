@@ -21,9 +21,9 @@ process eval_scores {
             path(eval_scores_script)
 
     output:
-        path "${traitName}_VarianceExplained.txt"
-        path "${traitName}_VarianceExplained.png"
-        path "${traitName}_Scores.txt"
+        path "${out_prefix}_VarianceExplained.txt"
+        path "${out_prefix}_VarianceExplained.png"
+        path "${out_prefix}_Scores.txt"
         
     script:
     if(binary == "T")
