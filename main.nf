@@ -57,6 +57,9 @@ I B P - P R S -  P I P E L I N E _ v. 1.0 - N F
 Reference GWAS               : $params.ref
 Trait Name                   : $params.trait
 Reference GWAS Sample Size   : $params.n
+Number of cases              : $params.n_cases
+Binary Trait?                : $params.binary
+Trait prevalence             : $params.prevalence
 Target Genotypes             : $params.target
 Target Prefix to use         : $target_prefix
 PRSCS 1000G hapmap3 SNPs LD  : $params.prscs_1000G_hm3_eur_ld
