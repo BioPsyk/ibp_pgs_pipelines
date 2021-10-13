@@ -40,18 +40,9 @@ def help_msg() {
     """
 }
 
-params.ref        = "/test/ieu-b42.vcf.gz"
-params.n          = 77096
-params.n_cases    = 33640
-params.prevalence = 0.1
-params.trait      = file(params.ref).getSimpleName()
-params.covs       = ""
-params.pheno      = ""
-params.binary     = "T"
-params.p_vals     = "5e-8,1e-6,0.05,1"
-params.help       = false
-target_prefix     = file(params.target).getSimpleName()
-case_proportion   = params.n_cases/params.n 
+params.trait    = file(params.ref).getSimpleName()
+target_prefix   = file(params.target).getSimpleName()
+case_proportion = params.n_cases/params.n 
 
 if(params.help)
 {
