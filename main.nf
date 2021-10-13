@@ -275,7 +275,6 @@ workflow {
         skip: 1) \
     | set { prsice_score_ch }
 
-/*
     // Evaluate the different PGS methods
 
     prsice_score_ch \
@@ -290,5 +289,5 @@ workflow {
     | combine(Channel.of(case_proportion)) \
     | combine(Channel.of("${target_prefix}_${params.trait}")) \
     | combine(Channel.of($params.eval_scores_path)) \
-    | eval_scores */
+    | eval_scores 
 } 
