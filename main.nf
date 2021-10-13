@@ -223,7 +223,7 @@ workflow {
     //Run SBayesR
 
     Channel.of(1..22) \
-    | combine(sbayesr_input_ch, by: 0)
+    | combine(sbayesr_input_ch, by: 0) \
     | combine(sbayesr_ukbb_big_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.sbayesr_path)) \
@@ -239,7 +239,7 @@ workflow {
     | set { sbayesr_ukbb_eur_big_score_ch }
 
     Channel.of(1..22) \
-    | combine(sbayesr_input_ch, by: 0)
+    | combine(sbayesr_input_ch, by: 0) \
     | combine(sbayesr_ukbb_hm3_eur_ld_ch, by: 0) \
     | combine(Channel.of(params.trait)) \
     | combine(Channel.of(params.sbayesr_path)) \
