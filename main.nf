@@ -278,10 +278,10 @@ workflow {
     // Evaluate the different PGS methods
 
     prsice_score_ch \
-    | combine(sbayesr_ukbb_eur_big_score_ch) \ 
+    | combine(sbayesr_ukbb_eur_big_score_ch) \
     | combine(sbayesr_ukbb_eur_hm3_score_ch) \
     | combine(prscs_ukbb_eur_hm3_score_ch) \
-    | combine(prscs_1kg_eur_hm3_score_ch) \ 
+    | combine(prscs_1kg_eur_hm3_score_ch) \
     | combine(Channel.of($params.pheno)) \
     | combine(Channel.of($params.covs)) \
     | combine(Channel.of($params.binary)) \
