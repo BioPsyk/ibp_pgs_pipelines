@@ -31,8 +31,8 @@ process eval_scores {
         Rscript ./evaluate_pgs.R $prsice_scores \
             $sbayesr_ukbb_big_scores \
             $sbayesr_ukbb_hm3_scores \
-            $prscs_ukbb_hm3_score \
-            $prscs_1kg_hm3_score \
+            $prscs_ukbb_hm3_scores \
+            $prscs_1kg_hm3_scores \
             $out_prefix \
             $pheno_file \
             $covs_file \
@@ -46,7 +46,7 @@ process eval_scores {
             $sbayesr_ukbb_big_scores \
             $sbayesr_ukbb_hm3_scores \
             $prscs_ukbb_hm3_scores \
-            $prscs_1kg_hm3_score \
+            $prscs_1kg_hm3_scores \
             $out_prefix \
             $pheno_file \
             $covs_file
