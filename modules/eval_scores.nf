@@ -42,7 +42,7 @@ process eval_scores {
         """
     else
         """
-        Rscript ./evaluate_pgs.R $prscs_scores \
+        Rscript ./evaluate_pgs.R $prsice_scores \
             $sbayesr_ukbb_big_scores \
             $sbayesr_ukbb_hm3_scores \
             $prscs_ukbb_hm3_scores \
