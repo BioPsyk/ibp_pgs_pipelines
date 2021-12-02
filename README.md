@@ -45,8 +45,10 @@ with the columns:
 
 * A file containing the variance explained in phenotype by each score with columns
 
+```
     Method
     r2 [ Nagelkerke R2 ]
     P
+```
 
 * A bar plot for variance explained
