@@ -42,16 +42,12 @@ parser = add_argument(parser,
                       "--prevalence",
                       help = "Prevalence in case of a binary trait
                       for liability transformation")
-parser = add_argument(parser,
-                      "--case_pct",
-                      help = "Case proportion in case of a binary trait 
-                      for liability transformation")
 options = parse_args(parser)
 
 if(isTRUE(options$binary) && 
-   (!exists(options$prevalence) || !exists(options$case_pct))) {
+   (!exists(options$prevalence))) {
     print("ERROR: --binary flag implies binary trait and 
-          requires --prevalence & --case_pct!")
+          requires --prevalence")
     stop()
 }
 
@@ -231,6 +227,13 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           all_methods_eval[2]))
 
 if(isTRUE(options$binary)) {
+    n_cases = sum(pheno$Pheno)
+    n_samples = nrow(pheno$Pheno)
+    if(n_cases > n_samples) {
+        n_cases = n_samples - n_cases
+    }
+    case_pct = n_cases/n_samples
+
     prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
                                                  options$case_pct, 
                                                  options$prevalence)

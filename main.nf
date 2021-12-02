@@ -41,8 +41,7 @@ def help_msg() {
 }
 
 params.trait    = file(params.ref).getSimpleName()
-target_prefix   = file(params.target).getSimpleName()
-case_proportion = params.n_cases/params.n 
+target_prefix   = file(params.target).getSimpleName() 
 
 if(params.help)
 {
@@ -280,7 +279,6 @@ workflow {
     | combine(Channel.of(params.covs)) \
     | combine(Channel.of(params.binary)) \
     | combine(Channel.of(params.prevalence)) \
-    | combine(Channel.of(case_proportion)) \
     | combine(Channel.of("${target_prefix}_${params.trait}")) \
     | combine(Channel.of(params.eval_scores_path)) \
     | eval_scores

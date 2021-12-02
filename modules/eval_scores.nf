@@ -16,7 +16,6 @@ process eval_scores {
             path(covs_file),
             val(binary),
             val(prevalence),
-            val(case_proportion),
             val(out_prefix),
             path(eval_scores_script)
 
@@ -37,8 +36,7 @@ process eval_scores {
             $pheno_file \
             $covs_file \
             --binary \
-            --prevalence $prevalence \
-            --case_pct $case_proportion
+            --prevalence $prevalence
         """
     else
         """
