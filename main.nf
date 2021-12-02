@@ -28,7 +28,7 @@ def help_msg() {
 
     --ref <gwas.vcf.gz> [A reference file of gwas summary stats in VCF.gz format] (Default: PGC SCZ 2014)
     --n <77096> [Reference GWAS Sample Size] (Default: 77096)
-    --n_cases <Number of cases> [If the outcome is binary, case proportion is used to calculate liability transformed r2] (Default: 33640)
+    --n_cases <Number of cases> [Number of cases in reference GWAS] (Default: 33640)
     --prevalence <Prevalence in decimals> [If the outcome is binary, population prevalence is used to calculate liability transformed r2] (Default: 0.1)
     --target <iPSYCH2012_All_Imputed_2021_QCed.json> [JSON file of target genotypes to score] (Default: iPSYCH2012 Imputed in 2021)
     --trait <ipsych_scz_2014> [A prefix for output files] (Default: Simple name of reference file)
