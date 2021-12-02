@@ -33,14 +33,14 @@ with the columns:
 
 ```
     IID [ Sample identifer ]
-    PT_5E8 [ Pruning and thresholding score with SNPs P \< 5E-8 ]
-    PT_1E6 [ Pruning and thresholding score with SNPs P \< 1E-6 ]
-    PT_0.05 [ Pruning and thresholding score with SNPs P \< 0.05 ]
-    PT_1 [ Pruning and thresholding score with all SNPs ]
+    PT_5E8 [ PRSice pruning and thresholding score with SNPs P < 5E-8 ]
+    PT_1E6 [ PRSice pruning and thresholding score with SNPs P < 1E-6 ]
+    PT_0.05 [ PRSice pruning and thresholding score with SNPs P < 0.05 ]
+    PT_1 [ PRSice pruning and thresholding score with all SNPs ]
     sBayesR_UKBB_2.8M  [ sBayesR scores using UKBB as reference LD and 2.8M high quality SNPs ]
     sBayesR_UKBB_HM3 [ sBayesR scores using UKBB as reference LD and HapMap3 SNPs ]
-    PRSCS_UKBB_HM3 [ PRSCS scores using UKBB as reference LD and HapMap3 SNPs ]
-    PRSCS_1KG_HM3` [ PRSCS scores using 1000 Genomes as reference LD and HapMap3 SNPs ]
+    PRSCS_UKBB_HM3 [ PRS-CS scores using UKBB as reference LD and HapMap3 SNPs ]
+    PRSCS_1KG_HM3` [ PRS-CS scores using 1000 Genomes as reference LD and HapMap3 SNPs ]
 ```
 
 * A file containing the variance explained in phenotype by each score with columns
