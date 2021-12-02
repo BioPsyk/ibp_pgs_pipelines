@@ -10,7 +10,7 @@ The pipeline can be run as follows to display the parameter options and help mes
 
 `nextflow run main.nf --help`
 
-## The inputs required:
+## The inputs required
 
 * A reference GWAS in VCF format, indexed using tabix.
 These can be obtained from the following resource: <https://gwas.mrcieu.ac.uk/datasets/>
@@ -25,12 +25,13 @@ This is hardcoded in the `nextflow.config` file for iPSYCH
 The pipeline also requires the R packages `ggplot2, dplyr, fmsb, data.table` present in the environment
 PGS computation using PRS-CS requires python packages `scipy, h5py` installed in the environment
 
-## The outputs produced:
+## The outputs produced
 
 * A file containing PGS from different methods.
 For example, if your trait is named BMI, the score file will be named: `iPSYCH2012_All_Imputed_2021_QCed_BMI_Scores.txt`
 with the columns:
 
+```
     IID [ Sample identifer ]
     PT_5E8 [ Pruning and thresholding score with SNPs P \< 5E-8 ]
     PT_1E6 [ Pruning and thresholding score with SNPs P \< 1E-6 ]
@@ -40,6 +41,7 @@ with the columns:
     sBayesR_UKBB_HM3 [ sBayesR scores using UKBB as reference LD and HapMap3 SNPs ]
     PRSCS_UKBB_HM3 [ PRSCS scores using UKBB as reference LD and HapMap3 SNPs ]
     PRSCS_1KG_HM3` [ PRSCS scores using 1000 Genomes as reference LD and HapMap3 SNPs ]
+```
 
 * A file containing the variance explained in phenotype by each score with columns
 
