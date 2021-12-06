@@ -44,7 +44,7 @@ parser = add_argument(parser,
                       for liability transformation")
 options = parse_args(parser)
 
-if(isTRUE(options$binary) && !is.null(options$prevalence)) {
+if(isTRUE(options$binary) && is.null(options$prevalence)) {
     print("ERROR: --binary flag implies binary trait and requires --prevalence")
     stop()
 }
