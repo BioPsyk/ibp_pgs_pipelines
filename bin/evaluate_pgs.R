@@ -83,28 +83,29 @@ sum_scale_scores = function (x_df, score_col_name) {
 calculate_r2_p = function(x_df, y_df, binary) {
     if(sum(y_df[2]) == 0) {
         return (c(0, 0))
-    }
-    x_df = semi_join(x_df, y_df, by = c("IID"))
-    pgs  = inner_join(x_df, y_df, by = c("IID"))
-    r2   = 0
-    p    = 0
-    
-    if(isTRUE(binary)) {
-        fit_null = glm(data = x_df, Pheno ~ . -IID)
-        fit_bin  = glm(data = pgs, Pheno ~ . -IID)
-        r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
-        p        = pchisq(deviance(fit_null) - deviance(fit_bin),
-                          df.residual(fit_null) - df.residual(fit_bin),
-                          lower.tail = F) 
     } else {
-        fit_null = lm(data = x_df, Pheno ~ . -IID)
-        fit_con  = lm(data = pgs, Pheno ~ . -IID)
-        r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
-        p        = pchisq(deviance(fit_null) - deviance(fit_con),
-                          df.residual(fit_null) - df.residual(fit_con),
-                          lower.tail = F) 
+        x_df = semi_join(x_df, y_df, by = c("IID"))
+        pgs  = inner_join(x_df, y_df, by = c("IID"))
+        r2   = 0
+        p    = 0
+    
+        if(isTRUE(binary)) {
+            fit_null = glm(data = x_df, Pheno ~ . -IID)
+            fit_bin  = glm(data = pgs, Pheno ~ . -IID)
+            r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
+            p        = pchisq(deviance(fit_null) - deviance(fit_bin),
+                            df.residual(fit_null) - df.residual(fit_bin),
+                            lower.tail = F) 
+        } else {
+            fit_null = lm(data = x_df, Pheno ~ . -IID)
+            fit_con  = lm(data = pgs, Pheno ~ . -IID)
+            r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
+            p        = pchisq(deviance(fit_null) - deviance(fit_con),
+                              df.residual(fit_null) - df.residual(fit_con),
+                              lower.tail = F) 
+        }   
+        return (c(r2, p))
     }
-    return (c(r2, p))
 }
 
 # Transform variance explained to liability scale for binary traits
