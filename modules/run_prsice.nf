@@ -17,10 +17,11 @@ process run_prsice {
             val(p_vals),
             val(binary),
             path(pheno),
-            path(prsice)
+            path(prsice),
+            path(col_check_script)
     
     output:
-        path "${trait}_chr${chr}.all_score"
+        path "${trait}_chr${chr}.colCheck.txt"
 
     script:
     """
@@ -36,5 +37,7 @@ process run_prsice {
             --bar-levels $p_vals \
             --no-regress \
             --score sum
+
+        Rscript ./fill_missing_cols_prsice.R ${trait}_chr${chr}.all_score ${trait}_${chr}
     """
 }
