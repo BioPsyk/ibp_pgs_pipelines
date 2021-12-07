@@ -113,16 +113,16 @@ calculate_r2_p = function(x_df, y_df, binary) {
 liability_transform = function(r2, k, p) {
     if(r2 == 0) {
         return (r2)
+    } else {
+        x     = qnorm(1 - k)
+        z     = dnorm(x)
+        i     = z / k
+        cc    = k * (1 - k) * k * (1 - k) / (z * z * p * (1 - p))
+        theta = i * ((p - k) / (1 - k)) * (i * ((p - k) / (1- k)) - x)
+        e     = 1 - p^(2 * p) * (1 - p)^(2 * (1 - p))
+        r2_L  = cc * e * r2 / (1 + cc * e * theta * r2)
+        return (r2_L)
     }
-
-    x     = qnorm(1 - k)
-    z     = dnorm(x)
-    i     = z / k
-    cc    = k * (1 - k) * k * (1 - k) / (z * z * p * (1 - p))
-    theta = i * ((p - k) / (1 - k)) * (i * ((p - k) / (1- k)) - x)
-    e     = 1 - p^(2 * p) * (1 - p)^(2 * (1 - p))
-    r2_L  = cc * e * r2 / (1 + cc * e * theta * r2)
-    return (r2_L)
 }
 
 ################################################################################
@@ -252,28 +252,28 @@ if(isTRUE(options$binary)) {
     case_pct = n_cases/n_samples
 
     prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     prsice_1_r2_L          = liability_transform(prsice_1_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], 
-                                                 options$case_pct, 
+                                                 case_pct, 
                                                  options$prevalence)
     
     r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L, 
