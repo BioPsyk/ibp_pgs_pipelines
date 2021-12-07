@@ -55,26 +55,32 @@ if(isTRUE(options$binary) && is.null(options$prevalence)) {
 
 sum_scale_scores = function (x_df, score_col_name) {
     colnames(x_df) = c("IID", "SCORE_CHR")
-    x_df = x_df %>% 
+    if(sum(x_df$SCORE_CHR) == 0) {
+        x_df = x_df %>% 
         group_by(IID) %>%
         mutate(SCORE_SUM = sum(SCORE_CHR)) %>%
         ungroup() %>%
         as.data.frame() %>%
-        mutate(SCORE_SCALED = scale(SCORE_SUM)) %>%
+        mutate(SCORE_SCALED = sum(SCORE_SUM)) %>%
         select(IID, SCORE_SCALED) %>% 
         unique()
-    colnames(x_df) = c("IID", score_col_name)
+    } else {
+        x_df = x_df %>% 
+            group_by(IID) %>%
+            mutate(SCORE_SUM = sum(SCORE_CHR)) %>%
+            ungroup() %>%
+            as.data.frame() %>%
+            mutate(SCORE_SCALED = scale(SCORE_SUM)) %>%
+            select(IID, SCORE_SCALED) %>% 
+            unique()
+        colnames(x_df) = c("IID", score_col_name)
+    }
     return (x_df)
 }
 
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
-
-    if(sum(y_df[2]) == 0) {
-        return (c(0, 0))
-    }
-
     x_df = semi_join(x_df, y_df, by = c("IID"))
     pgs  = inner_join(x_df, y_df, by = c("IID"))
     r2   = 0
