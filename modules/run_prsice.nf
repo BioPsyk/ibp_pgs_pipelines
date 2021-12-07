@@ -38,6 +38,6 @@ process run_prsice {
             --no-regress \
             --score sum
 
-        Rscript ./fill_missing_cols_prsice.R ${trait}_chr${chr}.all_score ${trait}_${chr}
+        Rscript ./fill_missing_cols_prsice.R ${trait}_chr${chr}.all_score ${trait}_chr${chr}
     """
 }
