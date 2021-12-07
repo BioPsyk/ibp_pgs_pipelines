@@ -245,7 +245,7 @@ r2_out = data.frame(Method = c("PRsice_5E8",
 
 if(isTRUE(options$binary)) {
     n_cases = sum(pheno$Pheno)
-    n_samples = nrow(pheno$Pheno)
+    n_samples = length(pheno$Pheno)
     if(n_cases > n_samples) {
         n_cases = n_samples - n_cases
     }
