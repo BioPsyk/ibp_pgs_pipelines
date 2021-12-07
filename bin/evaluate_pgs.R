@@ -70,6 +70,11 @@ sum_scale_scores = function (x_df, score_col_name) {
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
+
+    if(sum(y_df[2] == 0)) {
+        return (c(0, 0))
+    }
+
     x_df = semi_join(x_df, y_df, by = c("IID"))
     pgs  = inner_join(x_df, y_df, by = c("IID"))
     r2   = 0
@@ -96,6 +101,10 @@ calculate_r2_p = function(x_df, y_df, binary) {
 # Transform variance explained to liability scale for binary traits
 
 liability_transform = function(r2, k, p) {
+    if(r2 == 0) {
+        return (r2)
+    }
+
     x     = qnorm(1 - k)
     z     = dnorm(x)
     i     = z / k
