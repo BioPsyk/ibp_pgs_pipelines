@@ -127,11 +127,12 @@ liability_transform = function(r2, k, p) {
 
 ################################################################################
 
-pheno           = read.table(options$pheno, header = TRUE)
-colnames(pheno) = c("FID", "IID", "Pheno")
-pheno           = pheno %>% select(-FID)
-covar           = read.table(options$covar, header = TRUE)
-covar           = covar %>% select(-FID)
+pheno              = read.table(options$pheno, header = TRUE)
+colnames(pheno)    = c("FID", "IID", "Pheno")
+pheno              = pheno %>% select(-FID)
+covar              = read.table(options$covar, header = TRUE)
+covar              = covar %>% select(-FID)
+options$prevalence = as.numeric(options$prevalence)
 
 # Read PRSice scores, assumes there are scores at 4 different p-value thresholds
 # 5e-08, 1e-06, 0.05, 1 and that the scores are summed but not averaged
@@ -244,37 +245,22 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           all_methods_eval[2]))
 
 if(isTRUE(options$binary)) {
-    n_cases = sum(pheno$Pheno)
+    n_cases   = sum(pheno$Pheno)
     n_samples = length(pheno$Pheno)
+
     if(n_cases > n_samples) {
         n_cases = n_samples - n_cases
     }
     case_pct = n_cases/n_samples
 
-    prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    prsice_1_r2_L          = liability_transform(prsice_1_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
-    prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], 
-                                                 case_pct, 
-                                                 options$prevalence)
+    prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], case_pct, options$prevalence)
+    prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], case_pct, options$prevalence)
+    prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], case_pct, options$prevalence)
+    prsice_1_r2_L          = liability_transform(prsice_1_eval[1], case_pct, options$prevalence)
+    sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], case_pct, options$prevalence)
+    sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], case_pct, options$prevalence)
+    prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], case_pct, options$prevalence)
+    prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], case_pct, options$prevalence)
     
     r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L, 
                                 prsice_1E6_r2_L,
