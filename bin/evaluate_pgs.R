@@ -261,15 +261,17 @@ if(isTRUE(options$binary)) {
     sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], case_pct, options$prevalence)
     prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], case_pct, options$prevalence)
     prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], case_pct, options$prevalence)
+    all_r2_L               = liability_transform(all_eval[1], case_pct, options$prevalence)
     
-    r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L, 
+    r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L,
                                 prsice_1E6_r2_L,
                                 prsice_0.05_r2_L,
                                 prsice_1_r2_L,
                                 sBayesR_ukbb_2.8m_r2_L,
                                 sBayesR_ukbb_hm3_r2_L,
                                 prscs_ukbb_hm3_r2_L,
-                                prscs_1kg_hm3_r2_L))
+                                prscs_1kg_hm3_r2_L,
+                                all_r2_L))
     r2_out = cbind(r2_out, r2_L)
     
     # Make plot
