@@ -92,7 +92,7 @@ calculate_r2_p = function(x_df, y_df, binary) {
         if(isTRUE(binary)) {
             fit_null = glm(data = x_df, Pheno ~ . -IID)
             fit_bin  = glm(data = pgs, Pheno ~ . -IID)
-            r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
+            r2       = NagelkerkeR2(fit_bin)$R2 - NagelkerkeR2(fit_null)$R2
             p        = pchisq(deviance(fit_null) - deviance(fit_bin),
                             df.residual(fit_null) - df.residual(fit_bin),
                             lower.tail = F) 
