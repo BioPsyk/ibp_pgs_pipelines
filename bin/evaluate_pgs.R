@@ -261,7 +261,7 @@ if(isTRUE(options$binary)) {
     sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], case_pct, options$prevalence)
     prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], case_pct, options$prevalence)
     prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], case_pct, options$prevalence)
-    all_r2_L               = liability_transform(all_eval[1], case_pct, options$prevalence)
+    all_r2_L               = liability_transform(all_methods_eval[1], case_pct, options$prevalence)
     
     r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L,
                                 prsice_1E6_r2_L,
