@@ -71,7 +71,7 @@ sum_scale_scores = function (x_df, score_col_name) {
 
 calculate_r2_p = function(x_df, y_df, binary) {
 
-    if(sum(y_df[2] == 0)) {
+    if(sum(y_df[2]) == 0) {
         return (c(0, 0))
     }
 
