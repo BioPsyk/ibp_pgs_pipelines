@@ -21,7 +21,7 @@ process run_prsice {
             path(col_check_script)
     
     output:
-        path "${trait}_chr${chr}.colCheck.txt"
+        path "${trait}_chr${chr}_colCheck.txt"
 
     script:
     """
