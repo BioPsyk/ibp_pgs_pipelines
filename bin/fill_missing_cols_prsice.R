@@ -9,11 +9,11 @@ args       = commandArgs(trailingOnly = TRUE)
 score      = read.table(args[1], header = T)
 out_prefix = args[2]
 
-if(!"Pt.5e-08" %in% colnames(score)) {
+if(!"Pt_5e.08" %in% colnames(score)) {
     score = score %>% mutate(Pt_5e.08 = 0)
 }
 
-if(!"Pt.1e-06" %in% colnames(score)) {
+if(!"Pt_1e.06" %in% colnames(score)) {
     score = score %>% mutate(Pt_1e.06 = 0)
 }
 
