@@ -22,8 +22,8 @@ These are hardcoded in the `nextflow.config` file
 * A covariate file with the columns: `FID IID Age Sex PC1 PC2...`
 This is hardcoded in the `nextflow.config` file for iPSYCH
 
-The pipeline also requires the R packages `ggplot2, dplyr, fmsb, data.table` present in the environment
-PGS computation using PRS-CS requires python packages `scipy, h5py` installed in the environment
+The pipeline also requires the R packages `ggplot2, dplyr, fmsb, data.table, argparser`
+The pipeline requires the python packages `scipy, h5py, cyvcf2`
 
 ## The outputs produced
 
@@ -48,6 +48,7 @@ with the columns:
 ```
     Method
     r2 [ Nagelkerke R2 ]
+    r2_L [ Liability adjusted R2 for case-control outcomes ]
     P
 ```
 
