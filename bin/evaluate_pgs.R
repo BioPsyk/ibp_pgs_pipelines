@@ -55,64 +55,84 @@ if(isTRUE(options$binary) && is.null(options$prevalence)) {
 
 sum_scale_scores = function (x_df, score_col_name) {
     colnames(x_df) = c("IID", "SCORE_CHR")
-    x_df = x_df %>% 
+    if(sum(x_df$SCORE_CHR) == 0) {
+        x_df = x_df %>% 
         group_by(IID) %>%
         mutate(SCORE_SUM = sum(SCORE_CHR)) %>%
         ungroup() %>%
         as.data.frame() %>%
-        mutate(SCORE_SCALED = scale(SCORE_SUM)) %>%
+        mutate(SCORE_SCALED = sum(SCORE_SUM)) %>%
         select(IID, SCORE_SCALED) %>% 
         unique()
-    colnames(x_df) = c("IID", score_col_name)
+    } else {
+        x_df = x_df %>% 
+            group_by(IID) %>%
+            mutate(SCORE_SUM = sum(SCORE_CHR)) %>%
+            ungroup() %>%
+            as.data.frame() %>%
+            mutate(SCORE_SCALED = scale(SCORE_SUM)) %>%
+            select(IID, SCORE_SCALED) %>% 
+            unique()
+        colnames(x_df) = c("IID", score_col_name)
+    }
     return (x_df)
 }
 
 # Calculate r2 and p-value of PGS
 
 calculate_r2_p = function(x_df, y_df, binary) {
-    x_df = semi_join(x_df, y_df, by = c("IID"))
-    pgs  = inner_join(x_df, y_df, by = c("IID"))
-    r2   = 0
-    p    = 0
-    
-    if(isTRUE(binary)) {
-        fit_null = glm(data = x_df, Pheno ~ . -IID)
-        fit_bin  = glm(data = pgs, Pheno ~ . -IID)
-        r2       = NagelkerkeR2(fit_bin) - NagelkerkeR2(fit_null)
-        p        = pchisq(deviance(fit_null) - deviance(fit_bin),
-                          df.residual(fit_null) - df.residual(fit_bin),
-                          lower.tail = F) 
+    if(sum(y_df[2]) == 0) {
+        return (c(0, 0))
     } else {
-        fit_null = lm(data = x_df, Pheno ~ . -IID)
-        fit_con  = lm(data = pgs, Pheno ~ . -IID)
-        r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
-        p        = pchisq(deviance(fit_null) - deviance(fit_con),
-                          df.residual(fit_null) - df.residual(fit_con),
-                          lower.tail = F) 
+        x_df = semi_join(x_df, y_df, by = c("IID"))
+        pgs  = inner_join(x_df, y_df, by = c("IID"))
+        r2   = 0
+        p    = 0
+    
+        if(isTRUE(binary)) {
+            fit_null = glm(data = x_df, Pheno ~ . -IID)
+            fit_bin  = glm(data = pgs, Pheno ~ . -IID)
+            r2       = NagelkerkeR2(fit_bin)$R2 - NagelkerkeR2(fit_null)$R2
+            p        = pchisq(deviance(fit_null) - deviance(fit_bin),
+                            df.residual(fit_null) - df.residual(fit_bin),
+                            lower.tail = F) 
+        } else {
+            fit_null = lm(data = x_df, Pheno ~ . -IID)
+            fit_con  = lm(data = pgs, Pheno ~ . -IID)
+            r2       = summary(fit_con)$r.squared - summary(fit_null)$r.squared
+            p        = pchisq(deviance(fit_null) - deviance(fit_con),
+                              df.residual(fit_null) - df.residual(fit_con),
+                              lower.tail = F) 
+        }   
+        return (c(r2, p))
     }
-    return (c(r2, p))
 }
 
 # Transform variance explained to liability scale for binary traits
 
 liability_transform = function(r2, k, p) {
-    x     = qnorm(1 - k)
-    z     = dnorm(x)
-    i     = z / k
-    cc    = k * (1 - k) * k * (1 - k) / (z * z * p * (1 - p))
-    theta = i * ((p - k) / (1 - k)) * (i * ((p - k) / (1- k)) - x)
-    e     = 1 - p^(2 * p) * (1 - p)^(2 * (1 - p))
-    r2_L  = cc * e * r2 / (1 + cc * e * theta * r2)
-    return (r2_L)
+    if(r2 == 0) {
+        return (r2)
+    } else {
+        x     = qnorm(1 - k)
+        z     = dnorm(x)
+        i     = z / k
+        cc    = k * (1 - k) * k * (1 - k) / (z * z * p * (1 - p))
+        theta = i * ((p - k) / (1 - k)) * (i * ((p - k) / (1- k)) - x)
+        e     = 1 - p^(2 * p) * (1 - p)^(2 * (1 - p))
+        r2_L  = cc * e * r2 / (1 + cc * e * theta * r2)
+        return (r2_L)
+    }
 }
 
 ################################################################################
 
-pheno           = read.table(options$pheno, header = TRUE)
-colnames(pheno) = c("FID", "IID", "Pheno")
-pheno           = pheno %>% select(-FID)
-covar           = read.table(options$covar, header = TRUE)
-covar           = covar %>% select(-FID)
+pheno              = read.table(options$pheno, header = TRUE)
+colnames(pheno)    = c("FID", "IID", "Pheno")
+pheno              = pheno %>% select(-FID)
+covar              = read.table(options$covar, header = TRUE)
+covar              = covar %>% select(-FID)
+options$prevalence = as.numeric(options$prevalence)
 
 # Read PRSice scores, assumes there are scores at 4 different p-value thresholds
 # 5e-08, 1e-06, 0.05, 1 and that the scores are summed but not averaged
@@ -225,46 +245,33 @@ r2_out = data.frame(Method = c("PRsice_5E8",
                           all_methods_eval[2]))
 
 if(isTRUE(options$binary)) {
-    n_cases = sum(pheno$Pheno)
-    n_samples = nrow(pheno$Pheno)
+    n_cases   = sum(pheno$Pheno)
+    n_samples = length(pheno$Pheno)
+
     if(n_cases > n_samples) {
         n_cases = n_samples - n_cases
     }
     case_pct = n_cases/n_samples
 
-    prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    prsice_1_r2_L          = liability_transform(prsice_1_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
-    prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], 
-                                                 options$case_pct, 
-                                                 options$prevalence)
+    prsice_5E8_r2_L        = liability_transform(prsice_5E8_eval[1], case_pct, options$prevalence)
+    prsice_1E6_r2_L        = liability_transform(prsice_1E6_eval[1], case_pct, options$prevalence)
+    prsice_0.05_r2_L       = liability_transform(prsice_0.05_eval[1], case_pct, options$prevalence)
+    prsice_1_r2_L          = liability_transform(prsice_1_eval[1], case_pct, options$prevalence)
+    sBayesR_ukbb_2.8m_r2_L = liability_transform(sbayesr_ukbb_2.8m_eval[1], case_pct, options$prevalence)
+    sBayesR_ukbb_hm3_r2_L  = liability_transform(sbayesr_ukbb_hm3_eval[1], case_pct, options$prevalence)
+    prscs_ukbb_hm3_r2_L    = liability_transform(prscs_ukbb_hm3_eval[1], case_pct, options$prevalence)
+    prscs_1kg_hm3_r2_L     = liability_transform(prscs_1kg_hm3_eval[1], case_pct, options$prevalence)
+    all_r2_L               = liability_transform(all_methods_eval[1], case_pct, options$prevalence)
     
-    r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L, 
+    r2_L = data.frame("r2_L"= c(prsice_5E8_r2_L,
                                 prsice_1E6_r2_L,
                                 prsice_0.05_r2_L,
                                 prsice_1_r2_L,
                                 sBayesR_ukbb_2.8m_r2_L,
                                 sBayesR_ukbb_hm3_r2_L,
                                 prscs_ukbb_hm3_r2_L,
-                                prscs_1kg_hm3_r2_L))
+                                prscs_1kg_hm3_r2_L,
+                                all_r2_L))
     r2_out = cbind(r2_out, r2_L)
     
     # Make plot

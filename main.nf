@@ -74,6 +74,7 @@ Split GWAS Path              : $params.split_gwas_path
 sBayesR Path                 : $params.sbayesr_path
 PRS_CS Path                  : $params.prscs_path
 PRSICE Path                  : $params.prsice_path
+PRSICE column checker        : $params.prsice_col_checker
 ============================================================================================================
 """
 
@@ -262,6 +263,7 @@ workflow {
     | combine(Channel.of(params.binary)) \
     | combine(Channel.of(params.pheno)) \
     | combine(Channel.of(params.prsice_path)) \
+    | combine(Channel.of(params.prsice_col_checker)) \
     | run_prsice \
     | collectFile(name: "${target_prefix}_${params.trait}_prsice.score", 
         keepHeader: true,
