@@ -12,18 +12,34 @@ def main():
     format by chromosome.
     Reformats to:
     mt-cojo format for sBayesR,
-    tab delimited format format for prs-c or prsice""")
-    parser.add_argument('--chromosome', type = str, help = "Chromosome to split from VCF", required = True)
-    parser.add_argument('--vcf', type = str, help = "Path to a gzipped VCF", required = True)
-    parser.add_argument('--format', type = str, help = "prscs or sbayesr or prsice", required = True)
-    parser.add_argument('--out',  type = str, help = "Output prefix", required = True)
-    parser.add_argument('--n',  type = int, help = "GWAS Sample Size", required = True)
+    tab delimited format format for prs-cs or prsice""")
+    parser.add_argument('--chromosome', 
+        type = str, 
+        help = "Chromosome to split from VCF", 
+        required = True)
+    parser.add_argument('--vcf', 
+        type = str, 
+        help = "Path to a gzipped VCF", 
+        required = True)
+    parser.add_argument('--format', 
+        type = str, 
+        help = "prscs or sbayesr or prsice", 
+        required = True)
+    parser.add_argument('--out',  
+        type = str, 
+        help = "Output prefix", 
+        required = True)
+    parser.add_argument('--n', 
+        type = int, 
+        help = "GWAS Sample Size", 
+        required = True)
 
-    args        = parser.parse_args()
+    args = parser.parse_args()
     args.format = args.format.lower()
-    out         = args.out + "_" + args.format + "_" + "chr" + str(args.chromosome) + ".txt"
-    out_fh      = open(out, "w")
-    snp_dict    = {}
+    out = '_'.join(args.out, args.format, "chr", str(args.chromosome))
+    out = ".".join(out, "txt")
+    out_fh = open(out, "w")
+    snp_dict = {}
 
     if(args.format == "prscs"):
         out_fh.write("SNP A1 A2 BETA P\n")
@@ -32,56 +48,62 @@ def main():
     elif(args.format == "prsice"):
         out_fh.write("SNP CHR BP A1 A2 BETA SE P\n")
     else:
-        sys.exit("ERROR: Unsupported --format specified. Select either prscs or sbayesr or prsice!")
+        sys.exit("ERROR: Unsupported --format specified: ", args.format)
 
     if path.exists(args.vcf):
         gwas_vcf = VCF(args.vcf)
         for variant in gwas_vcf(args.chromosome):
             chromosome = variant.chromosome
-            position   = variant.start + 1
+            position = variant.start + 1
             ref_allele = variant.REF
             alt_allele = ''.join(variant.ALT)
-            effect     = str(variant.format('ES').flat[0])
-            std_error  = str(variant.format('SE').flat[0])
-            p_value    = str(variant.format('EP').flat[0])
-            maf        = variant.format('AF').flat[0]
-            N          = str(args.N)
 
-            if(len(alt_allele) > 1 or len(ref_allele) > 1): # Ignores INDELs in the input GWAS dataset
-                print("INFO: Ignoring INDEL/MULTI ALLELIC VARIANT at :" + snp + ":" + chromosome + " " + position)
+            if (variant.ID and variant.ID != "."):
+                snp = variant.ID
+                if snp in snp_dict.keys():
+                    print("WARNING: DUPLICATE VARIANT : ", snp + ", Skipping..")
+                    continue
+            else:
+                snp = chromosome + "_" + position + "_" + ref_allele + "_" + alt_allele
+            try:
+                effect = str(variant.format('ES').flat[0])
+            except:
+                print("WARNING: Effect size not available at SNP: ", snp, ", Skipping..")
+                continue
+            try:
+                std_error = str(variant.format('SE').flat[0])
+            except:
+                print("WARNING: Standard Error of effect not available at SNP: ", snp, ", Skipping..")
+                continue
+            try:
+                p_value = str(variant.format('EP').flat[0])
+            except:
+                print("WARNING: p-value not available at SNP: ", snp, ", Skipping..")
+                continue
+            try:
+                maf = variant.format('AF').flat[0]
+            except:
+                print("WARNING: Allele Frequency missing at SNP: ", snp, ", Skipping..")
+                continue
+            N = str(args.n)
+
+            if(len(alt_allele) > 1 or len(ref_allele) > 1): 
+                print("WARNING: INDEL/MULTI ALLELIC VARIANT at :", snp, ", Skipping..")
                 continue
 
             if (maf > 0.5):
                 maf = 1 - 0.5
-
             maf = str(maf)
 
-            if (variant.ID):
-                snp = variant.ID
-                if snp in snp_dict.keys():
-                    print("INFO: Ignoring DUPLICATE VARIANT :" + snp + "\n")
-                    continue
-            else:
-                snp = chromosome + "_" + position + "_" + ref_allele + "_" + alt_allele
-
-            out_fh.write(snp + " ")
-            if(args.format == 'prsice'):
-                out_fh.write(chromosome + " ")
-                out_fh.write(position + " ")
-            out_fh.write(alt_allele + " ")
-            out_fh.write(ref_allele + " ")
-            if(args.format == "sbayesr"):
-                out_fh.write(maf + " ")
-            out_fh.write(effect + " ")
-            if (args.format == "sbayesr" or args.format == "prsice"):
-                out_fh.write(std_error + " ")
-            out_fh.write(p_value + " ")
-            if (args.format == "sbayesr"):
-                out_fh.write(N)
-            out_fh.write("\n")
+            if(args.format == "prscs"):
+                out_line = ' '.join(snp, alt_allele, ref_allele, effect, p_value)
+            elif(args.format == "sbayesr"):
+                out_line = ' '.join(snp, alt_allele, ref_allele, maf, effect, std_error, p_value, N)
+            elif(args.format == "prsice"):
+                out_line = ' '.join(snp, chromosome, position, ref_allele, alt_allele, effect, std_error, p_value)
+            out_fh.write(out_line + "\n")
     else:
         sys.exit("ERROR: File not found: " + args.vcf + "!!")
-
     out_fh.close()
 
 if __name__ == '__main__':
