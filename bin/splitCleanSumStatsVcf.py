@@ -55,8 +55,8 @@ def main():
         for variant in gwas_vcf(args.chromosome):
             chromosome = variant.chromosome
             position = variant.start + 1
-            ref_allele = variant.REF
-            alt_allele = ''.join(variant.ALT)
+            otherAllele = variant.REF
+            effectAllele = ''.join(variant.ALT)
 
             if (variant.ID and variant.ID != "."):
                 snp = variant.ID
@@ -64,7 +64,7 @@ def main():
                     print("WARNING: DUPLICATE VARIANT : ", snp + ", Skipping..")
                     continue
             else:
-                snp = chromosome + "_" + position + "_" + ref_allele + "_" + alt_allele
+                snp = '_'.join(chromosome, position, effectAllele, otherAllele)
             try:
                 effect = str(variant.format('ES').flat[0])
             except:
@@ -81,26 +81,22 @@ def main():
                 print("WARNING: p-value not available at SNP: ", snp, ", Skipping..")
                 continue
             try:
-                maf = variant.format('AF').flat[0]
+                effectAlleleFreq = str(variant.format('AFKG').flat[0])
             except:
                 print("WARNING: Allele Frequency missing at SNP: ", snp, ", Skipping..")
                 continue
             N = str(args.n)
 
             if(len(alt_allele) > 1 or len(ref_allele) > 1): 
-                print("WARNING: INDEL/MULTI ALLELIC VARIANT at :", snp, ", Skipping..")
+                print("WARNING: INDEL/MULTI ALLELIC VARIANT at SNP:", snp, ", Skipping..")
                 continue
 
-            if (maf > 0.5):
-                maf = 1 - 0.5
-            maf = str(maf)
-
             if(args.format == "prscs"):
-                out_line = ' '.join(snp, alt_allele, ref_allele, effect, p_value)
+                out_line = ' '.join(snp, effectAllele, otherAllele, effect, p_value)
             elif(args.format == "sbayesr"):
-                out_line = ' '.join(snp, alt_allele, ref_allele, maf, effect, std_error, p_value, N)
+                out_line = ' '.join(snp, effectAllele, otherAllele, effectAlleleFreq, effect, std_error, p_value, N)
             elif(args.format == "prsice"):
-                out_line = ' '.join(snp, chromosome, position, ref_allele, alt_allele, effect, std_error, p_value)
+                out_line = ' '.join(snp, chromosome, position, effectAllele, otherAllele, effect, std_error, p_value)
             out_fh.write(out_line + "\n")
     else:
         sys.exit("ERROR: File not found: " + args.vcf + "!!")
