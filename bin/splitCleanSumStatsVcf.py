@@ -37,7 +37,7 @@ def main():
     args = parser.parse_args()
     args.format = args.format.lower()
     out = '_'.join([args.out, args.format, "chr"])
-    out = ''.join(out, str(args.chromosome))
+    out = ''.join([out, str(args.chromosome)])
     out = ".".join([out, "txt"])
     out_fh = open(out, "w")
     snp_dict = {}
