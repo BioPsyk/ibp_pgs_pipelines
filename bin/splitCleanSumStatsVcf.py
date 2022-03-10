@@ -54,7 +54,7 @@ def main():
         gwas_vcf = VCF(args.vcf)
         for variant in gwas_vcf(args.chromosome):
             chromosome = str(variant.CHROM)
-            position = variant.start + 1
+            position = str(variant.start + 1)
             otherAllele = variant.REF
             effectAllele = ''.join(variant.ALT)
 
