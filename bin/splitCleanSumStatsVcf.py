@@ -36,8 +36,8 @@ def main():
 
     args = parser.parse_args()
     args.format = args.format.lower()
-    out = '_'.join(args.out, args.format, "chr", str(args.chromosome))
-    out = ".".join(out, "txt")
+    out = '_'.join([args.out, args.format, "chr", str(args.chromosome)])
+    out = ".".join([out, "txt"])
     out_fh = open(out, "w")
     snp_dict = {}
 
@@ -64,7 +64,7 @@ def main():
                     print("WARNING: DUPLICATE VARIANT : ", snp + ", Skipping..")
                     continue
             else:
-                snp = '_'.join(chromosome, position, effectAllele, otherAllele)
+                snp = '_'.join([chromosome, position, effectAllele, otherAllele])
             try:
                 effect = str(variant.format('ES').flat[0])
             except:
@@ -92,11 +92,11 @@ def main():
                 continue
 
             if(args.format == "prscs"):
-                out_line = ' '.join(snp, effectAllele, otherAllele, effect, p_value)
+                out_line = ' '.join([snp, effectAllele, otherAllele, effect, p_value])
             elif(args.format == "sbayesr"):
-                out_line = ' '.join(snp, effectAllele, otherAllele, effectAlleleFreq, effect, std_error, p_value, N)
+                out_line = ' '.join([snp, effectAllele, otherAllele, effectAlleleFreq, effect, std_error, p_value, N])
             elif(args.format == "prsice"):
-                out_line = ' '.join(snp, chromosome, position, effectAllele, otherAllele, effect, std_error, p_value)
+                out_line = ' '.join([snp, chromosome, position, effectAllele, otherAllele, effect, std_error, p_value])
             out_fh.write(out_line + "\n")
     else:
         sys.exit("ERROR: File not found: " + args.vcf + "!!")
