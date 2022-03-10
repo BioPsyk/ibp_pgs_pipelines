@@ -87,7 +87,7 @@ def main():
                 continue
             N = str(args.n)
 
-            if(len(alt_allele) > 1 or len(ref_allele) > 1): 
+            if(len(effectAllele) > 1 or len(otherAllele) > 1): 
                 print("WARNING: INDEL/MULTI ALLELIC VARIANT at SNP:", snp, ", Skipping..")
                 continue
 
