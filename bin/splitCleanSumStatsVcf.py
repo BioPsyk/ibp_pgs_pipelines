@@ -66,6 +66,7 @@ def main():
                     continue
             else:
                 snp = '_'.join([chromosome, position, effectAllele, otherAllele])
+            snp_dict[snp] = 1
             try:
                 effect = str(variant.format('ES').flat[0])
             except:
