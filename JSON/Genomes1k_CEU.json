@@ -55,7 +55,7 @@
 	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr11.fam"
     },
     "12" : {
-	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.bed"
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.bed",
 	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.bim",
 	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.fam"
     },
