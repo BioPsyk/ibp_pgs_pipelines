@@ -1,0 +1,96 @@
+{
+    "1": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr1_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr1_mafpt01.ldm.sparse.info"
+    },
+    "2": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr2_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr2_mafpt01.ldm.sparse.info"
+    },
+    "3": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr3_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr3_mafpt01.ldm.sparse.info"
+    },
+    "4": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr4_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr4_mafpt01.ldm.sparse.info"
+    },
+    "5": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr5_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr5_mafpt01.ldm.sparse.info"
+    },
+    "6": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr6_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr6_mafpt01.ldm.sparse.info"
+    },
+    "7": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr7_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr7_mafpt01.ldm.sparse.info"
+    },
+    "8": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr8_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr8_mafpt01.ldm.sparse.info"
+    },
+    "9": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr9_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr9_mafpt01.ldm.sparse.info"
+    },
+    "10": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr10_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr10_mafpt01.ldm.sparse.info"
+    },
+    "11": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr11_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr11_mafpt01.ldm.sparse.info"
+    },
+    "12": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr12_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr12_mafpt01.ldm.sparse.info"
+    },
+    "13": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr13_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr13_mafpt01.ldm.sparse.info"
+    },
+    "14": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr14_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr14_mafpt01.ldm.sparse.info"
+    },
+    "15": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr15_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr15_mafpt01.ldm.sparse.info"
+    },
+    "16": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr16_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr16_mafpt01.ldm.sparse.info"
+    },
+    "17": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr17_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr17_mafpt01.ldm.sparse.info"
+    },
+    "18": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr18_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr18_mafpt01.ldm.sparse.info"
+    },
+    "19": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr19_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr19_mafpt01.ldm.sparse.info"
+    },
+    "20": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr20_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr20_mafpt01.ldm.sparse.info"
+    },
+    "21": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr21_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr21_mafpt01.ldm.sparse.info"
+    },
+    "22": {
+        "bin" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr22_mafpt01.ldm.sparse.bin",
+        "info" : "/faststorage/project/proto_psych_pgs_devel/data/ukb_50k_bigset_2.8M/ukb50k_shrunk_chr22_mafpt01.ldm.sparse.info"
+    },
+    "meta": {
+        "cohort": "ukbb",
+        "snps": "2.5M",
+        "population": "eur",
+        "format": "sbayesr"
+    }
+}

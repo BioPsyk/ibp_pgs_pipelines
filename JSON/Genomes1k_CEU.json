@@ -1,0 +1,117 @@
+{
+    "1" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr1.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr1.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr1.fam"
+    },
+    "2" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr2.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr2.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr2.fam"
+    },
+    "3": {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr3.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr3.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr3.fam"
+    },
+    "4" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr4.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr4.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr4.fam"
+    },
+    "5" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr5.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr5.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr5.fam"
+    },
+    "6" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr6.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr6.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr6.fam"
+    },
+    "7" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr7.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr7.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr7.fam"
+    },
+    "8" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr8.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr8.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr8.fam"
+    },
+    "9" : {	
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr9.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr9.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr9.fam"
+    },
+    "10" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr10.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr10.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr10.fam"
+    },
+    "11" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr11.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr11.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr11.fam"
+    },
+    "12" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.bed"
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr12.fam"
+    },
+    "13" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr13.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr13.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr13.fam"
+    },
+    "14" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr14.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr14.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr14.fam"
+    },
+    "15" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr15.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr15.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr15.fam"
+    },
+    "16" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr16.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr16.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr16.fam"
+    },
+    "17" : { 
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr17.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr17.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr17.fam"
+    },
+    "18" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr18.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr18.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr18.fam"
+    },
+    "19" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr19.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr19.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr19.fam"
+    },
+    "20" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr20.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr20.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr20.fam"
+    },
+    "21" : {
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr21.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr21.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr21.fam"
+    },
+    "22" : {	
+	"bed" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr22.bed",
+	"bim" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr22.bim",
+	"fam" : "/faststorage/project/proto_psych_pgs_devel/data/genotypes/Genomes1k_Phase1_CEU_chr22.fam"
+    },
+    "meta" : {
+	"cohort" : "1000Genomes",
+	"population" : "CEU",
+	"snps" : "ALL"
+    }
+}
