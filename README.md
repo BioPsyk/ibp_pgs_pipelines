@@ -13,17 +13,23 @@ The pipeline can be run as follows to display the parameter options and help mes
 ## The inputs required
 
 * A reference GWAS in VCF format, indexed using tabix.
-These can be obtained from the following resource: <https://gwas.mrcieu.ac.uk/datasets/>
+These can be obtained from the output of the IBP sum stats cleaning pipeline: `https://github.com/BioPsyk/cleansumstats`
+Please make sure that the VCF has standard errors in the format column as the older summary stats might be missing these.
+The code ignore SNPs without standard errors
+The file to use from the output directory is labeled: `cleaned_GRCh37_full_altbased.vcf.gz`
 * A json file containing paths to PLINK format `.bed/.bim/.fam` files.
-These can be obtained for iPSYCH datasets from the `JSON/` folder that comes with the pipeline
+These can be obtained for iPSYCH datasets on iPSYCH-GDK and a 1000 Genomes test dataset for GDK open from the `JSON/` folder that comes with the pipeline
 * Linkage disequilibrium matrices for the SNPs used to calculate PGS
-These are hardcoded in the `nextflow.config` file
+These are hardcoded in the `nextflow.config` file for iPSYCH-GDK and 
 * A phenotype file with the columns: `FID IID [Phenotype_Name]`
 * A covariate file with the columns: `FID IID Age Sex PC1 PC2...`
-This is hardcoded in the `nextflow.config` file for iPSYCH
+This is hardcoded in the `nextflow.config` file for iPSYCH and `gdk_open.config` for GDK-open
 
 The pipeline also requires the R packages `ggplot2, dplyr, fmsb, data.table, argparser`
 The pipeline requires the python packages `scipy, h5py, cyvcf2`
+
+The file rquirements.txt produced by conda can be used to reproduce the developer environment to run this pipeline with the following command:
+`conda create --name <env> --file requirements.txt`
 
 ## The outputs produced
 
