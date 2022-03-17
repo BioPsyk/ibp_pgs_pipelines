@@ -23,7 +23,7 @@ These can be obtained for iPSYCH datasets on iPSYCH-GDK and a 1000 Genomes test 
 These are hardcoded in the `nextflow.config` file for iPSYCH-GDK and `gdk_open.config` for GDK-open
 * A phenotype file with the columns: `FID IID [Phenotype_Name]`
 * A covariate file with the columns: `FID IID Age Sex PC1 PC2...`
-This is hardcoded in the `nextflow.config` file for iPSYCH and `gdk_open.config` for GDK-open. \
+This is hardcoded in the `nextflow.config` file for iPSYCH and `gdk_open.config` for GDK-open. 
 
 * The pipeline requires the R packages `ggplot2, dplyr, fmsb, data.table, argparser`
 * The pipeline requires the python packages `scipy, h5py, cyvcf2`
