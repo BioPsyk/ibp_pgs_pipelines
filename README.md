@@ -59,3 +59,8 @@ with the columns:
 ```
 
 * A bar plot for variance explained
+
+## NOTE
+
+When launching the pipeline as an sbatch script, please be mindful of requesting long enough wall-time for other more computationally expensive jobs, 
+such as calculating SNP posteriors to run and finish. This depends on how busy the queue is, but usually around 48h is long enough on GenomeDK.  
