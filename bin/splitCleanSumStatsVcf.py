@@ -49,7 +49,7 @@ def main():
     elif(args.format == "prsice"):
         out_fh.write("SNP CHR BP A1 A2 BETA SE P\n")
     elif(args.format == "ldpred"):
-        out_fh.write("rsid,chr,pos,a0,a1,beta,beta_se,N,p")
+        out_fh.write("rsid,chr,pos,a0,a1,beta,beta_se,N,p\n")
     else:
         sys.exit("ERROR: Unsupported --format specified: ", args.format)
 
