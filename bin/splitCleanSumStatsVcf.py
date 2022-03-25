@@ -48,7 +48,7 @@ def main():
         out_fh.write("SNP A1 A2 freq b se p N\n")
     elif(args.format == "prsice"):
         out_fh.write("SNP CHR BP A1 A2 BETA SE P\n")
-    elif(args.format == "ldpred":)
+    elif(args.format == "ldpred"):
         out_fh.write("rsid,chr,pos,a0,a1,beta,beta_se,N,p")
     else:
         sys.exit("ERROR: Unsupported --format specified: ", args.format)
