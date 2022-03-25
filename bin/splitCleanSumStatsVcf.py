@@ -23,7 +23,7 @@ def main():
         required = True)
     parser.add_argument('--format', 
         type = str, 
-        help = "prscs or sbayesr or prsice", 
+        help = "prscs (or) sbayesr (or) prsice (or) ldpred", 
         required = True)
     parser.add_argument('--out',  
         type = str, 
@@ -48,6 +48,8 @@ def main():
         out_fh.write("SNP A1 A2 freq b se p N\n")
     elif(args.format == "prsice"):
         out_fh.write("SNP CHR BP A1 A2 BETA SE P\n")
+    elif(args.format == "ldpred":)
+        out_fh.write("rsid,chr,pos,a0,a1,beta,beta_se,N,p")
     else:
         sys.exit("ERROR: Unsupported --format specified: ", args.format)
 
@@ -99,6 +101,8 @@ def main():
                 out_line = ' '.join([snp, effectAllele, otherAllele, effectAlleleFreq, effect, std_error, p_value, N])
             elif(args.format == "prsice"):
                 out_line = ' '.join([snp, chromosome, position, effectAllele, otherAllele, effect, std_error, p_value])
+            elif(args.format == "ldpred"):
+                out_line = ','.join([snp, chromosome, position, otherAllele, effectAllele, effect, std_error, N, p_value])
             out_fh.write(out_line + "\n")
     else:
         sys.exit("ERROR: File not found: " + args.vcf + "!!")
