@@ -43,9 +43,8 @@ names(map) = c("chr", "rsid", "dist", "pos", "a1", "a0")
     
 # Intersect sumstats with genotype map
     
-tmp_snp  = snp_match(sumstats[sumstats$chr==chr,], map)
-info_snp = rbind(info_snp, tmp_snp)
-    
+info_snp  = snp_match(sumstats, map)
+
 # Assign the genotype to a variable for easier downstream analysis
     
 genotype = obj.bigSNP$genotypes
