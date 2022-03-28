@@ -67,7 +67,7 @@ for (chr in 1:22) {
         genotype,
         ind.col = ind.chr2,
         ncores = NCORES,
-        info.pos = POS2[ind.chr2],
+        infos.pos = POS2[ind.chr2],
         size = 3/1000
     )
     
