@@ -26,7 +26,7 @@ sumstats = bigreadr::fread2(options$sumstats)
 # Calculate LD matrix from genotypes
 
 # Get maximum amount of cores
-NCORES = nb_cores()
+NCORES = 1
 # Open a temporary file
 tmp = tempfile(tmpdir = "tmp-data")
 on.exit(file.remove(paste0(tmp, ".sbk")), add = TRUE)
