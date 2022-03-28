@@ -33,21 +33,17 @@ on.exit(file.remove(paste0(tmp, ".sbk")), add = TRUE)
 
 # Initialize variables for storing the LD score and LD matrix
 
-corr = NULL
-ld = NULL
-
-# We want to know the ordering of samples in the bed file 
-
-info_snp = NULL
-fam.order = NULL
-
+corr       = NULL
+ld         = NULL
+info_snp   = NULL
+fam.order  = NULL
 obj.bigSNP = snp_attach(options$genotypes)
-
+map        = obj.bigSNP$map
 names(map) = c("chr", "rsid", "dist", "pos", "a1", "a0")
     
 # Intersect sumstats with genotype map
     
-tmp_snp = snp_match(sumstats[sumstats$chr==chr,], map)
+tmp_snp  = snp_match(sumstats[sumstats$chr==chr,], map)
 info_snp = rbind(info_snp, tmp_snp)
     
 # Assign the genotype to a variable for easier downstream analysis
