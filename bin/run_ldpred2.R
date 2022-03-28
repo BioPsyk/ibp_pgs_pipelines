@@ -41,7 +41,7 @@ ld = NULL
 info_snp = NULL
 fam.order = NULL
 
-obj.bigSNP = snp_attach(genotypes)
+obj.bigSNP = snp_attach(options$genotypes)
 
 names(map) = c("chr", "rsid", "dist", "pos", "a1", "a0")
     
