@@ -59,7 +59,7 @@ for (chr in 1:22) {
     #Extract SNPs in chromosome
     
     ind.chr = which(info_snp$chr == chr)
-    ind.chr2 = info_snps$`_NUM_ID_`[ind.chr]
+    ind.chr2 = info_snp$`_NUM_ID_`[ind.chr]
     
     # Calculate LD
     
