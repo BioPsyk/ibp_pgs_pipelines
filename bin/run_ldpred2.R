@@ -5,6 +5,7 @@ require(magrittr, quietly = TRUE)
 require(dplyr, quietly = TRUE)
 require(ggplot2, quietly = TRUE)
 require(bigsnpr, quietly = TRUE)
+require(bigreadr, quietly = TRUE)
 require(argparser, quietly = TRUE)
 
 parser = arg_parser("Run LDPred2 to calculate Polygenic Scores", 
@@ -15,93 +16,63 @@ parser = add_argument(parser,
 parser = add_argument(parser, 
                       "genotypes", 
                       help = "Genotype file in BigSnpR format")
+parser = add_argument(parser,
+                      "map",
+                      help = "map .RDS file for LD reference")
+parser = add_argument(parser,
+                      "ldm",
+                      help = "LDpred2 Sparse LD matrix .RDS file")
 parser = add_argument(parser, 
                       "out",
                       help = "Output Prefix",
                       default = "PGS_Eval")
+parser = add_argument(parser,
+                      "chromosome",
+                      help = "Chromosome to analyze")
 options = parse_args(parser)
 
-sumstats = bigreadr::fread2(options$sumstats)
+# Reading input summary stats
 
-# Calculate LD matrix from genotypes
+sumstats = bigreadr::fread2(options$sumstats)
+sumstats = sumstats %>% rename(n_eff = N)
 
 # Get maximum amount of cores
-NCORES = 1
-# Open a temporary file
-tmp = tempfile(tmpdir = "tmp-data")
-on.exit(file.remove(paste0(tmp, ".sbk")), add = TRUE)
 
-# Initialize variables for storing the LD score and LD matrix
+NCORES = 1 # change to nb_cores() when R pkg bigparallelr is fixed for bugs
 
-corr       = NULL
-ld         = NULL
-info_snp   = NULL
-fam.order  = NULL
-obj.bigSNP = snp_attach(options$genotypes)
-map        = obj.bigSNP$map
-names(map) = c("chr", "rsid", "dist", "pos", "a1", "a0")
-    
-# Intersect sumstats with genotype map
-    
-info_snp  = snp_match(sumstats, map)
+# Information for variants provided in the LD reference
 
-# Assign the genotype to a variable for easier downstream analysis
-    
-genotype = obj.bigSNP$genotypes
-    
-# Rename the data structures
+map_ldref = readRDS(options$map)
+map_ldref = map_ldref %>% filter(chr == options$chromosome)
+info_snp  = snp_match(sumstats, map_ldref)
+info_snp  = tidyr::drop_na(tibble::as_tibble(info_snp))
+sd_ldref  = with(info_snp, sqrt(2 * af_UKBB * (1 - af_UKBB)))
+sd_ss     = with(info_snp, 2 / sqrt(n_eff * beta_se^2))
+is_bad    = sd_ss < (0.5 * sd_ldref) | 
+    sd_ss > (sd_ldref + 0.1) | 
+    sd_ss < 0.1 | 
+    sd_ldref < 0.05
+df_beta = info_snp[!is_bad, ]
 
-CHR  = map$chr
-POS  = map$pos
-POS2 = map$dist
+tmp      = tempfile(tmpdir = "tmp-data")
+ind_chr  = which(df_beta$chr == options$chromosome)
+ind.chr2 = df_beta$`_NUM_ID_`[ind.chr]
+ind.chr3 = match(ind.chr2, which(map_ldref$chr == chr))
+corr_chr = readRDS(options$ldm)[ind.chr3, ind.chr3]
+corr     = as_SFBM(corr_chr, tmp)
 
-for (chr in 1:22) {
-    #Extract SNPs in chromosome
-    
-    ind.chr = which(info_snp$chr == chr)
-    ind.chr2 = info_snp$`_NUM_ID_`[ind.chr]
-    
-    # Calculate LD
-    
-    corr0 = snp_cor(
-        genotype,
-        ind.col = ind.chr2,
-        ncores = NCORES,
-        infos.pos = POS2[ind.chr2],
-        size = 3/1000
-    )
-    
-    if (chr == 1) {
-        ld <- Matrix::colSums(corr0^2)
-        corr <- as_SFBM(corr0, tmp)
-    } 
-    else {
-        ld <- c(ld, Matrix::colSums(corr0^2))
-        corr$add_columns(corr0, nrow(corr))
-    }   
-}
+# Heritability estimation of LD score regression to be used as a starting value 
+# in LDpred2-auto
 
-fam.order <- as.data.table(obj.bigSNP$fam)
-
-# Rename fam order
-
-setnames(fam.order,
-         c("family.ID", "sample.ID"),
-         c("FID", "IID"))
-
-# Perform LD Score regression 
-
-df_beta <- info_snp[,c("beta", "beta_se", "n_eff", "_NUM_ID_")]
-ldsc <- snp_ldsc(ld, 
-                 length(ld), 
-                 chi2 = (df_beta$beta / df_beta$beta_se)^2,
-                 sample_size = df_beta$n_eff, 
-                 blocks = NULL)
-h2_est <- ldsc[["h2"]]
+ldsc = with(df_beta, snp_ldsc(ld, ld_size = nrow(map_ldref), 
+                              chi2 = (beta / beta_se)^2,
+                              sample_size = n_eff,
+                              ncores = NCORES))
+h2_est = ldsc[["h2"]]
 
 # Obtain posteriors - INFINITESIMAL MODEL
 
-beta_inf <- snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
+beta_inf = snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
 
 # GRID MODEL
 
@@ -119,13 +90,12 @@ beta_grid = snp_ldpred2_grid(corr, df_beta, grid.param, ncores = NCORES)
 multi_auto <- snp_ldpred2_auto(corr, 
                                df_beta,
                                h2_init = h2_est,
-                               vec_p_init = seq_log(1e-4, 0.5, length.out = 30),
-                               alllow_jump_sign = FALSE,
+                               vec_p_init = seq_log(1e-4, 0.9, length.out = 30),
+                               allow_jump_sign = FALSE,
                                shrink_corr = 0.95,
                                ncores = NCORES)
 
-beta_auto <- sapply(multi_auto, function(auto)
-    auto$beta_est)
+beta_auto <- sapply(multi_auto, function(auto) auto$beta_est)
 
 # LASSOSUM2 GRID
 
@@ -156,5 +126,9 @@ write.table(beta_lassosum2,
             sep = " ", 
             row.names = F, 
             quote = F)
+
+# cleanup
+
+file.remove(paste0(tmp, ".sbk"))
 
 # ---------------- END OF CODE --------------#
