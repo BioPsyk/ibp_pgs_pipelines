@@ -13,9 +13,6 @@ parser = arg_parser("Run LDPred2 to calculate Polygenic Scores",
 parser = add_argument(parser, 
                       "sumstats", 
                       help = "Sumstats in LdPred2 format")
-parser = add_argument(parser, 
-                      "genotypes", 
-                      help = "Genotype file in BigSnpR format")
 parser = add_argument(parser,
                       "map",
                       help = "map .RDS file for LD reference")
