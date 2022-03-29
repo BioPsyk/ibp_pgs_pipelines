@@ -52,9 +52,9 @@ is_bad    = sd_ss < (0.5 * sd_ldref) |
 df_beta = info_snp[!is_bad, ]
 
 tmp      = tempfile(tmpdir = "tmp-data")
-ind_chr  = which(df_beta$chr == options$chromosome)
+ind.chr  = which(df_beta$chr == options$chromosome)
 ind.chr2 = df_beta$`_NUM_ID_`[ind.chr]
-ind.chr3 = match(ind.chr2, which(map_ldref$chr == chr))
+ind.chr3 = match(ind.chr2, which(map_ldref$chr == options$chromosome))
 corr_chr = readRDS(options$ldm)[ind.chr3, ind.chr3]
 corr     = as_SFBM(corr_chr, tmp)
 
