@@ -88,8 +88,6 @@ multi_auto <- snp_ldpred2_auto(corr,
                                df_beta,
                                h2_init = h2_est,
                                vec_p_init = seq_log(1e-4, 0.9, length.out = 30),
-                               allow_jump_sign = FALSE,
-                               shrink_corr = 0.95,
                                ncores = NCORES)
 
 beta_auto <- sapply(multi_auto, function(auto) auto$beta_est)
