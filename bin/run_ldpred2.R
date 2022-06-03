@@ -73,8 +73,15 @@ beta_inf = snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
 
 # GRID MODEL
 
-h2_seq = round(h2_est * c(0.3, 0.7, 1, 1.4), 4)
-p_seq  = signif(seq_log(1e-5, 1, length.out = 21), 2)
+h2_seq = round(h2_est * c(0.5, 0.8, 1, 1.2), 4)
+p_seq  = signif(seq_log(1e-5, 1, length.out = 5), 2)
+header = "ldpred2_inf"
+
+for (i in h2_seq) {
+    for (j in p_seq) {
+        header = rbind(grid_header, paste0("ldpred2_grid_", i, "_", j))
+    }
+}
 
 grid.param = expand.grid(p = p_seq, 
                          h2 = h2_seq, 
@@ -84,17 +91,26 @@ beta_grid = snp_ldpred2_grid(corr, df_beta, grid.param, ncores = NCORES)
 
 # AUTO MODEL
 
-multi_auto <- snp_ldpred2_auto(corr, 
-                               df_beta,
-                               h2_init = h2_est,
-                               vec_p_init = seq_log(1e-4, 0.9, length.out = 30),
-                               ncores = NCORES)
+multi_auto = snp_ldpred2_auto(corr, 
+                              df_beta,
+                              h2_init = h2_est,
+                              vec_p_init = seq_log(1e-4, 0.9, length.out = 5),
+                              ncores = NCORES)
+
+for (i in vec_p_init) {
+    auto_header = rbind(header, paste0("ldpred2_", h2_est, "_", vec_p_init))
+}
 
 beta_auto <- sapply(multi_auto, function(auto) auto$beta_est)
 
 # LASSOSUM2 GRID
 
 beta_lassosum2 = snp_lassosum2(corr, df_beta, ncores = NCORES)
+
+df_beta = df_beta %>% select(chr, rsid, pos, a1, a0)
+df_out  = cbind(df_beta, beta_inf, beta_grid, beta_auto, beta_lassosum2)
+header  = cbind(colnames(df_beta), header)
+colnames(df_out) = header
 
 # Write SNP posteriors to file
 
